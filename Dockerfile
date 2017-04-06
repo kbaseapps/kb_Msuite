@@ -95,23 +95,23 @@ RUN \
   make all
 
 # Install numpy, etc. (probably not necessary)
-#WORKDIR /kb/module
-#RUN \
+WORKDIR /kb/module
+RUN \
 #  pip install numpy
 #  pip install scipy
 #  pip install matplotlib
 #  pip install pysam
 #  pip install dendropy
 #  pip install ScreamingBackpack
+  pip install pysam, dendropy, ScreamingBackpack
 
 # Install CheckM
 WORKDIR /kb/module
 RUN \
-  pip install checkm-genome
+  pip install pysam, dendropy, ScreamingBackpack, checkm-genome
 
 
-# TODO: install data to mount
-# TODO: set data root
+# TODO: data installed using entrypoint script "init" mode
 
 
 # -----------------------------------------
