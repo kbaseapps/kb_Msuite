@@ -19,7 +19,9 @@ elif [ "${1}" = "init" ] ; then
   echo "Initialize module"
   #cd /kb/data
   cd /data
-  curl -s https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_v1.0.7.tar.gz | tar xzf -
+  #curl -s https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_v1.0.7.tar.gz | tar xzf -  # this is much slower than breaking up the jobs
+  curl https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_v1.0.7.tar.gz > checkm_data_v1.0.7.tar.gz
+  tar xzf checkm_data_v1.0.7.tar.gz
   checkm data setRoot /data
   if [ -d genome_tree ] ; then
       touch __READY__
