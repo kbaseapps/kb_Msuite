@@ -85,7 +85,7 @@ RUN \
 WORKDIR /kb/module
 RUN \
   git clone https://github.com/hyattpd/Prodigal && \
-  make install
+  make
 
 # Install Pplacer
 WORKDIR /kb/module
