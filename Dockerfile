@@ -85,12 +85,14 @@ RUN \
 WORKDIR /kb/module
 RUN \
   git clone https://github.com/hyattpd/Prodigal && \
-  make
+  cd Prodigal && \
+  make install
 
 # Install Pplacer
 WORKDIR /kb/module
 RUN \
   git clone https://github.com/matsen/pplacer && \
+  cd pplacer && \
   cat opam-requirements.txt | xargs opam install -y && \
   make all
 
