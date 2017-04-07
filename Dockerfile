@@ -88,36 +88,8 @@ RUN \
   cd Prodigal && \
   make install
 
-# Install Pplacer
-WORKDIR /kb/module
-RUN \
-  git clone https://github.com/matsen/pplacer && \
-  cd pplacer && \
-  cat opam-requirements.txt | xargs opam install -y && \
-  make all
 
-# Install numpy, etc. (probably not necessary)
-WORKDIR /kb/module
-RUN \
-#  pip install numpy
-#  pip install scipy
-#  pip install matplotlib
-#  pip install pysam
-#  pip install dendropy
-#  pip install ScreamingBackpack
-  pip install pysam, dendropy, ScreamingBackpack
-
-# Install CheckM
-WORKDIR /kb/module
-RUN \
-  pip install pysam, dendropy, ScreamingBackpack, checkm-genome
-
-
-# TODO: data installed using entrypoint script "init" mode
-
-
-# -----------------------------------------
-
+####### Install SDK App first (we need pplacer)
 COPY ./ /kb/module
 RUN mkdir -p /kb/module/work
 RUN chmod -R a+rw /kb/module
@@ -125,6 +97,40 @@ RUN chmod -R a+rw /kb/module
 WORKDIR /kb/module
 
 RUN make all
+
+
+# Install Pplacer
+WORKDIR /kb/module
+RUN \
+  unzip packages/pplacer-linux-v1.1.alpha19.zip && \
+  ln -s packages/pplacer-Linux-v1.1.alpha19/pplacer bin/pplacer && \
+  ln -s packages/pplacer-Linux-v1.1.alpha19/guppy bin/guppy && \
+  ln -s packages/pplacer-Linux-v1.1.alpha19/rppr bin/rppr
+
+# Install numpy, etc. (probably not necessary)
+WORKDIR /kb/module
+#RUN \
+#  pip install numpy
+#  pip install scipy
+#  pip install matplotlib
+#  pip install pysam
+#  pip install dendropy
+#  pip install ScreamingBackpack
+RUN pip install pysam
+RUN pip install dendropy
+RUN pip install ScreamingBackpack
+
+# Install CheckM
+WORKDIR /kb/module
+RUN \
+  pip install checkm-genome
+
+
+# NOTE: data installed using entrypoint script "init" mode
+
+
+# -----------------------------------------
+
 
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 
