@@ -26,7 +26,7 @@
         "service-mapping": {
             "url": "",
             "name": "kb_Msuite",
-            "method": "your_method",
+            "method": "run_checkM",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",
