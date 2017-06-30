@@ -2,16 +2,16 @@ module-name:
     kb_Msuite
 
 module-description:
-    A KBase module
+    A KBase module for running CheckM
 
 service-language:
     python
 
 module-version:
-    0.0.1
+    1.1.0
 
 owners:
-    [dylan, dparks, qzhang]
+    [dylan, dparks, qzhang, msneddon]
 
 data-version:
     1.0

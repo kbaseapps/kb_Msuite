@@ -35,5 +35,17 @@ parameters :
         short-hint : |
             Assess the genome quality based on sequence in an Assembly or in each bin of BinnedContig data.
 
+    save_all_output :
+        ui-name : |
+            Save full output
+        short-hint : |
+            If selected, creates a zip file of the entire CheckM output directory, which may be slow
+
+    save_all_plots :
+        ui-name : |
+            Save all plots
+        short-hint : |
+            If selected, creates a zip file of all the generated plots
+
 description : |
     <p>This app runs the CheckM lineage workflow (lineage_wf) on the provided data and produces a report.</p>

@@ -119,7 +119,7 @@ sub new
 
 =head2 run_checkM
 
-  $returnVal = $obj->run_checkM($params)
+  $obj->run_checkM($params)
 
 =over 4
 
@@ -129,18 +129,18 @@ sub new
 
 <pre>
 $params is a kb_Msuite.CheckMInputParams
-$returnVal is a kb_Msuite.CheckMResults
 CheckMInputParams is a reference to a hash where the following keys are defined:
+	subcommand has a value which is a string
 	bin_folder has a value which is a string
 	out_folder has a value which is a string
-	checkM_cmd_name has a value which is a string
-	workspace_name has a value which is a string
-	file_extension has a value which is a string
+	plots_folder has a value which is a string
+	seq_file has a value which is a string
+	tetra_file has a value which is a string
+	dist_value has a value which is an int
 	thread has a value which is an int
-CheckMResults is a reference to a hash where the following keys are defined:
-	checkM_results_folder has a value which is a string
-	report_name has a value which is a string
-	report_ref has a value which is a string
+	reduced_tree has a value which is a kb_Msuite.boolean
+	quiet has a value which is a kb_Msuite.boolean
+boolean is an int
 
 </pre>
 
@@ -149,18 +149,18 @@ CheckMResults is a reference to a hash where the following keys are defined:
 =begin text
 
 $params is a kb_Msuite.CheckMInputParams
-$returnVal is a kb_Msuite.CheckMResults
 CheckMInputParams is a reference to a hash where the following keys are defined:
+	subcommand has a value which is a string
 	bin_folder has a value which is a string
 	out_folder has a value which is a string
-	checkM_cmd_name has a value which is a string
-	workspace_name has a value which is a string
-	file_extension has a value which is a string
+	plots_folder has a value which is a string
+	seq_file has a value which is a string
+	tetra_file has a value which is a string
+	dist_value has a value which is an int
 	thread has a value which is an int
-CheckMResults is a reference to a hash where the following keys are defined:
-	checkM_results_folder has a value which is a string
-	report_name has a value which is a string
-	report_ref has a value which is a string
+	reduced_tree has a value which is a kb_Msuite.boolean
+	quiet has a value which is a kb_Msuite.boolean
+boolean is an int
 
 
 =end text
@@ -209,7 +209,7 @@ CheckMResults is a reference to a hash where the following keys are defined:
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
-	    return wantarray ? @{$result->result} : $result->result->[0];
+	    return;
 	}
     } else {
         Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_checkM",
@@ -237,6 +237,9 @@ $result is a kb_Msuite.CheckMLineageWfResult
 CheckMLineageWfParams is a reference to a hash where the following keys are defined:
 	input_ref has a value which is a string
 	workspace_name has a value which is a string
+	save_output_dir has a value which is a kb_Msuite.boolean
+	save_plots_dir has a value which is a kb_Msuite.boolean
+boolean is an int
 CheckMLineageWfResult is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -252,6 +255,9 @@ $result is a kb_Msuite.CheckMLineageWfResult
 CheckMLineageWfParams is a reference to a hash where the following keys are defined:
 	input_ref has a value which is a string
 	workspace_name has a value which is a string
+	save_output_dir has a value which is a kb_Msuite.boolean
+	save_plots_dir has a value which is a kb_Msuite.boolean
+boolean is an int
 CheckMLineageWfResult is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -468,62 +474,23 @@ a string
 
 =item Description
 
-required params:
-bin_folder: folder path that holds all putative genome files with (fa as the file extension) to be checkM-ed
-out_folder: folder path that holds all putative genome files with (fa as the file extension) to be checkM-ed
-checkM_cmd_name: name of the CheckM workflow,e.g., lineage_wf or taxonomy_wf
-workspace_name: the name of the workspace it gets saved to.
+Runs CheckM as a command line local function.
 
-optional params:
-file_extension: the extension of the putative genome file, should be "fna"
-thread: number of threads; default 1
+subcommand - specify the subcommand to run; supported options are lineage_wf, tetra, bin_qa_plot, dist_plot
 
+bin_folder - folder with fasta files representing each contig (must end in .fna)
+out_folder - folder to store output
+plots_folder - folder to save plots to
 
-=item Definition
+seq_file - the full concatenated FASTA file (must end in .fna) of all contigs in your bins, used
+           just for running the tetra command
+tetra_File - specify the output/input tetra nucleotide frequency file (generated with the tetra command)
 
-=begin html
+dist_value - when running dist_plot, set this to a value between 0 and 100
 
-<pre>
-a reference to a hash where the following keys are defined:
-bin_folder has a value which is a string
-out_folder has a value which is a string
-checkM_cmd_name has a value which is a string
-workspace_name has a value which is a string
-file_extension has a value which is a string
-thread has a value which is an int
-
-</pre>
-
-=end html
-
-=begin text
-
-a reference to a hash where the following keys are defined:
-bin_folder has a value which is a string
-out_folder has a value which is a string
-checkM_cmd_name has a value which is a string
-workspace_name has a value which is a string
-file_extension has a value which is a string
-thread has a value which is an int
-
-
-=end text
-
-=back
-
-
-
-=head2 CheckMResults
-
-=over 4
-
-
-
-=item Description
-
-checkM_results_folder: folder path that stores the CheckM results
-report_name: report name generated by KBaseReport
-report_ref: report reference generated by KBaseReport
+thread -  number of threads
+reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb
+quiet - pass the --quite parameter to checkM, but doesn't seem to work for all subcommands
 
 
 =item Definition
@@ -532,9 +499,16 @@ report_ref: report reference generated by KBaseReport
 
 <pre>
 a reference to a hash where the following keys are defined:
-checkM_results_folder has a value which is a string
-report_name has a value which is a string
-report_ref has a value which is a string
+subcommand has a value which is a string
+bin_folder has a value which is a string
+out_folder has a value which is a string
+plots_folder has a value which is a string
+seq_file has a value which is a string
+tetra_file has a value which is a string
+dist_value has a value which is an int
+thread has a value which is an int
+reduced_tree has a value which is a kb_Msuite.boolean
+quiet has a value which is a kb_Msuite.boolean
 
 </pre>
 
@@ -543,9 +517,16 @@ report_ref has a value which is a string
 =begin text
 
 a reference to a hash where the following keys are defined:
-checkM_results_folder has a value which is a string
-report_name has a value which is a string
-report_ref has a value which is a string
+subcommand has a value which is a string
+bin_folder has a value which is a string
+out_folder has a value which is a string
+plots_folder has a value which is a string
+seq_file has a value which is a string
+tetra_file has a value which is a string
+dist_value has a value which is an int
+thread has a value which is an int
+reduced_tree has a value which is a kb_Msuite.boolean
+quiet has a value which is a kb_Msuite.boolean
 
 
 =end text
@@ -574,6 +555,8 @@ input_ref - reference to the input Assembly or BinnedContigs data
 a reference to a hash where the following keys are defined:
 input_ref has a value which is a string
 workspace_name has a value which is a string
+save_output_dir has a value which is a kb_Msuite.boolean
+save_plots_dir has a value which is a kb_Msuite.boolean
 
 </pre>
 
@@ -584,6 +567,8 @@ workspace_name has a value which is a string
 a reference to a hash where the following keys are defined:
 input_ref has a value which is a string
 workspace_name has a value which is a string
+save_output_dir has a value which is a kb_Msuite.boolean
+save_plots_dir has a value which is a kb_Msuite.boolean
 
 
 =end text

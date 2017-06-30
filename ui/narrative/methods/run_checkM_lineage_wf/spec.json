@@ -7,7 +7,7 @@
     "categories": ["active"],
     "widgets": {
         "input": null,
-        "output": null
+        "output": "no-display"
     },
     "parameters": [ 
         {
@@ -20,7 +20,31 @@
             "text_options": {
                 "valid_ws_types": ["KBaseGenomeAnnotations.Assembly","KBaseMetagenomes.BinnedContigs"]
             }
-        }
+        }, 
+        {
+            "id": "save_all_output",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values":["0"],
+            "field_type" : "checkbox",
+            "checkbox_options":{
+                "checked_value": 1,
+                "unchecked_value": 0
+            }
+         }, 
+         {
+            "id": "save_all_plots",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values":["1"],
+            "field_type" : "checkbox",
+            "checkbox_options":{
+                "checked_value": 1,
+                "unchecked_value": 0
+            }
+         }
     ],
     "behavior": {
         "service-mapping": {
@@ -34,7 +58,16 @@
                 },
                 {
                     "input_parameter": "input_ref",
-                    "target_property": "input_ref"
+                    "target_property": "input_ref",
+                    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "save_all_output",
+                    "target_property": "save_output_dir"
+                },
+                {
+                    "input_parameter": "save_all_plots",
+                    "target_property": "save_plots_dir"
                 }
             ],
             "output_mapping": [

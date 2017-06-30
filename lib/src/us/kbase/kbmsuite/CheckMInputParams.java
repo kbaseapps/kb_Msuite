@@ -14,42 +14,73 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * <p>Original spec-file type: CheckMInputParams</p>
  * <pre>
- * required params:
- * bin_folder: folder path that holds all putative genome files with (fa as the file extension) to be checkM-ed
- * out_folder: folder path that holds all putative genome files with (fa as the file extension) to be checkM-ed
- * checkM_cmd_name: name of the CheckM workflow,e.g., lineage_wf or taxonomy_wf
- * workspace_name: the name of the workspace it gets saved to.
- * optional params:
- * file_extension: the extension of the putative genome file, should be "fna"
- * thread: number of threads; default 1
+ * Runs CheckM as a command line local function.
+ * subcommand - specify the subcommand to run; supported options are lineage_wf, tetra, bin_qa_plot, dist_plot
+ * bin_folder - folder with fasta files representing each contig (must end in .fna)
+ * out_folder - folder to store output
+ * plots_folder - folder to save plots to
+ * seq_file - the full concatenated FASTA file (must end in .fna) of all contigs in your bins, used
+ *            just for running the tetra command
+ * tetra_File - specify the output/input tetra nucleotide frequency file (generated with the tetra command)
+ * dist_value - when running dist_plot, set this to a value between 0 and 100
+ * thread -  number of threads
+ * reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb
+ * quiet - pass the --quite parameter to checkM, but doesn't seem to work for all subcommands
  * </pre>
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
+    "subcommand",
     "bin_folder",
     "out_folder",
-    "checkM_cmd_name",
-    "workspace_name",
-    "file_extension",
-    "thread"
+    "plots_folder",
+    "seq_file",
+    "tetra_file",
+    "dist_value",
+    "thread",
+    "reduced_tree",
+    "quiet"
 })
 public class CheckMInputParams {
 
+    @JsonProperty("subcommand")
+    private String subcommand;
     @JsonProperty("bin_folder")
     private String binFolder;
     @JsonProperty("out_folder")
     private String outFolder;
-    @JsonProperty("checkM_cmd_name")
-    private String checkMCmdName;
-    @JsonProperty("workspace_name")
-    private String workspaceName;
-    @JsonProperty("file_extension")
-    private String fileExtension;
+    @JsonProperty("plots_folder")
+    private String plotsFolder;
+    @JsonProperty("seq_file")
+    private String seqFile;
+    @JsonProperty("tetra_file")
+    private String tetraFile;
+    @JsonProperty("dist_value")
+    private Long distValue;
     @JsonProperty("thread")
     private Long thread;
+    @JsonProperty("reduced_tree")
+    private Long reducedTree;
+    @JsonProperty("quiet")
+    private Long quiet;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("subcommand")
+    public String getSubcommand() {
+        return subcommand;
+    }
+
+    @JsonProperty("subcommand")
+    public void setSubcommand(String subcommand) {
+        this.subcommand = subcommand;
+    }
+
+    public CheckMInputParams withSubcommand(String subcommand) {
+        this.subcommand = subcommand;
+        return this;
+    }
 
     @JsonProperty("bin_folder")
     public String getBinFolder() {
@@ -81,48 +112,63 @@ public class CheckMInputParams {
         return this;
     }
 
-    @JsonProperty("checkM_cmd_name")
-    public String getCheckMCmdName() {
-        return checkMCmdName;
+    @JsonProperty("plots_folder")
+    public String getPlotsFolder() {
+        return plotsFolder;
     }
 
-    @JsonProperty("checkM_cmd_name")
-    public void setCheckMCmdName(String checkMCmdName) {
-        this.checkMCmdName = checkMCmdName;
+    @JsonProperty("plots_folder")
+    public void setPlotsFolder(String plotsFolder) {
+        this.plotsFolder = plotsFolder;
     }
 
-    public CheckMInputParams withCheckMCmdName(String checkMCmdName) {
-        this.checkMCmdName = checkMCmdName;
+    public CheckMInputParams withPlotsFolder(String plotsFolder) {
+        this.plotsFolder = plotsFolder;
         return this;
     }
 
-    @JsonProperty("workspace_name")
-    public String getWorkspaceName() {
-        return workspaceName;
+    @JsonProperty("seq_file")
+    public String getSeqFile() {
+        return seqFile;
     }
 
-    @JsonProperty("workspace_name")
-    public void setWorkspaceName(String workspaceName) {
-        this.workspaceName = workspaceName;
+    @JsonProperty("seq_file")
+    public void setSeqFile(String seqFile) {
+        this.seqFile = seqFile;
     }
 
-    public CheckMInputParams withWorkspaceName(String workspaceName) {
-        this.workspaceName = workspaceName;
+    public CheckMInputParams withSeqFile(String seqFile) {
+        this.seqFile = seqFile;
         return this;
     }
 
-    @JsonProperty("file_extension")
-    public String getFileExtension() {
-        return fileExtension;
+    @JsonProperty("tetra_file")
+    public String getTetraFile() {
+        return tetraFile;
     }
 
-    @JsonProperty("file_extension")
-    public void setFileExtension(String fileExtension) {
-        this.fileExtension = fileExtension;
+    @JsonProperty("tetra_file")
+    public void setTetraFile(String tetraFile) {
+        this.tetraFile = tetraFile;
     }
 
-    public CheckMInputParams withFileExtension(String fileExtension) {
-        this.fileExtension = fileExtension;
+    public CheckMInputParams withTetraFile(String tetraFile) {
+        this.tetraFile = tetraFile;
+        return this;
+    }
+
+    @JsonProperty("dist_value")
+    public Long getDistValue() {
+        return distValue;
+    }
+
+    @JsonProperty("dist_value")
+    public void setDistValue(Long distValue) {
+        this.distValue = distValue;
+    }
+
+    public CheckMInputParams withDistValue(Long distValue) {
+        this.distValue = distValue;
         return this;
     }
 
@@ -141,6 +187,36 @@ public class CheckMInputParams {
         return this;
     }
 
+    @JsonProperty("reduced_tree")
+    public Long getReducedTree() {
+        return reducedTree;
+    }
+
+    @JsonProperty("reduced_tree")
+    public void setReducedTree(Long reducedTree) {
+        this.reducedTree = reducedTree;
+    }
+
+    public CheckMInputParams withReducedTree(Long reducedTree) {
+        this.reducedTree = reducedTree;
+        return this;
+    }
+
+    @JsonProperty("quiet")
+    public Long getQuiet() {
+        return quiet;
+    }
+
+    @JsonProperty("quiet")
+    public void setQuiet(Long quiet) {
+        this.quiet = quiet;
+    }
+
+    public CheckMInputParams withQuiet(Long quiet) {
+        this.quiet = quiet;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -153,7 +229,7 @@ public class CheckMInputParams {
 
     @Override
     public String toString() {
-        return ((((((((((((((("CheckMInputParams"+" [binFolder=")+ binFolder)+", outFolder=")+ outFolder)+", checkMCmdName=")+ checkMCmdName)+", workspaceName=")+ workspaceName)+", fileExtension=")+ fileExtension)+", thread=")+ thread)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((("CheckMInputParams"+" [subcommand=")+ subcommand)+", binFolder=")+ binFolder)+", outFolder=")+ outFolder)+", plotsFolder=")+ plotsFolder)+", seqFile=")+ seqFile)+", tetraFile=")+ tetraFile)+", distValue=")+ distValue)+", thread=")+ thread)+", reducedTree=")+ reducedTree)+", quiet=")+ quiet)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

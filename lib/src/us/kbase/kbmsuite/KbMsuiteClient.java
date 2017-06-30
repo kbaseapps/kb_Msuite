@@ -174,16 +174,14 @@ public class KbMsuiteClient {
      * <pre>
      * </pre>
      * @param   params   instance of type {@link us.kbase.kbmsuite.CheckMInputParams CheckMInputParams}
-     * @return   parameter "returnVal" of type {@link us.kbase.kbmsuite.CheckMResults CheckMResults}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public CheckMResults runCheckM(CheckMInputParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public void runCheckM(CheckMInputParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(params);
-        TypeReference<List<CheckMResults>> retType = new TypeReference<List<CheckMResults>>() {};
-        List<CheckMResults> res = caller.jsonrpcCall("kb_Msuite.run_checkM", args, retType, true, true, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
+        TypeReference<Object> retType = new TypeReference<Object>() {};
+        caller.jsonrpcCall("kb_Msuite.run_checkM", args, retType, false, true, jsonRpcContext, this.serviceVersion);
     }
 
     /**

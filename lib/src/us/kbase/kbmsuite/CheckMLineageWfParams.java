@@ -23,7 +23,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "input_ref",
-    "workspace_name"
+    "workspace_name",
+    "save_output_dir",
+    "save_plots_dir"
 })
 public class CheckMLineageWfParams {
 
@@ -31,6 +33,10 @@ public class CheckMLineageWfParams {
     private String inputRef;
     @JsonProperty("workspace_name")
     private String workspaceName;
+    @JsonProperty("save_output_dir")
+    private Long saveOutputDir;
+    @JsonProperty("save_plots_dir")
+    private Long savePlotsDir;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("input_ref")
@@ -63,6 +69,36 @@ public class CheckMLineageWfParams {
         return this;
     }
 
+    @JsonProperty("save_output_dir")
+    public Long getSaveOutputDir() {
+        return saveOutputDir;
+    }
+
+    @JsonProperty("save_output_dir")
+    public void setSaveOutputDir(Long saveOutputDir) {
+        this.saveOutputDir = saveOutputDir;
+    }
+
+    public CheckMLineageWfParams withSaveOutputDir(Long saveOutputDir) {
+        this.saveOutputDir = saveOutputDir;
+        return this;
+    }
+
+    @JsonProperty("save_plots_dir")
+    public Long getSavePlotsDir() {
+        return savePlotsDir;
+    }
+
+    @JsonProperty("save_plots_dir")
+    public void setSavePlotsDir(Long savePlotsDir) {
+        this.savePlotsDir = savePlotsDir;
+    }
+
+    public CheckMLineageWfParams withSavePlotsDir(Long savePlotsDir) {
+        this.savePlotsDir = savePlotsDir;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -75,7 +111,7 @@ public class CheckMLineageWfParams {
 
     @Override
     public String toString() {
-        return ((((((("CheckMLineageWfParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((("CheckMLineageWfParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
