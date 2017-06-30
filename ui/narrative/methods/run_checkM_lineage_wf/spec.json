@@ -4,7 +4,7 @@
         "dylan","qzhang","msneddon"
     ],
     "contact": "",
-    "categories": ["active"],
+    "categories": ["active","communities","assembly"],
     "widgets": {
         "input": null,
         "output": "no-display"
