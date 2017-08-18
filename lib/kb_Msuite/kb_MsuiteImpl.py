@@ -3,10 +3,10 @@
 import os
 import json
 
-from pprint import pprint
+# from pprint import pprint
 
 from kb_Msuite.Utils.CheckMUtil import CheckMUtil
-from kb_Msuite.Utils.DataStagingUtils import DataStagingUtils
+# from kb_Msuite.Utils.DataStagingUtils import DataStagingUtils
 #END_HEADER
 
 
@@ -17,15 +17,20 @@ class kb_Msuite:
 
     Module Description:
     A KBase module: kb_Msuite
-This SDK module is developed to wrap the open source package CheckM which consists of a set of tools 
-for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. 
-CheckM consists of a series of commands in order to support a number of different analyses and workflows.
 
-References: 
+This SDK module is developed to wrap the open source package CheckM which consists of a set
+of tools for assessing the quality of genomes recovered from isolates, single cells, or
+metagenomes.
+CheckM consists of a series of commands in order to support a number of different analyses
+and workflows.
+
+References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
-Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of
+microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research,
+25: 1043–1055.
     '''
 
     ######## WARNING FOR GEVENT USERS ####### noqa
@@ -50,7 +55,6 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
         self.config['KB_AUTH_TOKEN'] = os.environ['KB_AUTH_TOKEN']
         #END_CONSTRUCTOR
         pass
-
 
     def run_checkM(self, ctx, params):
         """
@@ -126,6 +130,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
                              'result is not type dict as required.')
         # return the results
         return [result]
+
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",
