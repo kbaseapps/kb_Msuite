@@ -4,9 +4,11 @@
 name: Assess Genome Quality with CheckM - v1.0.7
 
 tooltip: |
-    Runs the CheckM lineage workflow to assess the genome quality of isolates, single cells or metagenomes
+    Runs the CheckM lineage workflow to assess the genome quality of isolates, single cells or genome bins from metagenome assemblies
 
-screenshots: []
+screenshots:
+    - checkM_input_cell.png
+    - checkM_output_report.png
 
 icon: checkm-green.png
 
@@ -23,7 +25,7 @@ suggestions:
         related:
             []
         next:
-            []
+            ["MetagenomeUtils.edit_bins_in_binned_contigs", "MetagenomeUtils.edit_contigs_in_binned_contigs", "MetagenomeUtils.extract_bins_as_assemblies"]
 
 #
 # Configure the display and description of parameters
