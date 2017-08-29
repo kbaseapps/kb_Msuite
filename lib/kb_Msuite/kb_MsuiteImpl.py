@@ -39,7 +39,7 @@ microbial genomes recovered from isolates, single cells, and metagenomes. Genome
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.1.0"
+    VERSION = "1.1.1"
     GIT_URL = "git@github.com:kbaseapps/kb_Msuite"
     GIT_COMMIT_HASH = "8e65e17fb7ef3a95e0f9a5b861b3391c78c6ec36"
 
