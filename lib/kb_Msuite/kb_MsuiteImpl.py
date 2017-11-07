@@ -17,20 +17,15 @@ class kb_Msuite:
 
     Module Description:
     A KBase module: kb_Msuite
+This SDK module is developed to wrap the open source package CheckM which consists of a set of tools 
+for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. 
+CheckM consists of a series of commands in order to support a number of different analyses and workflows.
 
-This SDK module is developed to wrap the open source package CheckM which consists of a set
-of tools for assessing the quality of genomes recovered from isolates, single cells, or
-metagenomes.
-CheckM consists of a series of commands in order to support a number of different analyses
-and workflows.
-
-References:
+References: 
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
-Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of
-microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research,
-25: 1043–1055.
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
     '''
 
     ######## WARNING FOR GEVENT USERS ####### noqa
@@ -39,9 +34,9 @@ microbial genomes recovered from isolates, single cells, and metagenomes. Genome
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.1.1"
-    GIT_URL = "git@github.com:kbaseapps/kb_Msuite"
-    GIT_COMMIT_HASH = "8e65e17fb7ef3a95e0f9a5b861b3391c78c6ec36"
+    VERSION = "1.1.2"
+    GIT_URL = "https://github.com/dcchivian/kb_Msuite"
+    GIT_COMMIT_HASH = "c1c3fffa378f0aa2afc36e7c7a9255425105dff5"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -55,6 +50,7 @@ microbial genomes recovered from isolates, single cells, and metagenomes. Genome
         self.config['KB_AUTH_TOKEN'] = os.environ['KB_AUTH_TOKEN']
         #END_CONSTRUCTOR
         pass
+
 
     def run_checkM(self, ctx, params):
         """
@@ -130,7 +126,6 @@ microbial genomes recovered from isolates, single cells, and metagenomes. Genome
                              'result is not type dict as required.')
         # return the results
         return [result]
-
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

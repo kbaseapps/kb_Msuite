@@ -104,6 +104,8 @@ class CoreCheckMTest(unittest.TestCase):
 
         # first build the example Assembly
         cls.assembly_filename = 'assembly.fasta'
+        #cls.assembly_filename = 'Bradyrhizobium_sp.LB8_assembly.fa'  # DEBUG
+        #cls.assembly_filename = 'test_2.fasta'  # DEBUG
         cls.assembly_fasta_file_path = os.path.join(cls.scratch, cls.assembly_filename)
         shutil.copy(os.path.join("data", cls.assembly_filename), cls.assembly_fasta_file_path)
         assembly_params = {'file': {'path': cls.assembly_fasta_file_path},
@@ -113,6 +115,7 @@ class CoreCheckMTest(unittest.TestCase):
         cls.assembly_ref1 = cls.au.save_assembly_from_fasta(assembly_params)
         pprint('Saved Assembly: ' + cls.assembly_ref1)
 
+        """  # DEBUG
         # next save the bins
         cls.binned_contigs_dir_name = 'binned_contigs'
         cls.binned_contigs_dir_path = os.path.join(cls.scratch, cls.binned_contigs_dir_name)
@@ -125,7 +128,7 @@ class CoreCheckMTest(unittest.TestCase):
                                  }
         cls.binned_contigs_ref1 = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1)
-
+        """
 
     # Uncomment to skip this test
     # @unittest.skip("skipped test_checkM_lineage_wf_full_app")
@@ -135,7 +138,8 @@ class CoreCheckMTest(unittest.TestCase):
         params = {
             'workspace_name': self.ws_info[1],
             'input_ref': self.assembly_ref1,
-            'save_output_dir': 0,
+            #'save_output_dir': 0,  # DEBUG
+            'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
@@ -169,7 +173,7 @@ class CoreCheckMTest(unittest.TestCase):
 
     # Uncomment to skip this test
     # @unittest.skip("skipped test_data_staging")
-    def test_data_staging(self):
+    def HIDE_data_staging(self):
 
         # test stage assembly
         dsu = DataStagingUtils(self.cfg)
