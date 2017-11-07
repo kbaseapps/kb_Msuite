@@ -35,7 +35,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.1.2"
-    GIT_URL = "https://github.com/dcchivian/kb_Msuite"
+    GIT_URL = "https://github.com/kbaseapps/kb_Msuite"
     GIT_COMMIT_HASH = "c1c3fffa378f0aa2afc36e7c7a9255425105dff5"
 
     #BEGIN_CLASS_HEADER
