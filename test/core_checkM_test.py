@@ -115,6 +115,7 @@ class CoreCheckMTest(unittest.TestCase):
         cls.assembly_ref1 = cls.au.save_assembly_from_fasta(assembly_params)
         pprint('Saved Assembly: ' + cls.assembly_ref1)
 
+
         # next save the bins
         cls.binned_contigs_dir_name = 'binned_contigs'
         cls.binned_contigs_dir_path = os.path.join(cls.scratch, cls.binned_contigs_dir_name)
@@ -127,6 +128,20 @@ class CoreCheckMTest(unittest.TestCase):
                                  }
         cls.binned_contigs_ref1 = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1)
+
+
+        # next save the empty bins
+        cls.binned_contigs_dir_name_empty = 'binned_contigs_empty'
+        cls.binned_contigs_dir_path_empty = os.path.join(cls.scratch, cls.binned_contigs_dir_name_empty)
+        shutil.copytree(os.path.join("data", cls.binned_contigs_dir_name_empty), cls.binned_contigs_dir_path_empty)
+
+        binned_contigs_params = {'file_directory': cls.binned_contigs_dir_path_empty,
+                                 'workspace_name': cls.ws_info[1],
+                                 'assembly_ref': cls.assembly_ref1,
+                                 'binned_contig_name': 'MyBins'
+                                 }
+        cls.binned_contigs_ref1_empty = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
+        pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1_empty)
 
 
     # Uncomment to skip this test
@@ -169,6 +184,15 @@ class CoreCheckMTest(unittest.TestCase):
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
         print('RESULT:')
         pprint(result)
+
+        # run checkM lineage_wf app on EMPTY BinnedContigs
+        params = {
+            'workspace_name': self.ws_info[1],
+            'input_ref': self.binned_contigs_ref1_empty
+        }
+        with self.assertRaises(ValueError) as exception_context:
+            self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
+        self.assertTrue('Binned Assembly is empty' in str(exception_context.exception))
 
 
     # Uncomment to skip this test

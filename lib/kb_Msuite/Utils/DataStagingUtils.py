@@ -65,7 +65,8 @@ class DataStagingUtils(object):
             if not os.path.isfile(filename):
                 raise ValueError('Error generating fasta file from an Assembly or ContigSet with AssemblyUtil')
             # make sure fasta file isn't empty
-            if self.count_fasta_seq_len(filename) == 0:
+            min_fasta_len = 1
+            if not self.fasta_seq_len_at_least(filename, min_fasta_len):
                 raise ValueError('Assembly or ContigSet is empty in filename: '+str(filename))
             pass
 
@@ -84,7 +85,8 @@ class DataStagingUtils(object):
             for (dirpath, dirnames, filenames) in os.walk(input_dir):
                 for fasta_file in filenames:
                     fasta_path = os.path.join (input_dir,fasta_file)
-                    if self.count_fasta_seq_len(fasta_path) == 0:
+                    min_fasta_len = 1
+                    if not self.fasta_seq_len_at_least(fasta_path, min_fasta_len):
                         raise ValueError('Binned Assembly is empty for fasta_path: '+str(fasta_path))
                 break
 
@@ -106,7 +108,7 @@ class DataStagingUtils(object):
         return {'input_dir': input_dir, 'folder_suffix': suffix, 'all_seq_fasta': all_seq_fasta}
 
 
-    def count_fasta_seq_len(self, fasta_path):
+    def fasta_seq_len_at_least(self, fasta_path, min_fasta_len=1):
         '''
         counts the number of non-header, non-whitespace characters in a FASTA file
         '''
@@ -118,7 +120,9 @@ class DataStagingUtils(object):
                     continue
                 line = line.replace(' ','')
                 seq_len += len(line)
-        return seq_len
+                if seq_len >= min_fasta_len:
+                    return True
+        return False
 
 
     def set_fasta_file_extensions(self, folder, new_extension):
