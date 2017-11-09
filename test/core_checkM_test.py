@@ -104,6 +104,8 @@ class CoreCheckMTest(unittest.TestCase):
 
         # first build the example Assembly
         cls.assembly_filename = 'assembly.fasta'
+        #cls.assembly_filename = 'Bradyrhizobium_sp.LB8_assembly.fa'  # DEBUG
+        #cls.assembly_filename = 'test_2.fasta'  # DEBUG
         cls.assembly_fasta_file_path = os.path.join(cls.scratch, cls.assembly_filename)
         shutil.copy(os.path.join("data", cls.assembly_filename), cls.assembly_fasta_file_path)
         assembly_params = {'file': {'path': cls.assembly_fasta_file_path},
@@ -112,6 +114,7 @@ class CoreCheckMTest(unittest.TestCase):
                            }
         cls.assembly_ref1 = cls.au.save_assembly_from_fasta(assembly_params)
         pprint('Saved Assembly: ' + cls.assembly_ref1)
+
 
         # next save the bins
         cls.binned_contigs_dir_name = 'binned_contigs'
@@ -127,6 +130,20 @@ class CoreCheckMTest(unittest.TestCase):
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1)
 
 
+        # next save the empty bins
+        cls.binned_contigs_dir_name_empty = 'binned_contigs_empty'
+        cls.binned_contigs_dir_path_empty = os.path.join(cls.scratch, cls.binned_contigs_dir_name_empty)
+        shutil.copytree(os.path.join("data", cls.binned_contigs_dir_name_empty), cls.binned_contigs_dir_path_empty)
+
+        binned_contigs_params = {'file_directory': cls.binned_contigs_dir_path_empty,
+                                 'workspace_name': cls.ws_info[1],
+                                 'assembly_ref': cls.assembly_ref1,
+                                 'binned_contig_name': 'MyBins'
+                                 }
+        cls.binned_contigs_ref1_empty = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
+        pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1_empty)
+
+
     # Uncomment to skip this test
     # @unittest.skip("skipped test_checkM_lineage_wf_full_app")
     def test_checkM_lineage_wf_full_app(self):
@@ -135,7 +152,8 @@ class CoreCheckMTest(unittest.TestCase):
         params = {
             'workspace_name': self.ws_info[1],
             'input_ref': self.assembly_ref1,
-            'save_output_dir': 0,
+            #'save_output_dir': 0,  # DEBUG
+            'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
@@ -159,16 +177,27 @@ class CoreCheckMTest(unittest.TestCase):
         # machine has less than ~16gb memory
 
         # run checkM lineage_wf app on BinnedContigs
-        # params = {
-        #     'workspace_name': self.ws_info[1],
-        #     'input_ref': self.binned_contigs_ref1
-        # }
-        # result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
-        # print('RESULT:')
-        # pprint(result)
+        params = {
+            'workspace_name': self.ws_info[1],
+            'input_ref': self.binned_contigs_ref1
+        }
+        result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
+        print('RESULT:')
+        pprint(result)
+
+        # run checkM lineage_wf app on EMPTY BinnedContigs
+        params = {
+            'workspace_name': self.ws_info[1],
+            'input_ref': self.binned_contigs_ref1_empty
+        }
+        with self.assertRaises(ValueError) as exception_context:
+            self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
+        self.assertTrue('Binned Assembly is empty' in str(exception_context.exception))
+
 
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_data_staging")
+    @unittest.skip("skipped test_data_staging")
+    # missing test data for this custom test
     def test_data_staging(self):
 
         # test stage assembly
@@ -197,9 +226,9 @@ class CoreCheckMTest(unittest.TestCase):
 
 
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_output_plotting")
+    @unittest.skip("skipped test_output_plotting")
     # missing test data for this custom test
-    def HIDE_output_plotting(self):
+    def test_output_plotting(self):
 
         cmu = CheckMUtil(self.cfg)
         plots_dir = os.path.join(self.scratch, 'plots_1')
@@ -223,9 +252,9 @@ class CoreCheckMTest(unittest.TestCase):
 
 
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_output_plotting")
+    @unittest.skip("skipped test_output_plotting")
     # missing test data for this custom test
-    def HIDE_checkM_local_function_wiring(self):
+    def test_checkM_local_function_wiring(self):
 
         # run checkM lineage_wf app on a single assembly
         tetra_file = os.path.join(self.scratch, 'tetra_test.tsv')

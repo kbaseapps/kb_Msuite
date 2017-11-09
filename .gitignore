@@ -1,5 +1,4 @@
 bin
-data
 test_local
 sdk.cfg
 *.py.bak-*

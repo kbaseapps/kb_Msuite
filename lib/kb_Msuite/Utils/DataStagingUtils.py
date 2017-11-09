@@ -55,6 +55,8 @@ class DataStagingUtils(object):
         #     the object.
         obj_name = input_info[1]
         type_name = input_info[2].split('-')[0]
+
+        # Standard Single Assembly
         if type_name in ['KBaseGenomeAnnotations.Assembly', 'KBaseGenomes.ContigSet']:
             au = AssemblyUtil(self.callback_url)
             os.makedirs(input_dir)
@@ -62,15 +64,40 @@ class DataStagingUtils(object):
             au.get_assembly_as_fasta({'ref': input_ref, 'filename': filename})
             if not os.path.isfile(filename):
                 raise ValueError('Error generating fasta file from an Assembly or ContigSet with AssemblyUtil')
+            # make sure fasta file isn't empty
+            min_fasta_len = 1
+            if not self.fasta_seq_len_at_least(filename, min_fasta_len):
+                raise ValueError('Assembly or ContigSet is empty in filename: '+str(filename))
             pass
+
+        # AssemblySet
+        elif type_name == 'KBaseSets.AssemblySet':
+            raise ValueError('Cannot yet stage fasta file input directory from KBaseSets.AssemblySet')
+
+        # Binned Contigs
         elif type_name == 'KBaseMetagenomes.BinnedContigs':
             # download the bins as fasta and set the input folder name
             au = MetagenomeUtils(self.callback_url)
             bin_file_dir = au.binned_contigs_to_file({'input_ref': input_ref, 'save_to_shock': 0})['bin_file_directory']
             os.rename(bin_file_dir, input_dir)
+            # make sure fasta file isn't empty
             self.set_fasta_file_extensions(input_dir, fasta_file_extension)
+            for (dirpath, dirnames, filenames) in os.walk(input_dir):
+                for fasta_file in filenames:
+                    fasta_path = os.path.join (input_dir,fasta_file)
+                    min_fasta_len = 1
+                    if not self.fasta_seq_len_at_least(fasta_path, min_fasta_len):
+                        raise ValueError('Binned Assembly is empty for fasta_path: '+str(fasta_path))
+                break
+
+        # Genome
         elif type_name == 'KBaseGenomes.Genome':
             raise ValueError('Cannot yet stage fasta file input directory from KBaseGenomes.Genome')
+
+        # GenomeSet
+        elif type_name == 'KBaseSearch.GenomeSet':
+            raise ValueError('Cannot yet stage fasta file input directory from KBaseSearch.GenomeSet')
+
         else:
             raise ValueError('Cannot stage fasta file input directory from type: ' + type_name)
 
@@ -79,6 +106,23 @@ class DataStagingUtils(object):
         self.cat_fasta_files(input_dir, fasta_file_extension, all_seq_fasta)
 
         return {'input_dir': input_dir, 'folder_suffix': suffix, 'all_seq_fasta': all_seq_fasta}
+
+
+    def fasta_seq_len_at_least(self, fasta_path, min_fasta_len=1):
+        '''
+        counts the number of non-header, non-whitespace characters in a FASTA file
+        '''
+        seq_len = 0
+        with open (fasta_path, 'r', 0) as fasta_handle:
+            for line in fasta_handle:
+                line = line.strip()
+                if line.startswith('>'):
+                    continue
+                line = line.replace(' ','')
+                seq_len += len(line)
+                if seq_len >= min_fasta_len:
+                    return True
+        return False
 
 
     def set_fasta_file_extensions(self, folder, new_extension):
