@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Assess Genome Quality with CheckM - v1.0.7
+name: Assess Genome Quality with CheckM - v1.0.8
 
 tooltip: |
     Runs the CheckM lineage workflow to assess the genome quality of isolates, single cells, or genome bins from metagenome assemblies
