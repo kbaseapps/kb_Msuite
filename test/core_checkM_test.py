@@ -145,13 +145,17 @@ class CoreCheckMTest(unittest.TestCase):
 
 
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_checkM_lineage_wf_full_app")
-    def test_checkM_lineage_wf_full_app(self):
+    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
+    def test_checkM_lineage_wf_full_app_single_assembly(self):
+        method_name = 'test_checkM_lineage_wf_full_app_single_assembly'
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
 
         # run checkM lineage_wf app on a single assembly
+        input_ref = self.assembly_ref1
         params = {
             'workspace_name': self.ws_info[1],
-            'input_ref': self.assembly_ref1,
+            'input_ref': input_ref,
             #'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1
@@ -173,22 +177,52 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
 
+    # Uncomment to skip this test
+    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
+    def test_checkM_lineage_wf_full_app_binned_contigs(self):
+        method_name = 'test_checkM_lineage_wf_full_app_binned_contigs'
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
+
         # Even with the reduced_tree option, this will take a long time and crash if your
         # machine has less than ~16gb memory
 
         # run checkM lineage_wf app on BinnedContigs
+        input_ref = self.binned_contigs_ref1
         params = {
             'workspace_name': self.ws_info[1],
-            'input_ref': self.binned_contigs_ref1
+            'input_ref': input_ref,
+            'save_output_dir': 1,
+            'save_plots_dir': 1
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
         print('RESULT:')
         pprint(result)
 
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
+
+        # make sure the report was created and includes the HTML report and download links
+        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+
+        self.assertEquals(rep['direct_html_link_index'], 0)
+        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['html_links']), 1)
+        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+
+
+    # Uncomment to skip this test
+    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
+    def test_checkM_lineage_wf_full_app_binned_contigs_EMPTY(self):
+        method_name = 'test_checkM_lineage_wf_full_app_binned_contigs_EMPTY'
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
+
         # run checkM lineage_wf app on EMPTY BinnedContigs
+        input_ref = self.binned_contigs_ref1_empty
         params = {
             'workspace_name': self.ws_info[1],
-            'input_ref': self.binned_contigs_ref1_empty
+            'input_ref': input_ref
         }
         with self.assertRaises(ValueError) as exception_context:
             self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
