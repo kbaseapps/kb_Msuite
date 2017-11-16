@@ -103,55 +103,73 @@ class CoreCheckMTest(unittest.TestCase):
         os.makedirs(cls.test_directory_path)
 
         # first build the example Assembly
-        cls.assembly_filename = 'assembly.fasta'
-        #cls.assembly_filename = 'Bradyrhizobium_sp.LB8_assembly.fa'  # DEBUG
-        #cls.assembly_filename = 'test_2.fasta'  # DEBUG
-        cls.assembly_fasta_file_path = os.path.join(cls.scratch, cls.assembly_filename)
-        shutil.copy(os.path.join("data", cls.assembly_filename), cls.assembly_fasta_file_path)
-        assembly_params = {'file': {'path': cls.assembly_fasta_file_path},
+        assembly_filename = 'assembly.fasta'
+        assembly_objname = 'Assembly_Test1.Assembly'
+        assembly_fasta_file_path = os.path.join(cls.scratch, assembly_filename)
+        shutil.copy(os.path.join("data", assembly_filename), assembly_fasta_file_path)
+        assembly_params = {'file': {'path': assembly_fasta_file_path},
                            'workspace_name': cls.ws_info[1],
-                           'assembly_name': 'MyMetagenomeAssembly'
+                           'assembly_name': assembly_objname
                            }
         cls.assembly_ref1 = cls.au.save_assembly_from_fasta(assembly_params)
         pprint('Saved Assembly: ' + cls.assembly_ref1)
 
+        # contig that breaks checkm v1.0.7 reduced_tree
+        assembly_filename = 'offending_contig_67815-67907.fa'
+        assembly_objname = 'Offending_Contig_test2.Assembly'
+        assembly_fasta_file_path = os.path.join(cls.scratch, assembly_filename)
+        shutil.copy(os.path.join("data", assembly_filename), assembly_fasta_file_path)
+        assembly_params = {'file': {'path': assembly_fasta_file_path},
+                           'workspace_name': cls.ws_info[1],
+                           'assembly_name': assembly_objname
+                           }
+        cls.assembly_offending_ref1 = cls.au.save_assembly_from_fasta(assembly_params)
+        pprint('Saved Assembly: ' + cls.assembly_offending_ref1)
+
 
         # next save the bins
-        cls.binned_contigs_dir_name = 'binned_contigs'
-        cls.binned_contigs_dir_path = os.path.join(cls.scratch, cls.binned_contigs_dir_name)
-        shutil.copytree(os.path.join("data", cls.binned_contigs_dir_name), cls.binned_contigs_dir_path)
+        binned_contigs_dir_name = 'binned_contigs'
+        binned_contigs_objname = 'MyBins_test3'
+        binned_contigs_dir_path = os.path.join(cls.scratch, binned_contigs_dir_name)
+        shutil.copytree(os.path.join("data", binned_contigs_dir_name), binned_contigs_dir_path)
 
-        binned_contigs_params = {'file_directory': cls.binned_contigs_dir_path,
+        binned_contigs_params = {'file_directory': binned_contigs_dir_path,
                                  'workspace_name': cls.ws_info[1],
                                  'assembly_ref': cls.assembly_ref1,
-                                 'binned_contig_name': 'MyBins'
+                                 'binned_contig_name': binned_contigs_objname
                                  }
         cls.binned_contigs_ref1 = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1)
 
 
         # next save the empty bins
-        cls.binned_contigs_dir_name_empty = 'binned_contigs_empty'
-        cls.binned_contigs_dir_path_empty = os.path.join(cls.scratch, cls.binned_contigs_dir_name_empty)
-        shutil.copytree(os.path.join("data", cls.binned_contigs_dir_name_empty), cls.binned_contigs_dir_path_empty)
+        binned_contigs_dir_name_empty = 'binned_contigs_empty'
+        binned_contigs_objname_empty = "MyBins_empty"
+        binned_contigs_dir_path_empty = os.path.join(cls.scratch, binned_contigs_dir_name_empty)
+        shutil.copytree(os.path.join("data", binned_contigs_dir_name_empty), binned_contigs_dir_path_empty)
 
-        binned_contigs_params = {'file_directory': cls.binned_contigs_dir_path_empty,
+        binned_contigs_params = {'file_directory': binned_contigs_dir_path_empty,
                                  'workspace_name': cls.ws_info[1],
                                  'assembly_ref': cls.assembly_ref1,
-                                 'binned_contig_name': 'MyBins'
+                                 'binned_contig_name': binned_contigs_objname_empty
                                  }
         cls.binned_contigs_ref1_empty = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1_empty)
 
 
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_checkM_lineage_wf_full_app")
-    def test_checkM_lineage_wf_full_app(self):
+    #@unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
+    def test_checkM_lineage_wf_full_app_single_assembly(self):
+        method_name = 'test_checkM_lineage_wf_full_app_single_assembly'
+        print ("\n=================================================================")
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
 
         # run checkM lineage_wf app on a single assembly
+        input_ref = self.assembly_ref1
         params = {
             'workspace_name': self.ws_info[1],
-            'input_ref': self.assembly_ref1,
+            'input_ref': input_ref,
             #'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1
@@ -173,22 +191,88 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
 
+    # Uncomment to skip this test
+    #@unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
+    def test_checkM_lineage_wf_full_app_single_problem_assembly(self):
+        method_name = 'test_checkM_lineage_wf_full_app_single_problem_assembly'
+        print ("\n=================================================================")
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
+
+        # run checkM lineage_wf app on a single assembly
+        input_ref = self.assembly_offending_ref1
+        params = {
+            'workspace_name': self.ws_info[1],
+            'input_ref': input_ref,
+            #'save_output_dir': 0,  # DEBUG
+            'save_output_dir': 1,  # DEBUG
+            'save_plots_dir': 1
+        }
+        result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
+
+        pprint('End to end test result:')
+        pprint(result)
+
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
+
+        # make sure the report was created and includes the HTML report and download links
+        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+
+        self.assertEquals(rep['direct_html_link_index'], 0)
+        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['html_links']), 1)
+        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+
+
+    # Uncomment to skip this test
+    #@unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
+    def test_checkM_lineage_wf_full_app_binned_contigs(self):
+        method_name = 'test_checkM_lineage_wf_full_app_binned_contigs'
+        print ("\n=================================================================")
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
+
         # Even with the reduced_tree option, this will take a long time and crash if your
         # machine has less than ~16gb memory
 
         # run checkM lineage_wf app on BinnedContigs
+        input_ref = self.binned_contigs_ref1
         params = {
             'workspace_name': self.ws_info[1],
-            'input_ref': self.binned_contigs_ref1
+            'input_ref': input_ref,
+            'save_output_dir': 1,
+            'save_plots_dir': 1
         }
-        result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
+        result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
         print('RESULT:')
         pprint(result)
 
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
+
+        # make sure the report was created and includes the HTML report and download links
+        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+
+        self.assertEquals(rep['direct_html_link_index'], 0)
+        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['html_links']), 1)
+        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+
+
+    # Uncomment to skip this test
+    #@unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
+    def test_checkM_lineage_wf_full_app_binned_contigs_EMPTY(self):
+        method_name = 'test_checkM_lineage_wf_full_app_binned_contigs_EMPTY'
+        print ("\n=================================================================")
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
+
         # run checkM lineage_wf app on EMPTY BinnedContigs
+        input_ref = self.binned_contigs_ref1_empty
         params = {
             'workspace_name': self.ws_info[1],
-            'input_ref': self.binned_contigs_ref1_empty
+            'input_ref': input_ref
         }
         with self.assertRaises(ValueError) as exception_context:
             self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
