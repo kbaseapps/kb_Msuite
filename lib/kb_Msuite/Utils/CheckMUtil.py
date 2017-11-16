@@ -24,7 +24,7 @@ class CheckMUtil:
         self.callback_url = config['SDK_CALLBACK_URL']
         self.scratch = config['scratch']
         self.threads = config['threads']
-        self.reduced_tree = config['reduced_tree']
+        #self.reduced_tree = config['reduced_tree']
 
 
     def run_checkM_lineage_wf(self, params):
@@ -57,9 +57,12 @@ class CheckMUtil:
         # 2) run the lineage workflow
         lineage_wf_options = {'bin_folder': input_dir,
                               'out_folder': output_dir,
-                              'thread': self.threads,
-                              'reduced_tree': self.reduced_tree
+                              'thread': self.threads
+                              #'reduced_tree': self.reduced_tree
                               }
+        if 'reduced_tree' in params and params['reduced_tree'] != None and int(params['reduced_tree']) == 1:
+            lineage_wf_options['reduced_tree'] = params['reduced_tree']
+
         self.run_checkM('lineage_wf', lineage_wf_options)
 
 
