@@ -170,6 +170,7 @@ class CoreCheckMTest(unittest.TestCase):
         params = {
             'workspace_name': self.ws_info[1],
             'input_ref': input_ref,
+            'reduced_tree': 0,
             #'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1
@@ -204,6 +205,7 @@ class CoreCheckMTest(unittest.TestCase):
         params = {
             'workspace_name': self.ws_info[1],
             'input_ref': input_ref,
+            'reduced_tree': 1,  # this must be 1 to regression test with --reduced_tree
             #'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1
@@ -241,6 +243,7 @@ class CoreCheckMTest(unittest.TestCase):
         params = {
             'workspace_name': self.ws_info[1],
             'input_ref': input_ref,
+            'reduced_tree': 1,
             'save_output_dir': 1,
             'save_plots_dir': 1
         }
@@ -272,6 +275,7 @@ class CoreCheckMTest(unittest.TestCase):
         input_ref = self.binned_contigs_ref1_empty
         params = {
             'workspace_name': self.ws_info[1],
+            'reduced_tree': 1,
             'input_ref': input_ref
         }
         with self.assertRaises(ValueError) as exception_context:
