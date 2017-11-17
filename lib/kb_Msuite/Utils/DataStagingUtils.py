@@ -15,6 +15,7 @@ class DataStagingUtils(object):
         self.ctx = ctx
         self.scratch = os.path.abspath(config['scratch'])
         self.ws_url = config['workspace-url']
+        self.serviceWizardURL = config['srv-wiz-url']
         self.callbackURL = config['SDK_CALLBACK_URL']
         if not os.path.exists(self.scratch):
             os.makedirs(self.scratch)
@@ -156,6 +157,7 @@ class DataStagingUtils(object):
         # Genome and GenomeSet
         #
         elif type_name == 'KBaseGenomes.Genome' or type_name == 'KBaseSearch.GenomeSet':
+            raise ValueError('Cannot handle Genome or GenomeSet types yet.  type_name: ' + type_name)
             genome_obj_names = []
             genome_sci_names = []
             genome_assembly_refs = []

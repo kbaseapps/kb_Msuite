@@ -16,6 +16,8 @@ from pprint import pprint  # noqa: F401
 from Workspace.WorkspaceClient import Workspace as workspaceService
 
 from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
+from SetAPI.SetAPIServiceClient import SetAPI
+from GenomeFileUtil.GenomeFileUtilClient import GenomeFileUtil
 from MetagenomeUtils.MetagenomeUtilsClient import MetagenomeUtils
 
 from kb_Msuite.kb_MsuiteImpl import kb_Msuite
@@ -64,6 +66,8 @@ class CoreCheckMTest(unittest.TestCase):
         cls.wsName = "test_kb_Msuite_" + str(suffix)
         cls.ws_info = cls.wsClient.create_workspace({'workspace': cls.wsName})
         cls.au = AssemblyUtil(os.environ['SDK_CALLBACK_URL'])
+        cls.setAPI = SetAPI(url=cls.cfg['srv-wiz-url'], token=cls.ctx['token'])
+        cls.gfu = GenomeFileUtil(os.environ['SDK_CALLBACK_URL'])
         cls.mu = MetagenomeUtils(os.environ['SDK_CALLBACK_URL'])
 
         # stage an input and output directory
@@ -102,7 +106,9 @@ class CoreCheckMTest(unittest.TestCase):
         cls.test_directory_path = os.path.join(cls.scratch, test_directory_name)
         os.makedirs(cls.test_directory_path)
 
-        # first build the example Assembly
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
+        # build the example Assembly
         assembly_filename = 'assembly.fasta'
         assembly_objname = 'Assembly_Test1.Assembly'
         assembly_fasta_file_path = os.path.join(cls.scratch, assembly_filename)
@@ -114,7 +120,8 @@ class CoreCheckMTest(unittest.TestCase):
         cls.assembly_ref1 = cls.au.save_assembly_from_fasta(assembly_params)
         pprint('Saved Assembly: ' + cls.assembly_ref1)
 
-        # contig that breaks checkm v1.0.7 reduced_tree
+
+        # contig that breaks checkm v1.0.7 reduced_tree (works on v1.0.8)
         assembly_filename = 'offending_contig_67815-67907.fa'
         assembly_objname = 'Offending_Contig_test2.Assembly'
         assembly_fasta_file_path = os.path.join(cls.scratch, assembly_filename)
@@ -127,7 +134,20 @@ class CoreCheckMTest(unittest.TestCase):
         pprint('Saved Assembly: ' + cls.assembly_offending_ref1)
 
 
-        # next save the bins
+        # create an AssemblySet
+        assembly_items = [{'ref': cls.assembly_ref1, 'label': 'assembly_1'},
+                          {'ref': cls.assembly_offending_ref1, 'label': 'assembly_2'}]
+        assemblySet_obj = { 'description': 'test assembly set',
+                            'items': assembly_items
+                        }
+        assemblySet_objname = 'TEST_ASSEMBLY_SET'
+        cls.assemblySet_ref1 = cls.setAPI.save_assembly_set_v1 ({'workspace_name': cls.ws_info[1],
+                                                                 'output_object_name': assemblySet_objname,
+                                                                 'data': assemblySet_obj
+                                                             })['set_ref']
+
+
+        # create a BinnedContigs object
         binned_contigs_dir_name = 'binned_contigs'
         binned_contigs_objname = 'MyBins_test3'
         binned_contigs_dir_path = os.path.join(cls.scratch, binned_contigs_dir_name)
@@ -142,7 +162,7 @@ class CoreCheckMTest(unittest.TestCase):
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1)
 
 
-        # next save the empty bins
+        # create an empty BinnedContigs object
         binned_contigs_dir_name_empty = 'binned_contigs_empty'
         binned_contigs_objname_empty = "MyBins_empty"
         binned_contigs_dir_path_empty = os.path.join(cls.scratch, binned_contigs_dir_name_empty)
@@ -155,6 +175,49 @@ class CoreCheckMTest(unittest.TestCase):
                                  }
         cls.binned_contigs_ref1_empty = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1_empty)
+
+
+        """
+        # upload a few genomes
+        cls.genome_refs = []
+        for i,genome_filename in enumerate(['GCF_000022285.1_ASM2228v1_genomic.gbff', \
+                                            'GCF_001439985.1_wTPRE_1.0_genomic.gbff']): 
+                                            #'GCF_000287295.1_ASM28729v1_genomic.gbff', \
+                                            #'GCF_000306885.1_ASM30688v1_genomic.gbff', \
+            genome_file_path = os.path.join(cls.scratch, genome_filename)
+            shutil.copy(os.path.join("data", "genomes", genome_filename), genome_file_path)
+            cls.genome_refs.append(cls.gfu.genbank_to_genome({'file': {'path': genome_file_path},
+                                                              'workspace_name': cls.ws_info[1],
+                                                              'genome_name': genome_filename})['genome_ref'])
+
+
+        # create a genomeSet
+        genome_scinames = dict()
+        for genome_i,genome_ref in enumerate(cls.genome_refs):
+            genome_scinames[genome_ref] = 'Genus species str. '+str(genome_i)
+        testGS = {
+            'description': 'genomeSet for testing',
+            'elements': dict()
+        }
+        for genome_ref in cls.genome_refs: 
+            testGS['elements'][genome_scinames[genome_ref]] = { 'ref': genome_ref }
+        obj_info = cls.getWsClient().save_objects({'workspace': cls.ws_info[1],       
+                                                   'objects': [
+                                                       {
+                                                           'type':'KBaseSearch.GenomeSet',
+                                                           'data':testGS,
+                                                           'name':'test_genomeset_1',
+                                                           'meta':{},
+                                                           'provenance':[
+                                                               {
+                                                                   'service':'kb_Msuite',
+                                                                   'method':'test_CheckM'
+                                                               }
+                                                           ]
+                                                       }]
+                                               })[0]
+        cls.genomeSet_ref1 = str(obj_info[WSID_I]) +'/'+ str(obj_info[OBJID_I]) +'/'+ str(obj_info[VERSION_I])
+        """
 
 
     # Uncomment to skip this test
@@ -281,6 +344,40 @@ class CoreCheckMTest(unittest.TestCase):
         with self.assertRaises(ValueError) as exception_context:
             self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
         self.assertTrue('Binned Assembly is empty' in str(exception_context.exception))
+
+
+    # Uncomment to skip this test
+    #@unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
+    def test_checkM_lineage_wf_full_app_assemblySet(self):
+        method_name = 'test_checkM_lineage_wf_full_app_assemblySet'
+        print ("\n=================================================================")
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
+
+        # run checkM lineage_wf app on a single assembly
+        input_ref = self.assemblySet_ref1
+        params = {
+            'workspace_name': self.ws_info[1],
+            'input_ref': input_ref,
+            'reduced_tree': 1,
+            'save_output_dir': 1,
+            'save_plots_dir': 1
+        }
+        result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
+
+        pprint('End to end test result:')
+        pprint(result)
+
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
+
+        # make sure the report was created and includes the HTML report and download links
+        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+
+        self.assertEquals(rep['direct_html_link_index'], 0)
+        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['html_links']), 1)
+        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
 
     # Uncomment to skip this test

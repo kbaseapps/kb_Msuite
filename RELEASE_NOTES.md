@@ -2,7 +2,7 @@
 __Changes__
 - Added choice to use reduced or full Reference Tree to input widget
 - Changed save output and save plots input widgets from checkbox to dropdown
-- Added AssemblySet, Genome, and GenomeSet input types
+- Added AssemblySet input type
 
 ### Version 1.2.0
 __Changes__

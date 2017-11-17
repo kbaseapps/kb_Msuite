@@ -21,9 +21,7 @@
                 "valid_ws_types": [ "KBaseMetagenomes.BinnedContigs",
 				    "KBaseGenomeAnnotations.Assembly",
 				    "KBaseGenomes.ContigSet",
-				    "KBaseSets.AssemblySet",
-				    "KBaseGenomes.Genome",
-				    "KBaseSearch.GenomeSet"
+				    "KBaseSets.AssemblySet"
 				  ]
             }
         }, 

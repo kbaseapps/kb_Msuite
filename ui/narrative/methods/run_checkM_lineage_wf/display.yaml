@@ -33,11 +33,11 @@ suggestions:
 parameters :
     input_ref :
         ui-name : |
-            Input Assembly, Genome, or BinnedContigs
+            Input Assembly or BinnedContigs
         short-hint : |
-            Input can be an Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs object
+            Input can be an Assembly, AssemblySet, or BinnedContigs object
         long-hint : |
-            Assess the genome quality based on sequence in an Assembly, AssemblySet, Genome, GenomeSet, or in each bin of BinnedContig data.
+            Assess the genome quality based on sequence in an Assembly, AssemblySet, or in each bin of BinnedContig data.
 
     reduced_tree :
         ui-name : |
