@@ -25,7 +25,7 @@ References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
-Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043-1055, doi:10.1101/gr.186072.114
     '''
 
     ######## WARNING FOR GEVENT USERS ####### noqa
@@ -35,8 +35,8 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.2.1"
-    GIT_URL = "https://github.com/dcchivian/kb_Msuite"
-    GIT_COMMIT_HASH = "8e9b412149c4e88cda1743e7294dbb5441cc467f"
+    GIT_URL = "https://github.com/kbaseapps/kb_Msuite"
+    GIT_COMMIT_HASH = "e8b2eebcf40a63d03159f30e6ce3c6ac1bb8dab0"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -91,7 +91,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
             raise ValueError('"subcommand" parameter field must be specified ' +
                              '(to one of lineage_wf, tetra, bin_qa_plot, dist_plot, etc)')
 
-        checkM_runner = CheckMUtil(self.config)
+        checkM_runner = CheckMUtil(self.config, ctx)
         checkM_runner.run_checkM(params['subcommand'], params)
 
         #END run_checkM
@@ -117,7 +117,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
         print('--->\nRunning kb_Msuite.run_checkM_lineage_wf\nparams:')
         print(json.dumps(params, indent=1))
 
-        cmu = CheckMUtil(self.config)
+        cmu = CheckMUtil(self.config, ctx)
         result = cmu.run_checkM_lineage_wf(params)
 
         #END run_checkM_lineage_wf

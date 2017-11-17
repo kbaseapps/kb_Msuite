@@ -19,8 +19,9 @@ def log(message, prefix_newline=False):
 
 class CheckMUtil:
 
-    def __init__(self, config):
+    def __init__(self, config, ctx):
         self.config = config
+        self.ctx = ctx
         self.callback_url = config['SDK_CALLBACK_URL']
         self.scratch = config['scratch']
         self.threads = config['threads']
@@ -40,7 +41,7 @@ class CheckMUtil:
 
 
         # 1) stage input data
-        dsu = DataStagingUtils(self.config)
+        dsu = DataStagingUtils(self.config, self.ctx)
         staged_input = dsu.stage_input(params['input_ref'], 'fna')
         input_dir = staged_input['input_dir']
         suffix = staged_input['folder_suffix']

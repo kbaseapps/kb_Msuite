@@ -58,7 +58,7 @@ class CoreCheckMTest(unittest.TestCase):
         cls.serviceImpl = kb_Msuite(cls.cfg)
         cls.scratch = cls.cfg['scratch']
         cls.callback_url = os.environ['SDK_CALLBACK_URL']
-        cls.checkm_runner = CheckMUtil(cls.cfg)
+        cls.checkm_runner = CheckMUtil(cls.cfg, cls.ctx)
 
         suffix = int(time.time() * 1000)
         cls.wsName = "test_kb_Msuite_" + str(suffix)
@@ -289,7 +289,7 @@ class CoreCheckMTest(unittest.TestCase):
     def test_data_staging(self):
 
         # test stage assembly
-        dsu = DataStagingUtils(self.cfg)
+        dsu = DataStagingUtils(self.cfg, self.ctx)
         staged_input = dsu.stage_input(self.assembly_ref1, 'strange_fasta_extension')
         pprint(staged_input)
 
@@ -318,7 +318,7 @@ class CoreCheckMTest(unittest.TestCase):
     # missing test data for this custom test
     def test_output_plotting(self):
 
-        cmu = CheckMUtil(self.cfg)
+        cmu = CheckMUtil(self.cfg, self.ctx)
         plots_dir = os.path.join(self.scratch, 'plots_1')
         html_dir = os.path.join(self.scratch, 'html_1')
         tetra_file = os.path.join(self.scratch, 'tetra_1.tsv')
