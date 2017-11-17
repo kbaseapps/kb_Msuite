@@ -19,12 +19,13 @@ def log(message, prefix_newline=False):
 
 class CheckMUtil:
 
-    def __init__(self, config):
+    def __init__(self, config, ctx):
         self.config = config
+        self.ctx = ctx
         self.callback_url = config['SDK_CALLBACK_URL']
         self.scratch = config['scratch']
         self.threads = config['threads']
-        self.reduced_tree = config['reduced_tree']
+        #self.reduced_tree = config['reduced_tree']
 
 
     def run_checkM_lineage_wf(self, params):
@@ -40,7 +41,7 @@ class CheckMUtil:
 
 
         # 1) stage input data
-        dsu = DataStagingUtils(self.config)
+        dsu = DataStagingUtils(self.config, self.ctx)
         staged_input = dsu.stage_input(params['input_ref'], 'fna')
         input_dir = staged_input['input_dir']
         suffix = staged_input['folder_suffix']
@@ -57,9 +58,12 @@ class CheckMUtil:
         # 2) run the lineage workflow
         lineage_wf_options = {'bin_folder': input_dir,
                               'out_folder': output_dir,
-                              'thread': self.threads,
-                              'reduced_tree': self.reduced_tree
+                              'thread': self.threads
+                              #'reduced_tree': self.reduced_tree
                               }
+        if 'reduced_tree' in params and params['reduced_tree'] != None and int(params['reduced_tree']) == 1:
+            lineage_wf_options['reduced_tree'] = params['reduced_tree']
+
         self.run_checkM('lineage_wf', lineage_wf_options)
 
 
@@ -235,12 +239,13 @@ class CheckMUtil:
 
         output_packages = []
 
-        if 'save_output_dir' in params and str(params['save_output_dir']) == '1':
+        #if 'save_output_dir' in params and str(params['save_output_dir']) == '1':
+        if True:
             log('packaging full output directory')
             zipped_output_file = outputBuilder.package_folder(outputBuilder.output_dir, 'full_output.zip',
                                                               'Full output of CheckM')
             output_packages.append(zipped_output_file)
-        else:
+        else:  # ADD LATER?
             log('not packaging full output directory, selecting specific files')
             crit_out_dir = os.path.join(self.scratch, 'critical_output_' + os.path.basename(input_dir))
             os.makedirs(crit_out_dir)

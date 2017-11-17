@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * <p>Original spec-file type: CheckMLineageWfParams</p>
  * <pre>
- * input_ref - reference to the input Assembly or BinnedContigs data
- *             (could be expanded to include Genome objects as well)
+ * input_ref - reference to the input Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs data
  * </pre>
  * 
  */
@@ -24,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "input_ref",
     "workspace_name",
+    "reduced_tree",
     "save_output_dir",
     "save_plots_dir"
 })
@@ -33,6 +33,8 @@ public class CheckMLineageWfParams {
     private String inputRef;
     @JsonProperty("workspace_name")
     private String workspaceName;
+    @JsonProperty("reduced_tree")
+    private Long reducedTree;
     @JsonProperty("save_output_dir")
     private Long saveOutputDir;
     @JsonProperty("save_plots_dir")
@@ -66,6 +68,21 @@ public class CheckMLineageWfParams {
 
     public CheckMLineageWfParams withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
+        return this;
+    }
+
+    @JsonProperty("reduced_tree")
+    public Long getReducedTree() {
+        return reducedTree;
+    }
+
+    @JsonProperty("reduced_tree")
+    public void setReducedTree(Long reducedTree) {
+        this.reducedTree = reducedTree;
+    }
+
+    public CheckMLineageWfParams withReducedTree(Long reducedTree) {
+        this.reducedTree = reducedTree;
         return this;
     }
 
@@ -111,7 +128,7 @@ public class CheckMLineageWfParams {
 
     @Override
     public String toString() {
-        return ((((((((((("CheckMLineageWfParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((("CheckMLineageWfParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", reducedTree=")+ reducedTree)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

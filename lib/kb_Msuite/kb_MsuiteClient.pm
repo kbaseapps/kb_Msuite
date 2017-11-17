@@ -237,6 +237,7 @@ $result is a kb_Msuite.CheckMLineageWfResult
 CheckMLineageWfParams is a reference to a hash where the following keys are defined:
 	input_ref has a value which is a string
 	workspace_name has a value which is a string
+	reduced_tree has a value which is a kb_Msuite.boolean
 	save_output_dir has a value which is a kb_Msuite.boolean
 	save_plots_dir has a value which is a kb_Msuite.boolean
 boolean is an int
@@ -255,6 +256,7 @@ $result is a kb_Msuite.CheckMLineageWfResult
 CheckMLineageWfParams is a reference to a hash where the following keys are defined:
 	input_ref has a value which is a string
 	workspace_name has a value which is a string
+	reduced_tree has a value which is a kb_Msuite.boolean
 	save_output_dir has a value which is a kb_Msuite.boolean
 	save_plots_dir has a value which is a kb_Msuite.boolean
 boolean is an int
@@ -489,7 +491,7 @@ tetra_File - specify the output/input tetra nucleotide frequency file (generated
 dist_value - when running dist_plot, set this to a value between 0 and 100
 
 thread -  number of threads
-reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb
+reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb (otherwise needs 40+ GB, which NJS worker nodes do have)
 quiet - pass the --quite parameter to checkM, but doesn't seem to work for all subcommands
 
 
@@ -543,8 +545,7 @@ quiet has a value which is a kb_Msuite.boolean
 
 =item Description
 
-input_ref - reference to the input Assembly or BinnedContigs data
-            (could be expanded to include Genome objects as well)
+input_ref - reference to the input Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs data
 
 
 =item Definition
@@ -555,6 +556,7 @@ input_ref - reference to the input Assembly or BinnedContigs data
 a reference to a hash where the following keys are defined:
 input_ref has a value which is a string
 workspace_name has a value which is a string
+reduced_tree has a value which is a kb_Msuite.boolean
 save_output_dir has a value which is a kb_Msuite.boolean
 save_plots_dir has a value which is a kb_Msuite.boolean
 
@@ -567,6 +569,7 @@ save_plots_dir has a value which is a kb_Msuite.boolean
 a reference to a hash where the following keys are defined:
 input_ref has a value which is a string
 workspace_name has a value which is a string
+reduced_tree has a value which is a kb_Msuite.boolean
 save_output_dir has a value which is a kb_Msuite.boolean
 save_plots_dir has a value which is a kb_Msuite.boolean
 

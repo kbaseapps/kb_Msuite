@@ -36,7 +36,7 @@ module kb_Msuite {
         dist_value - when running dist_plot, set this to a value between 0 and 100
 
         thread -  number of threads
-        reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb
+        reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb (otherwise needs 40+ GB, which NJS worker nodes do have)
         quiet - pass the --quite parameter to checkM, but doesn't seem to work for all subcommands
     */
     typedef structure {
@@ -64,14 +64,13 @@ module kb_Msuite {
 
 
     /*
-        input_ref - reference to the input Assembly or BinnedContigs data
-                    (could be expanded to include Genome objects as well)
+        input_ref - reference to the input Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs data
     */
     typedef structure {
         string input_ref;
         string workspace_name;
 
-
+        boolean reduced_tree;
         boolean save_output_dir;
         boolean save_plots_dir;
     } CheckMLineageWfParams;

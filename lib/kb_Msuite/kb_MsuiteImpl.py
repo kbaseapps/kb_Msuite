@@ -25,7 +25,7 @@ References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
-Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043-1055, doi:10.1101/gr.186072.114
     '''
 
     ######## WARNING FOR GEVENT USERS ####### noqa
@@ -34,9 +34,9 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.0"
+    VERSION = "1.2.1"
     GIT_URL = "https://github.com/kbaseapps/kb_Msuite"
-    GIT_COMMIT_HASH = "e7fdaa336f5fb700d340c780b29d72049a8dd89b"
+    GIT_COMMIT_HASH = "e8b2eebcf40a63d03159f30e6ce3c6ac1bb8dab0"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -66,16 +66,17 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            the tetra command) dist_value - when running dist_plot, set this
            to a value between 0 and 100 thread -  number of threads
            reduced_tree - if set to 1, run checkM with the reduced_tree flag,
-           which will keep memory limited to less than 16gb quiet - pass the
-           --quite parameter to checkM, but doesn't seem to work for all
-           subcommands) -> structure: parameter "subcommand" of String,
-           parameter "bin_folder" of String, parameter "out_folder" of
-           String, parameter "plots_folder" of String, parameter "seq_file"
-           of String, parameter "tetra_file" of String, parameter
-           "dist_value" of Long, parameter "thread" of Long, parameter
-           "reduced_tree" of type "boolean" (A boolean - 0 for false, 1 for
-           true. @range (0, 1)), parameter "quiet" of type "boolean" (A
-           boolean - 0 for false, 1 for true. @range (0, 1))
+           which will keep memory limited to less than 16gb (otherwise needs
+           40+ GB, which NJS worker nodes do have) quiet - pass the --quite
+           parameter to checkM, but doesn't seem to work for all subcommands)
+           -> structure: parameter "subcommand" of String, parameter
+           "bin_folder" of String, parameter "out_folder" of String,
+           parameter "plots_folder" of String, parameter "seq_file" of
+           String, parameter "tetra_file" of String, parameter "dist_value"
+           of Long, parameter "thread" of Long, parameter "reduced_tree" of
+           type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
+           1)), parameter "quiet" of type "boolean" (A boolean - 0 for false,
+           1 for true. @range (0, 1))
         """
         # ctx is the context object
         #BEGIN run_checkM
@@ -90,7 +91,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
             raise ValueError('"subcommand" parameter field must be specified ' +
                              '(to one of lineage_wf, tetra, bin_qa_plot, dist_plot, etc)')
 
-        checkM_runner = CheckMUtil(self.config)
+        checkM_runner = CheckMUtil(self.config, ctx)
         checkM_runner.run_checkM(params['subcommand'], params)
 
         #END run_checkM
@@ -99,13 +100,14 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     def run_checkM_lineage_wf(self, ctx, params):
         """
         :param params: instance of type "CheckMLineageWfParams" (input_ref -
-           reference to the input Assembly or BinnedContigs data (could be
-           expanded to include Genome objects as well)) -> structure:
-           parameter "input_ref" of String, parameter "workspace_name" of
-           String, parameter "save_output_dir" of type "boolean" (A boolean -
-           0 for false, 1 for true. @range (0, 1)), parameter
-           "save_plots_dir" of type "boolean" (A boolean - 0 for false, 1 for
-           true. @range (0, 1))
+           reference to the input Assembly, AssemblySet, Genome, GenomeSet,
+           or BinnedContigs data) -> structure: parameter "input_ref" of
+           String, parameter "workspace_name" of String, parameter
+           "reduced_tree" of type "boolean" (A boolean - 0 for false, 1 for
+           true. @range (0, 1)), parameter "save_output_dir" of type
+           "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
+           parameter "save_plots_dir" of type "boolean" (A boolean - 0 for
+           false, 1 for true. @range (0, 1))
         :returns: instance of type "CheckMLineageWfResult" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -115,7 +117,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
         print('--->\nRunning kb_Msuite.run_checkM_lineage_wf\nparams:')
         print(json.dumps(params, indent=1))
 
-        cmu = CheckMUtil(self.config)
+        cmu = CheckMUtil(self.config, ctx)
         result = cmu.run_checkM_lineage_wf(params)
 
         #END run_checkM_lineage_wf

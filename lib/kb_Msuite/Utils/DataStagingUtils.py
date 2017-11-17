@@ -5,15 +5,20 @@ import subprocess
 
 from Workspace.WorkspaceClient import Workspace
 from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
+from SetAPI.SetAPIServiceClient import SetAPI
 from MetagenomeUtils.MetagenomeUtilsClient import MetagenomeUtils
 
 
 class DataStagingUtils(object):
 
-    def __init__(self, config):
+    def __init__(self, config, ctx):
+        self.ctx = ctx
         self.scratch = os.path.abspath(config['scratch'])
         self.ws_url = config['workspace-url']
-        self.callback_url = config['SDK_CALLBACK_URL']
+        self.serviceWizardURL = config['srv-wiz-url']
+        self.callbackURL = config['SDK_CALLBACK_URL']
+        if not os.path.exists(self.scratch):
+            os.makedirs(self.scratch)
 
 
     def stage_input(self, input_ref, fasta_file_extension):
@@ -32,10 +37,16 @@ class DataStagingUtils(object):
             staged_input
             {"input_dir": '...'}
         '''
+        # config
+        #SERVICE_VER = 'dev'
+        SERVICE_VER = 'release'
+
         # generate a folder in scratch to hold the input
         suffix = str(int(time.time() * 1000))
         input_dir = os.path.join(self.scratch, 'bins_' + suffix)
         all_seq_fasta = os.path.join(self.scratch, 'all_sequences_' + suffix + '.' + fasta_file_extension)
+        if not os.path.exists(input_dir):
+            os.makedirs(input_dir)
 
 
         # 2) based on type, download the files
@@ -53,32 +64,85 @@ class DataStagingUtils(object):
         # 9 int size - the size of the object in bytes.
         # 10 usermeta meta - arbitrary user-supplied metadata about
         #     the object.
-        obj_name = input_info[1]
-        type_name = input_info[2].split('-')[0]
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        obj_name = input_info[NAME_I]
+        type_name = input_info[TYPE_I].split('-')[0]
 
         # Standard Single Assembly
+        #
         if type_name in ['KBaseGenomeAnnotations.Assembly', 'KBaseGenomes.ContigSet']:
-            au = AssemblyUtil(self.callback_url)
-            os.makedirs(input_dir)
+            try:
+                auClient = AssemblyUtil(self.callbackURL, token=self.ctx['token'], service_ver=SERVICE_VER)
+            except Exception as e:
+                raise ValueError('Unable to instantiate auClient with callbackURL: '+ self.callbackURL +' ERROR: ' + str(e))
+
+            # create file data
             filename = os.path.join(input_dir, obj_name + '.' + fasta_file_extension)
-            au.get_assembly_as_fasta({'ref': input_ref, 'filename': filename})
+            auClient.get_assembly_as_fasta({'ref': input_ref, 'filename': filename})
             if not os.path.isfile(filename):
                 raise ValueError('Error generating fasta file from an Assembly or ContigSet with AssemblyUtil')
             # make sure fasta file isn't empty
             min_fasta_len = 1
             if not self.fasta_seq_len_at_least(filename, min_fasta_len):
                 raise ValueError('Assembly or ContigSet is empty in filename: '+str(filename))
-            pass
 
         # AssemblySet
+        #
         elif type_name == 'KBaseSets.AssemblySet':
-            raise ValueError('Cannot yet stage fasta file input directory from KBaseSets.AssemblySet')
+            # setAPI_Client
+            try:
+                #setAPI_Client = SetAPI (url=self.callbackURL, token=self.ctx['token'])  # for SDK local.  local doesn't work for SetAPI
+                setAPI_Client = SetAPI (url=self.serviceWizardURL, token=self.ctx['token'])  # for dynamic service
+            except Exception as e:
+                raise ValueError('Unable to instantiate setAPI_Client with serviceWizardURL: '+ self.serviceWizardURL +' ERROR: ' + str(e))
+
+            # auClient
+            try:
+                auClient = AssemblyUtil(self.callbackURL, token=self.ctx['token'], service_ver=SERVICE_VER)
+            except Exception as e:
+                raise ValueError('Unable to instantiate auClient with callbackURL: '+ self.callbackURL +' ERROR: ' + str(e))
+            
+            # read assemblySet
+            try:
+                assemblySet_obj = setAPI_Client.get_assembly_set_v1 ({'ref':input_ref, 'include_item_info':1})
+            except Exception as e:
+                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+            assembly_refs = []
+            assembly_names = []
+            for assembly_item in assemblySet_obj['data']['items']:            
+                this_assembly_ref = assembly_item['ref']
+                # assembly obj info
+                try:
+                    this_assembly_info = ws.get_object_info_new ({'objects':[{'ref':this_assembly_ref}]})[0]
+                    this_assembly_name = this_assembly_info[NAME_I]
+                except Exception as e:
+                    raise ValueError('Unable to get object from workspace: (' + this_assembly_ref +'): ' + str(e))
+                assembly_refs.append(this_assembly_ref)
+                assembly_names.append(this_assembly_name)    
+
+            # create file data (name for file is what's reported in results)
+            for ass_i,assembly_ref in enumerate(assembly_refs):
+                this_name = assembly_names[ass_i]
+                filename = os.path.join(input_dir, this_name + '.' + fasta_file_extension)
+                auClient.get_assembly_as_fasta({'ref': assembly_ref, 'filename': filename})
+                if not os.path.isfile(filename):
+                    raise ValueError('Error generating fasta file from an Assembly or ContigSet with AssemblyUtil')
+                # make sure fasta file isn't empty
+                min_fasta_len = 1
+                if not self.fasta_seq_len_at_least(filename, min_fasta_len):
+                    raise ValueError('Assembly or ContigSet is empty in filename: '+str(filename))
 
         # Binned Contigs
+        #
         elif type_name == 'KBaseMetagenomes.BinnedContigs':
+            # mguClient
+            try:
+                mguClient = MetagenomeUtils(self.callbackURL, token=self.ctx['token'], service_ver=SERVICE_VER)
+            except Exception as e:
+                raise ValueError('Unable to instantiate mguClient with callbackURL: '+ self.callbackURL +' ERROR: ' + str(e))
+
             # download the bins as fasta and set the input folder name
-            au = MetagenomeUtils(self.callback_url)
-            bin_file_dir = au.binned_contigs_to_file({'input_ref': input_ref, 'save_to_shock': 0})['bin_file_directory']
+            bin_file_dir = mguClient.binned_contigs_to_file({'input_ref': input_ref, 'save_to_shock': 0})['bin_file_directory']
             os.rename(bin_file_dir, input_dir)
             # make sure fasta file isn't empty
             self.set_fasta_file_extensions(input_dir, fasta_file_extension)
@@ -90,14 +154,74 @@ class DataStagingUtils(object):
                         raise ValueError('Binned Assembly is empty for fasta_path: '+str(fasta_path))
                 break
 
-        # Genome
-        elif type_name == 'KBaseGenomes.Genome':
-            raise ValueError('Cannot yet stage fasta file input directory from KBaseGenomes.Genome')
+        # Genome and GenomeSet
+        #
+        elif type_name == 'KBaseGenomes.Genome' or type_name == 'KBaseSearch.GenomeSet':
+            raise ValueError('Cannot handle Genome or GenomeSet types yet.  type_name: ' + type_name)
+            genome_obj_names = []
+            genome_sci_names = []
+            genome_assembly_refs = []
 
-        # GenomeSet
-        elif type_name == 'KBaseSearch.GenomeSet':
-            raise ValueError('Cannot yet stage fasta file input directory from KBaseSearch.GenomeSet')
+            if type_name == 'KBaseGenomes.Genome':
+                genomeSet_refs = [input_ref]
+            else:  # get genomeSet_refs from GenomeSet object
+                genomeSet_refs = []
+                try:
+                    genomeSet_object = ws.get_objects2({'objects':[{'ref':input_ref}]})['data'][0]['data']
+                except Exception as e:
+                    raise ValueError('Unable to fetch '+str(input_ref)+' object from workspace: ' + str(e))
+                    #to get the full stack trace: traceback.format_exc()
 
+                # iterate through genomeSet members
+                for genome_id in genomeSet_object['elements'].keys():
+                    if 'ref' not in genomeSet_object['elements'][genome_id] or \
+                       genomeSet_object['elements'][genome_id]['ref'] == None or \
+                       genomeSet_object['elements'][genome_id]['ref'] == '':
+                        raise ValueError('genome_ref not found for genome_id: '+str(genome_id)+' in genomeSet: '+str(input_ref))
+                    else:
+                        genomeSet_refs.append(genomeSet_object['elements'][genome_id]['ref'])
+
+            # genome obj data
+            for i,this_input_ref in enumerate(genomeSet_refs):
+                try:
+                    objects = ws.get_objects2({'objects':[{'ref':this_input_ref}]})['data']
+                    genome_obj = objects[0]['data']
+                    genome_obj_info = objects[0]['info']
+                    genome_obj_names.append(genome_obj_info[NAME_I])
+                    genome_sci_names.append(genome_obj['scientific_name'])
+                except:
+                    raise ValueError ("unable to fetch genome: "+this_input_ref)
+
+                # Get genome_assembly_ref
+                if ('contigset_ref' not in genome_obj or genome_obj['contigset_ref'] == None) \
+                   and ('assembly_ref' not in genome_obj or genome_obj['assembly_ref'] == None):
+                    msg = "Genome "+genome_obj_names[i]+" (ref:"+input_ref+") "+genome_sci_names[i]+" MISSING BOTH contigset_ref AND assembly_ref.  Cannot process.  Exiting."
+                    self.log(console, msg)
+                    self.log(invalid_msgs, msg)
+                    continue
+                elif 'assembly_ref' in genome_obj and genome_obj['assembly_ref'] != None:
+                    msg = "Genome "+genome_obj_names[i]+" (ref:"+input_ref+") "+genome_sci_names[i]+" USING assembly_ref: "+str(genome_obj['assembly_ref'])
+                    self.log (console, msg)
+                    genome_assembly_refs.append(genome_obj['assembly_ref'])
+                elif 'contigset_ref' in genome_obj and genome_obj['contigset_ref'] != None:
+                    msg = "Genome "+genome_obj_names[i]+" (ref:"+input_ref+") "+genome_sci_names[i]+" USING contigset_ref: "+str(genome_obj['contigset_ref'])
+                    self.log (console, msg)
+                    genome_assembly_refs.append(genome_obj['contigset_ref'])
+
+            # create file data (name for file is what's reported in results)
+            for ass_i,assembly_ref in enumerate(genome_assembly_refs):
+                this_name = genome_obj_name[ass_i]
+                filename = os.path.join(input_dir, this_name + '.' + fasta_file_extension)
+                auClient.get_assembly_as_fasta({'ref': assembly_ref, 'filename': filename})
+                if not os.path.isfile(filename):
+                    raise ValueError('Error generating fasta file from an Assembly or ContigSet with AssemblyUtil')
+                # make sure fasta file isn't empty
+                min_fasta_len = 1
+                if not self.fasta_seq_len_at_least(filename, min_fasta_len):
+                    raise ValueError('Assembly or ContigSet is empty in filename: '+str(filename))
+
+        # Unknown type slipped through
+        #
         else:
             raise ValueError('Cannot stage fasta file input directory from type: ' + type_name)
 

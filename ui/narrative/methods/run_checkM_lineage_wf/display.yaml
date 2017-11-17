@@ -33,26 +33,28 @@ suggestions:
 parameters :
     input_ref :
         ui-name : |
-            Assembly or BinnedContigs
+            Input Assembly or BinnedContigs
         short-hint : |
-            Assess the genome quality based on sequence in an Assembly or in each bin of BinnedContig data.
+            Input can be an Assembly, AssemblySet, or BinnedContigs object
+        long-hint : |
+            Assess the genome quality based on sequence in an Assembly, AssemblySet, or in each bin of BinnedContig data.
 
-    save_all_output :
+    reduced_tree :
         ui-name : |
-            Save full output
+            Reference Tree
         short-hint : |
-            If selected, creates a zip file of the entire CheckM output directory, which may be slow
+            Reduced tree is faster, full tree may offer improved performance
 
     save_all_plots :
         ui-name : |
             Save all plots
         short-hint : |
-            If selected, creates a zip file of all the generated plots
+            If selected, creates a downloadable zip file of all the generated plots
 
 description : |
     <p>This app runs the CheckM lineage workflow (lineage_wf) on the provided data and produces a report.  CheckM is part of the M-suite collection of bioinformatic tools from the Ecogenomics Group at the University of Queensland, Australia.</p>
     <p><hr></p>
-    <p>CheckM v1.0.7 from <a href="http://ecogenomics.github.io/CheckM/">ecogenomics.github.io/CheckM</a>.  For additional info, also see <a href="https://github.com/Ecogenomics/CheckM/wiki">github.com/Ecogenomics/CheckM/wiki</a>.</p>
+    <p>CheckM v1.0.8 from <a href="http://ecogenomics.github.io/CheckM/">ecogenomics.github.io/CheckM</a>.  For additional info, also see <a href="https://github.com/Ecogenomics/CheckM/wiki">github.com/Ecogenomics/CheckM/wiki</a>.</p>
     <p><i>Please cite:</i></p>
        <ul>
        <li>Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. (2015) CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. <a href="http://genome.cshlp.org/content/25/7/1043.long">Genome Res. 2015 Jul;25(7):1043-55.</a> doi:  doi: 10.1101/gr.186072.114
