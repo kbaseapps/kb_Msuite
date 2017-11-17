@@ -94,10 +94,6 @@
                     "target_property": "reduced_tree"
                 },
                 {
-                    "input_parameter": "save_all_output",
-                    "target_property": "save_output_dir"
-                },
-                {
                     "input_parameter": "save_all_plots",
                     "target_property": "save_plots_dir"
                 }
