@@ -45,12 +45,6 @@ parameters :
         short-hint : |
             Reduced tree is faster, full tree may offer improved performance
 
-    save_all_output :
-        ui-name : |
-            Save full output
-        short-hint : |
-            If selected, creates a downloadable zip file of the entire CheckM output directory, which may be slow
-
     save_all_plots :
         ui-name : |
             Save all plots

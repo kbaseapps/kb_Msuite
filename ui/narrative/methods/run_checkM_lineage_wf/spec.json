@@ -49,30 +49,6 @@
 		]
             }
         }, 
-        {
-            "id": "save_all_output",
-            "optional": false,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values":[0],
-            "field_type" : "dropdown",
-            "dropdown_options": {
-		"options": [
-		    {
-			"value": 0,
-			"display": "discard",
-			"id": "save_all_output_FALSE",
-			"ui-name": "save_all_output_FALSE"
-		    },
-		    {
-			"value": 1,
-			"display": "save",
-			"id": "save_all_output_TRUE",
-			"ui-name": "save_all_output_TRUE"
-		    }
-		]
-            }
-         },
          {
            "id": "save_all_plots",
             "optional": false,

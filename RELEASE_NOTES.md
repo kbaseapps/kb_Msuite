@@ -1,7 +1,8 @@
 ### Version 1.2.1
 __Changes__
 - Added choice to use reduced or full Reference Tree to input widget
-- Changed save output and save plots input widgets from checkbox to dropdown
+- Changed and save_all_plots input widgets from checkbox to dropdown
+- Removed save_all_plots option and made that default behavior
 - Added AssemblySet input type
 
 ### Version 1.2.0

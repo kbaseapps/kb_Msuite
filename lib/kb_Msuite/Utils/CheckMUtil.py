@@ -239,12 +239,13 @@ class CheckMUtil:
 
         output_packages = []
 
-        if 'save_output_dir' in params and str(params['save_output_dir']) == '1':
+        #if 'save_output_dir' in params and str(params['save_output_dir']) == '1':
+        if True:
             log('packaging full output directory')
             zipped_output_file = outputBuilder.package_folder(outputBuilder.output_dir, 'full_output.zip',
                                                               'Full output of CheckM')
             output_packages.append(zipped_output_file)
-        else:
+        else:  # ADD LATER?
             log('not packaging full output directory, selecting specific files')
             crit_out_dir = os.path.join(self.scratch, 'critical_output_' + os.path.basename(input_dir))
             os.makedirs(crit_out_dir)
