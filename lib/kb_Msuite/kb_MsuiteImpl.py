@@ -25,7 +25,7 @@ References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
-Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043-1055, doi:10.1101/gr.186072.114
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
     '''
 
     ######## WARNING FOR GEVENT USERS ####### noqa
@@ -34,9 +34,9 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.1"
+    VERSION = "1.2.2"
     GIT_URL = "https://github.com/kbaseapps/kb_Msuite"
-    GIT_COMMIT_HASH = "e8b2eebcf40a63d03159f30e6ce3c6ac1bb8dab0"
+    GIT_COMMIT_HASH = "639ef8cecfcce3f1a244b46e9916eeeaf304e170"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER

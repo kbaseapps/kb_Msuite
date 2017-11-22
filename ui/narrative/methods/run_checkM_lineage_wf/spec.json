@@ -1,5 +1,5 @@
 {
-    "ver": "1.2.1",
+    "ver": "1.2.2",
     "authors": [
         "dylan","qzhang","msneddon","dparks"
     ],
@@ -21,7 +21,9 @@
                 "valid_ws_types": [ "KBaseMetagenomes.BinnedContigs",
 				    "KBaseGenomeAnnotations.Assembly",
 				    "KBaseGenomes.ContigSet",
-				    "KBaseSets.AssemblySet"
+				    "KBaseSets.AssemblySet",
+				    "KBaseGenomes.Genome",
+				    "KBaseSearch.GenomeSet"
 				  ]
             }
         }, 
