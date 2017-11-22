@@ -33,11 +33,11 @@ suggestions:
 parameters :
     input_ref :
         ui-name : |
-            Input Assembly or BinnedContigs
+            Input Assembly, Genome, or BinnedContigs
         short-hint : |
-            Input can be an Assembly, AssemblySet, or BinnedContigs object
+            Input can be an Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs object
         long-hint : |
-            Assess the genome quality based on sequence in an Assembly, AssemblySet, or in each bin of BinnedContig data.
+            Assess the genome quality based on sequence in an Assembly, AssemblySet, Genome, GenomeSet, or in each bin of BinnedContig data.
 
     reduced_tree :
         ui-name : |
@@ -66,8 +66,7 @@ description : |
     <p>CheckM provides a set of tools for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. It provides robust estimates of genome completeness and contamination by using collocated sets of genes that are ubiquitous and single-copy within a phylogenetic lineage. Assessment of genome quality can also be examined using plots depicting key genomic characteristics (e.g., GC, coding density) which highlight sequences outside the expected distributions of a typical genome.</p>
     <p><hr></p>
     <p><b>Configuration:</b></p>
-    <p><b><i>Assembly or BinnedContigs:</i></b> A user may submit a single genome assembly object or a BinnedContig object containing multiple "binned" genomes.  In the latter case, a separate evaluation of the genome completeness using the clade-specific phylogenetic marker genes will be performed.</p>
-    <p><b><i>Save full output:</i></b> The user has the option of generating and downloading all possible output from the CheckM "lineage" workflow.  Selecting this option will slow down the runtime.</p>
+    <p><b><i>Assembly, Genome, or BinnedContigs:</i></b> A user may submit a single genome assembly object, an AssemblySet, a Genome, a GenomeSet, or a BinnedContig object containing multiple "binned" genomes.  In the cases with multiple assemblies/genomes/bins, a separate evaluation of the genome completeness using the clade-specific phylogenetic marker genes will be performed.</p>
     <p><b><i>Save all plots:</i></b> The user has the option of generating and downloading all possible plots from the CheckM "lineage" workflow.  Selecting this option will slow down the runtime.</p>
     <p><hr></p>
     <p><b>Output:</b></p>

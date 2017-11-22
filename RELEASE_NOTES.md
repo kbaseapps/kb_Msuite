@@ -1,3 +1,7 @@
+### Version 1.2.2
+__Changes__
+- Added Genome and GenomeSet input types
+
 ### Version 1.2.1
 __Changes__
 - Added choice to use reduced or full Reference Tree to input widget

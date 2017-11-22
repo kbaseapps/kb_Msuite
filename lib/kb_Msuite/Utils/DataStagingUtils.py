@@ -68,14 +68,29 @@ class DataStagingUtils(object):
         obj_name = input_info[NAME_I]
         type_name = input_info[TYPE_I].split('-')[0]
 
+        # auClient
+        try:
+            auClient = AssemblyUtil(self.callbackURL, token=self.ctx['token'], service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError('Unable to instantiate auClient with callbackURL: '+ self.callbackURL +' ERROR: ' + str(e))
+
+        # setAPI_Client
+        try:
+            #setAPI_Client = SetAPI (url=self.callbackURL, token=self.ctx['token'])  # for SDK local.  local doesn't work for SetAPI
+            setAPI_Client = SetAPI (url=self.serviceWizardURL, token=self.ctx['token'])  # for dynamic service
+        except Exception as e:
+            raise ValueError('Unable to instantiate setAPI_Client with serviceWizardURL: '+ self.serviceWizardURL +' ERROR: ' + str(e))
+
+        # mguClient
+        try:
+            mguClient = MetagenomeUtils(self.callbackURL, token=self.ctx['token'], service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError('Unable to instantiate mguClient with callbackURL: '+ self.callbackURL +' ERROR: ' + str(e))
+
+
         # Standard Single Assembly
         #
         if type_name in ['KBaseGenomeAnnotations.Assembly', 'KBaseGenomes.ContigSet']:
-            try:
-                auClient = AssemblyUtil(self.callbackURL, token=self.ctx['token'], service_ver=SERVICE_VER)
-            except Exception as e:
-                raise ValueError('Unable to instantiate auClient with callbackURL: '+ self.callbackURL +' ERROR: ' + str(e))
-
             # create file data
             filename = os.path.join(input_dir, obj_name + '.' + fasta_file_extension)
             auClient.get_assembly_as_fasta({'ref': input_ref, 'filename': filename})
@@ -89,18 +104,6 @@ class DataStagingUtils(object):
         # AssemblySet
         #
         elif type_name == 'KBaseSets.AssemblySet':
-            # setAPI_Client
-            try:
-                #setAPI_Client = SetAPI (url=self.callbackURL, token=self.ctx['token'])  # for SDK local.  local doesn't work for SetAPI
-                setAPI_Client = SetAPI (url=self.serviceWizardURL, token=self.ctx['token'])  # for dynamic service
-            except Exception as e:
-                raise ValueError('Unable to instantiate setAPI_Client with serviceWizardURL: '+ self.serviceWizardURL +' ERROR: ' + str(e))
-
-            # auClient
-            try:
-                auClient = AssemblyUtil(self.callbackURL, token=self.ctx['token'], service_ver=SERVICE_VER)
-            except Exception as e:
-                raise ValueError('Unable to instantiate auClient with callbackURL: '+ self.callbackURL +' ERROR: ' + str(e))
             
             # read assemblySet
             try:
@@ -135,11 +138,6 @@ class DataStagingUtils(object):
         # Binned Contigs
         #
         elif type_name == 'KBaseMetagenomes.BinnedContigs':
-            # mguClient
-            try:
-                mguClient = MetagenomeUtils(self.callbackURL, token=self.ctx['token'], service_ver=SERVICE_VER)
-            except Exception as e:
-                raise ValueError('Unable to instantiate mguClient with callbackURL: '+ self.callbackURL +' ERROR: ' + str(e))
 
             # download the bins as fasta and set the input folder name
             bin_file_dir = mguClient.binned_contigs_to_file({'input_ref': input_ref, 'save_to_shock': 0})['bin_file_directory']
@@ -157,7 +155,6 @@ class DataStagingUtils(object):
         # Genome and GenomeSet
         #
         elif type_name == 'KBaseGenomes.Genome' or type_name == 'KBaseSearch.GenomeSet':
-            raise ValueError('Cannot handle Genome or GenomeSet types yet.  type_name: ' + type_name)
             genome_obj_names = []
             genome_sci_names = []
             genome_assembly_refs = []
@@ -196,21 +193,20 @@ class DataStagingUtils(object):
                 if ('contigset_ref' not in genome_obj or genome_obj['contigset_ref'] == None) \
                    and ('assembly_ref' not in genome_obj or genome_obj['assembly_ref'] == None):
                     msg = "Genome "+genome_obj_names[i]+" (ref:"+input_ref+") "+genome_sci_names[i]+" MISSING BOTH contigset_ref AND assembly_ref.  Cannot process.  Exiting."
-                    self.log(console, msg)
-                    self.log(invalid_msgs, msg)
+                    raise ValueError (msg)
                     continue
                 elif 'assembly_ref' in genome_obj and genome_obj['assembly_ref'] != None:
                     msg = "Genome "+genome_obj_names[i]+" (ref:"+input_ref+") "+genome_sci_names[i]+" USING assembly_ref: "+str(genome_obj['assembly_ref'])
-                    self.log (console, msg)
+                    print (msg)
                     genome_assembly_refs.append(genome_obj['assembly_ref'])
                 elif 'contigset_ref' in genome_obj and genome_obj['contigset_ref'] != None:
                     msg = "Genome "+genome_obj_names[i]+" (ref:"+input_ref+") "+genome_sci_names[i]+" USING contigset_ref: "+str(genome_obj['contigset_ref'])
-                    self.log (console, msg)
+                    print (msg)
                     genome_assembly_refs.append(genome_obj['contigset_ref'])
 
             # create file data (name for file is what's reported in results)
             for ass_i,assembly_ref in enumerate(genome_assembly_refs):
-                this_name = genome_obj_name[ass_i]
+                this_name = genome_obj_names[ass_i]
                 filename = os.path.join(input_dir, this_name + '.' + fasta_file_extension)
                 auClient.get_assembly_as_fasta({'ref': assembly_ref, 'filename': filename})
                 if not os.path.isfile(filename):
