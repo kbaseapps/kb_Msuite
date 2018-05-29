@@ -67,7 +67,7 @@ class CoreCheckMTest(unittest.TestCase):
         cls.ws_info = cls.wsClient.create_workspace({'workspace': cls.wsName})
         cls.au = AssemblyUtil(os.environ['SDK_CALLBACK_URL'])
         cls.setAPI = SetAPI(url=cls.cfg['srv-wiz-url'], token=cls.ctx['token'])
-        cls.gfu = GenomeFileUtil(os.environ['SDK_CALLBACK_URL'])
+        cls.gfu = GenomeFileUtil(os.environ['SDK_CALLBACK_URL'], service_ver='dev')
         cls.mu = MetagenomeUtils(os.environ['SDK_CALLBACK_URL'])
 
         # stage an input and output directory
@@ -99,14 +99,14 @@ class CoreCheckMTest(unittest.TestCase):
     def getContext(self):
         return self.__class__.ctx
 
-
     @classmethod
     def prepare_data(cls):
         test_directory_name = 'test_kb_Msuite'
         cls.test_directory_path = os.path.join(cls.scratch, test_directory_name)
         os.makedirs(cls.test_directory_path)
 
-        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
 
         # build the example Assembly
         assembly_filename = 'assembly.fasta'
@@ -120,7 +120,6 @@ class CoreCheckMTest(unittest.TestCase):
         cls.assembly_ref1 = cls.au.save_assembly_from_fasta(assembly_params)
         pprint('Saved Assembly: ' + cls.assembly_ref1)
 
-
         # contig that breaks checkm v1.0.7 reduced_tree (works on v1.0.8)
         assembly_filename = 'offending_contig_67815-67907.fa'
         assembly_objname = 'Offending_Contig_test2.Assembly'
@@ -133,19 +132,16 @@ class CoreCheckMTest(unittest.TestCase):
         cls.assembly_offending_ref1 = cls.au.save_assembly_from_fasta(assembly_params)
         pprint('Saved Assembly: ' + cls.assembly_offending_ref1)
 
-
         # create an AssemblySet
         assembly_items = [{'ref': cls.assembly_ref1, 'label': 'assembly_1'},
                           {'ref': cls.assembly_offending_ref1, 'label': 'assembly_2'}]
-        assemblySet_obj = { 'description': 'test assembly set',
-                            'items': assembly_items
-                        }
+        assemblySet_obj = {'description': 'test assembly set',
+                           'items': assembly_items}
         assemblySet_objname = 'TEST_ASSEMBLY_SET'
-        cls.assemblySet_ref1 = cls.setAPI.save_assembly_set_v1 ({'workspace_name': cls.ws_info[1],
-                                                                 'output_object_name': assemblySet_objname,
-                                                                 'data': assemblySet_obj
-                                                             })['set_ref']
-
+        cls.assemblySet_ref1 = cls.setAPI.save_assembly_set_v1({
+                                        'workspace_name': cls.ws_info[1],
+                                        'output_object_name': assemblySet_objname,
+                                        'data': assemblySet_obj})['set_ref']
 
         # create a BinnedContigs object
         binned_contigs_dir_name = 'binned_contigs'
@@ -158,70 +154,67 @@ class CoreCheckMTest(unittest.TestCase):
                                  'assembly_ref': cls.assembly_ref1,
                                  'binned_contig_name': binned_contigs_objname
                                  }
-        cls.binned_contigs_ref1 = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
+        cls.binned_contigs_ref1 = cls.mu.file_to_binned_contigs(
+                                                binned_contigs_params)['binned_contig_obj_ref']
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1)
-
 
         # create an empty BinnedContigs object
         binned_contigs_dir_name_empty = 'binned_contigs_empty'
         binned_contigs_objname_empty = "MyBins_empty"
         binned_contigs_dir_path_empty = os.path.join(cls.scratch, binned_contigs_dir_name_empty)
-        shutil.copytree(os.path.join("data", binned_contigs_dir_name_empty), binned_contigs_dir_path_empty)
+        shutil.copytree(os.path.join("data", binned_contigs_dir_name_empty),
+                        binned_contigs_dir_path_empty)
 
         binned_contigs_params = {'file_directory': binned_contigs_dir_path_empty,
                                  'workspace_name': cls.ws_info[1],
                                  'assembly_ref': cls.assembly_ref1,
                                  'binned_contig_name': binned_contigs_objname_empty
                                  }
-        cls.binned_contigs_ref1_empty = cls.mu.file_to_binned_contigs(binned_contigs_params)['binned_contig_obj_ref']
+        cls.binned_contigs_ref1_empty = cls.mu.file_to_binned_contigs(
+                                                binned_contigs_params)['binned_contig_obj_ref']
         pprint('Saved BinnedContigs: ' + cls.binned_contigs_ref1_empty)
-
 
         # upload a few genomes
         cls.genome_refs = []
-        for i,genome_filename in enumerate(['GCF_000022285.1_ASM2228v1_genomic.gbff', \
-                                            'GCF_001439985.1_wTPRE_1.0_genomic.gbff']): 
-                                            #'GCF_000287295.1_ASM28729v1_genomic.gbff', \
-                                            #'GCF_000306885.1_ASM30688v1_genomic.gbff', \
+        for i, genome_filename in enumerate(['GCF_000022285.1_ASM2228v1_genomic.gbff',
+                                            'GCF_001439985.1_wTPRE_1.0_genomic.gbff']):
             genome_file_path = os.path.join(cls.scratch, genome_filename)
             shutil.copy(os.path.join("data", "genomes", genome_filename), genome_file_path)
             cls.genome_refs.append(cls.gfu.genbank_to_genome({'file': {'path': genome_file_path},
                                                               'workspace_name': cls.ws_info[1],
-                                                              'genome_name': genome_filename})['genome_ref'])
-
+                                                              'genome_name': genome_filename,
+                                                              'generate_ids_if_needed': 1})['genome_ref'])
 
         # create a genomeSet
         genome_scinames = dict()
-        for genome_i,genome_ref in enumerate(cls.genome_refs):
+        for genome_i, genome_ref in enumerate(cls.genome_refs):
             genome_scinames[genome_ref] = 'Genus species str. '+str(genome_i)
         testGS = {
             'description': 'genomeSet for testing',
             'elements': dict()
         }
-        for genome_ref in cls.genome_refs: 
-            testGS['elements'][genome_scinames[genome_ref]] = { 'ref': genome_ref }
-        obj_info = cls.wsClient.save_objects({'workspace': cls.ws_info[1],       
+        for genome_ref in cls.genome_refs:
+            testGS['elements'][genome_scinames[genome_ref]] = {'ref': genome_ref}
+        obj_info = cls.wsClient.save_objects({'workspace': cls.ws_info[1],
                                               'objects': [
                                                   {
-                                                      'type':'KBaseSearch.GenomeSet',
-                                                      'data':testGS,
-                                                      'name':'test_genomeset_1',
-                                                      'meta':{},
-                                                      'provenance':[
+                                                      'type': 'KBaseSearch.GenomeSet',
+                                                      'data': testGS,
+                                                      'name': 'test_genomeset_1',
+                                                      'meta': {},
+                                                      'provenance': [
                                                           {
-                                                              'service':'kb_Msuite',
-                                                              'method':'test_CheckM'
+                                                              'service': 'kb_Msuite',
+                                                              'method': 'test_CheckM'
                                                           }
                                                       ]
-                                                  }]
-                                          })[0]
-        cls.genomeSet_ref1 = str(obj_info[WSID_I]) +'/'+ str(obj_info[OBJID_I]) +'/'+ str(obj_info[VERSION_I])
+                                                  }]})[0]
+        cls.genomeSet_ref1 = str(obj_info[WSID_I]) + '/' + str(obj_info[OBJID_I]) + '/' + str(obj_info[VERSION_I])
 
-
-    ### Test 1: single assembly
+    # Test 1: single assembly
     #
     # Uncomment to skip this test
-    #HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
+    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
     def test_checkM_lineage_wf_full_app_single_assembly(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_assembly'
         print ("\n=================================================================")
@@ -234,7 +227,7 @@ class CoreCheckMTest(unittest.TestCase):
             'workspace_name': self.ws_info[1],
             'input_ref': input_ref,
             'reduced_tree': 0,
-            #'save_output_dir': 0,  # DEBUG
+            # 'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1
         }
@@ -247,18 +240,18 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('report_ref', result)
 
         # make sure the report was created and includes the HTML report and download links
-        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+        rep = self.getWsClient().get_objects2({'objects':
+                                              [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
-
-    ### Test 2: Regression test (CheckM <= v1.0.7) for single problem assembly
+    # Test 2: Regression test (CheckM <= v1.0.7) for single problem assembly
     #
     # Uncomment to skip this test
-    #HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
+    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
     def test_checkM_lineage_wf_full_app_single_problem_assembly(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_problem_assembly'
         print ("\n=================================================================")
@@ -271,7 +264,7 @@ class CoreCheckMTest(unittest.TestCase):
             'workspace_name': self.ws_info[1],
             'input_ref': input_ref,
             'reduced_tree': 1,  # this must be 1 to regression test with --reduced_tree
-            #'save_output_dir': 0,  # DEBUG
+            # 'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1
         }
@@ -284,18 +277,18 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('report_ref', result)
 
         # make sure the report was created and includes the HTML report and download links
-        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+        rep = self.getWsClient().get_objects2({'objects':
+                                              [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
-
-    ### Test 3: binned contigs
+    # Test 3: binned contigs
     #
     # Uncomment to skip this test
-    #HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
     def test_checkM_lineage_wf_full_app_binned_contigs(self):
         method_name = 'test_checkM_lineage_wf_full_app_binned_contigs'
         print ("\n=================================================================")
@@ -303,7 +296,7 @@ class CoreCheckMTest(unittest.TestCase):
         print ("=================================================================\n")
 
         # Even with the reduced_tree option, this will take a long time and crash if your
-        # machine has less than ~16gb memory 
+        # machine has less than ~16gb memory
 
         # run checkM lineage_wf app on BinnedContigs
         input_ref = self.binned_contigs_ref1
@@ -322,18 +315,18 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('report_ref', result)
 
         # make sure the report was created and includes the HTML report and download links
-        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+        rep = self.getWsClient().get_objects2({'objects':
+                                              [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
-
-    ### Test 4: Regression test for empty binned contigs object
+    # Test 4: Regression test for empty binned contigs object
     #
     # Uncomment to skip this test
-    #HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
+    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
     def test_checkM_lineage_wf_full_app_binned_contigs_EMPTY(self):
         method_name = 'test_checkM_lineage_wf_full_app_binned_contigs_EMPTY'
         print ("\n=================================================================")
@@ -351,11 +344,10 @@ class CoreCheckMTest(unittest.TestCase):
             self.getImpl().run_checkM_lineage_wf(self.getContext(), params)
         self.assertTrue('Binned Assembly is empty' in str(exception_context.exception))
 
-
-    ### Test 5: Assembly Set
+    # Test 5: Assembly Set
     #
     # Uncomment to skip this test
-    #HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
+    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
     def test_checkM_lineage_wf_full_app_assemblySet(self):
         method_name = 'test_checkM_lineage_wf_full_app_assemblySet'
         print ("\n=================================================================")
@@ -380,18 +372,18 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('report_ref', result)
 
         # make sure the report was created and includes the HTML report and download links
-        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+        rep = self.getWsClient().get_objects2({'objects':
+                                              [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
-
-    ### Test 6: Single Genome
+    # Test 6: Single Genome
     #
     # Uncomment to skip this test
-    #HIDE #HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_genome")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_genome")
     def test_checkM_lineage_wf_full_app_single_genome(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_genome'
         print ("\n=================================================================")
@@ -416,18 +408,18 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('report_ref', result)
 
         # make sure the report was created and includes the HTML report and download links
-        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+        rep = self.getWsClient().get_objects2({'objects':
+                                              [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
-
-    ### Test 7: Genome Set
+    # Test 7: Genome Set
     #
     # Uncomment to skip this test
-    #HIDE #HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_genomeSet")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_genomeSet")
     def test_checkM_lineage_wf_full_app_genomeSet(self):
         method_name = 'test_checkM_lineage_wf_full_app_genomeSet'
         print ("\n=================================================================")
@@ -452,15 +444,15 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('report_ref', result)
 
         # make sure the report was created and includes the HTML report and download links
-        rep = self.getWsClient().get_objects2({'objects': [{'ref': result['report_ref']}]})['data'][0]['data']
+        rep = self.getWsClient().get_objects2({'objects':
+                                              [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'report.html')
 
-
-    ### Test 8: Data staging (intended data not checked into git repo: SKIP)
+    # Test 8: Data staging (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
     @unittest.skip("skipped test_data_staging")
@@ -487,12 +479,14 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertTrue(os.path.isfile(staged_input2['all_seq_fasta']))
         self.assertIn('folder_suffix', staged_input2)
 
-        self.assertTrue(os.path.isfile(os.path.join(staged_input2['input_dir'], 'out_header.001.fna')))
-        self.assertTrue(os.path.isfile(os.path.join(staged_input2['input_dir'], 'out_header.002.fna')))
-        self.assertTrue(os.path.isfile(os.path.join(staged_input2['input_dir'], 'out_header.003.fna')))
+        self.assertTrue(os.path.isfile(os.path.join(staged_input2['input_dir'],
+                                                    'out_header.001.fna')))
+        self.assertTrue(os.path.isfile(os.path.join(staged_input2['input_dir'],
+                                                    'out_header.002.fna')))
+        self.assertTrue(os.path.isfile(os.path.join(staged_input2['input_dir'],
+                                                    'out_header.003.fna')))
 
-
-    ### Test 9: Plotting (intended data not checked into git repo: SKIP)
+    # Test 9: Plotting (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
     @unittest.skip("skipped test_output_plotting")
@@ -504,7 +498,8 @@ class CoreCheckMTest(unittest.TestCase):
         html_dir = os.path.join(self.scratch, 'html_1')
         tetra_file = os.path.join(self.scratch, 'tetra_1.tsv')
 
-        cmu.build_checkM_lineage_wf_plots(self.input_dir, self.output_dir, plots_dir, self.all_seq_fasta, tetra_file)
+        cmu.build_checkM_lineage_wf_plots(self.input_dir, self.output_dir, plots_dir,
+                                          self.all_seq_fasta, tetra_file)
         self.assertTrue(os.path.isdir(plots_dir))
         self.assertTrue(os.path.isfile(os.path.join(plots_dir, 'bin_qa_plot.png')))
         self.assertTrue(os.path.isfile(os.path.join(plots_dir, 'NewBins.001.ref_dist_plots.png')))
@@ -519,11 +514,10 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('description', res)
         self.assertEqual(res['name'], 'report.html')
 
-
-    ### Test 10: tetra wiring (intended data not checked into git repo: SKIP)
+    # Test 10: tetra wiring (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_output_plotting")
+    @unittest.skip("skipped test_checkM_local_function_wiring")
     # missing test data for this custom test
     def test_checkM_local_function_wiring(self):
 
