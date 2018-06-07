@@ -63,7 +63,14 @@ class OutputBuilder(object):
 
         # move plots we need into the html directory
         plot_name = 'bin_qa_plot.png'
-        shutil.copy(os.path.join(self.plots_dir, plot_name), os.path.join(html_dir, plot_name))
+        plot_path = os.path.join(self.plots_dir, plot_name)
+        if os.path.isfile(plot_path):
+            shutil.copy(plot_path, os.path.join(html_dir, plot_name))
+        else:
+            log(
+                'Warning: the bin_qa_plot image was not generated. '
+                'This is most likely due to image and file size.'
+            )
         self._copy_ref_dist_plots(self.plots_dir, html_dir)
 
         # write the html report to file
