@@ -64,7 +64,8 @@ class OutputBuilder(object):
         # move plots we need into the html directory
         plot_name = 'bin_qa_plot.png'
         plot_path = os.path.join(self.plots_dir, plot_name)
-        if os.path.isfile(plot_path):
+        plot_exists = os.path.isfile(plot_path)
+        if plot_exists:
             shutil.copy(plot_path, os.path.join(html_dir, plot_name))
         else:
             log(
@@ -84,10 +85,13 @@ class OutputBuilder(object):
         self._write_tabs(html)
 
         # include the single main summary figure
-        html.write('<div id="Plot" class="tabcontent">\n')
-        html.write('<img src="' + plot_name + '" width="90%" />\n')
-        html.write('<br><br><br>\n')
-        html.write('</div>\n')
+        if plot_exists:
+            html.write('<div id="Plot" class="tabcontent">\n')
+            html.write('<img src="' + plot_name + '" width="90%" />\n')
+            html.write('<br><br><br>\n')
+            html.write('</div>\n')
+        else:
+            html.write('<p>The Bin QA Plot was not generated.</p>')
 
         # print out the info table
         self.build_summary_table(html, html_dir)
