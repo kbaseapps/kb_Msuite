@@ -91,7 +91,11 @@ class OutputBuilder(object):
             html.write('<br><br><br>\n')
             html.write('</div>\n')
         else:
-            html.write('<p>The Bin QA Plot was not generated.</p>')
+            html.write(
+                '<p>Sorry, the Bin QA Plot was not generated. '
+                'This is likely due to having too many bins and '
+                'too large of an image size to properly render.</p>'
+            )
 
         # print out the info table
         self.build_summary_table(html, html_dir)
