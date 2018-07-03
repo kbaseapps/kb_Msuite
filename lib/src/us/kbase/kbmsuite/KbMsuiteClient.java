@@ -23,7 +23,7 @@ import us.kbase.common.service.UnauthorizedException;
  * References: 
  * CheckM in github: http://ecogenomics.github.io/CheckM/
  * CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
- * Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
+ * Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043???1055.
  * </pre>
  */
 public class KbMsuiteClient {
@@ -198,6 +198,25 @@ public class KbMsuiteClient {
         args.add(params);
         TypeReference<List<CheckMLineageWfResult>> retType = new TypeReference<List<CheckMLineageWfResult>>() {};
         List<CheckMLineageWfResult> res = caller.jsonrpcCall("kb_Msuite.run_checkM_lineage_wf", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: lineage_wf</p>
+     * <pre>
+     * *
+     * * A "local method" for calling lineage_wf directly.
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbmsuite.LineageWfParams LineageWfParams}
+     * @return   parameter "result" of type {@link us.kbase.kbmsuite.LineageWfResult LineageWfResult}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public LineageWfResult lineageWf(LineageWfParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<LineageWfResult>> retType = new TypeReference<List<LineageWfResult>>() {};
+        List<LineageWfResult> res = caller.jsonrpcCall("kb_Msuite.lineage_wf", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

@@ -1,10 +1,10 @@
 /*
 A KBase module: kb_Msuite
-This SDK module is developed to wrap the open source package CheckM which consists of a set of tools 
-for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. 
+This SDK module is developed to wrap the open source package CheckM which consists of a set of tools
+for assessing the quality of genomes recovered from isolates, single cells, or metagenomes.
 CheckM consists of a series of commands in order to support a number of different analyses and workflows.
 
-References: 
+References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
@@ -20,7 +20,7 @@ module kb_Msuite {
 
     typedef string FASTA_format; /*".fna"*/
 
-    /*  
+    /*
         Runs CheckM as a command line local function.
 
         subcommand - specify the subcommand to run; supported options are lineage_wf, tetra, bin_qa_plot, dist_plot
@@ -83,6 +83,41 @@ module kb_Msuite {
     funcdef run_checkM_lineage_wf(CheckMLineageWfParams params)
         returns (CheckMLineageWfResult result) authentication required;
 
+
+    /**
+     * Parameters for lineage_wf, which runs as a "local method".
+     *
+     * Required arguments:
+     *   bin_dir - required - Path to the directory where your bins are located
+     *   out_dir - required - Path to a directory where we will write output files
+     *   options - optional - A mapping of options to pass to lineage_wf. See the README.md
+     *     in the kb_Msuite repo for a list of all of these. For options that have no value, simply
+     *     pass an empty string.
+     */
+    typedef structure {
+      string bin_dir;
+      string out_dir;
+      mapping <string, string> options;
+    } LineageWfParams;
+
+    /**
+     * Output results of running the lineage_wf local method.
+     * We simply give the raw standard out from checkm, which may be an error message (checkm does
+     * not use stderr)
+     *
+     * Fields:
+     *   stdout - The standard out given by checkm after running.
+     */
+    typedef structure {
+      string stdout;
+    } LineageWfResult;
+
+
+    /**
+     * A "local method" for calling lineage_wf directly.
+     */
+    funcdef lineage_wf(LineageWfParams params)
+        returns (LineageWfResult result) authentication required;
 
 
 };

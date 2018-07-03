@@ -35,7 +35,7 @@ References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
-Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043???1055.
 
 
 =cut
@@ -321,6 +321,100 @@ CheckMLineageWfResult is a reference to a hash where the following keys are defi
     }
 }
  
+
+
+=head2 lineage_wf
+
+  $result = $obj->lineage_wf($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_Msuite.LineageWfParams
+$result is a kb_Msuite.LineageWfResult
+LineageWfParams is a reference to a hash where the following keys are defined:
+	bin_dir has a value which is a string
+	out_dir has a value which is a string
+	options has a value which is a reference to a hash where the key is a string and the value is a string
+LineageWfResult is a reference to a hash where the following keys are defined:
+	stdout has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_Msuite.LineageWfParams
+$result is a kb_Msuite.LineageWfResult
+LineageWfParams is a reference to a hash where the following keys are defined:
+	bin_dir has a value which is a string
+	out_dir has a value which is a string
+	options has a value which is a reference to a hash where the key is a string and the value is a string
+LineageWfResult is a reference to a hash where the following keys are defined:
+	stdout has a value which is a string
+
+
+=end text
+
+=item Description
+
+A "local method" for calling lineage_wf directly.
+
+=back
+
+=cut
+
+ sub lineage_wf
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function lineage_wf (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to lineage_wf:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'lineage_wf');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_Msuite.lineage_wf",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'lineage_wf',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method lineage_wf",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'lineage_wf',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -364,16 +458,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'run_checkM_lineage_wf',
+                method_name => 'lineage_wf',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method run_checkM_lineage_wf",
+            error => "Error invoking method lineage_wf",
             status_line => $self->{client}->status_line,
-            method_name => 'run_checkM_lineage_wf',
+            method_name => 'lineage_wf',
         );
     }
 }
@@ -604,6 +698,94 @@ report_ref has a value which is a string
 a reference to a hash where the following keys are defined:
 report_name has a value which is a string
 report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 LineageWfParams
+
+=over 4
+
+
+
+=item Description
+
+*
+* Parameters for lineage_wf, which runs as a "local method".
+*
+* Required arguments:
+*   bin_dir - required - Path to the directory where your bins are located
+*   out_dir - required - Path to a directory where we will write output files
+*   options - optional - A mapping of options to pass to lineage_wf. See the README.md
+*     in the kb_Msuite repo for a list of all of these. For options that have no value, simply
+*     pass an empty string.
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+bin_dir has a value which is a string
+out_dir has a value which is a string
+options has a value which is a reference to a hash where the key is a string and the value is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+bin_dir has a value which is a string
+out_dir has a value which is a string
+options has a value which is a reference to a hash where the key is a string and the value is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 LineageWfResult
+
+=over 4
+
+
+
+=item Description
+
+*
+* Output results of running the lineage_wf local method.
+* We simply give the raw standard out from checkm, which may be an error message (checkm does
+* not use stderr)
+*
+* Fields:
+*   stdout - The standard out given by checkm after running.
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+stdout has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+stdout has a value which is a string
 
 
 =end text
