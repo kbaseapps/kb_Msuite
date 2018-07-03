@@ -81,7 +81,7 @@ class CoreCheckMTest(unittest.TestCase):
         """
 
         # prepare WS data
-        # cls.prepare_data()
+        cls.prepare_data()
 
     @classmethod
     def tearDownClass(cls):
@@ -552,7 +552,8 @@ class CoreCheckMTest(unittest.TestCase):
             'output_dir': output_dir,
             'log_path': log_path,
             'options': {
-                '-x': 'fasta'
+                '-x': 'fasta',
+                '--reduced_tree': ''
             }
         })
         out_contents = os.listdir(output_dir)
