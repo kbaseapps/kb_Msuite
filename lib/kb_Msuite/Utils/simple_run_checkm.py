@@ -18,6 +18,7 @@ def run_checkm(input_dir, output_dir, log_path, options={}):
         args.append(opt)
         if val:
             args.append(str(val))
+    print('Running: ' + ' '.join(args))
     proc = Popen(args, stdout=PIPE, stderr=STDOUT)
     with proc.stdout, open(log_path, 'w') as logfile:
         for line in iter(proc.stdout.readline, b''):
