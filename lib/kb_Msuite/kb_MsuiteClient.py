@@ -88,18 +88,20 @@ class kb_Msuite(object):
            lineage_wf, which runs as a "local method". * * Required
            arguments: *   bin_dir - required - Path to the directory where
            your bins are located *   out_dir - required - Path to a directory
-           where we will write output files *   options - optional - A
-           mapping of options to pass to lineage_wf. See the README.md *    
-           in the kb_Msuite repo for a list of all of these. For options that
-           have no value, simply *     pass an empty string.) -> structure:
-           parameter "bin_dir" of String, parameter "out_dir" of String,
-           parameter "options" of mapping from String to String
+           where we will write output files *   log_path - required - Path to
+           a file that will be written to with all log output from *    
+           stdout and stderr while running `checkm lineage_wf`. *   options -
+           optional - A mapping of options to pass to lineage_wf. See the
+           README.md *     in the kb_Msuite repo for a list of all of these.
+           For options that have no value, simply *     pass an empty
+           string.) -> structure: parameter "bin_dir" of String, parameter
+           "out_dir" of String, parameter "log_path" of String, parameter
+           "options" of mapping from String to String
         :returns: instance of type "LineageWfResult" (* * Output results of
-           running the lineage_wf local method. * We simply give the raw
-           standard out from checkm, which may be an error message (checkm
-           does * not use stderr) * * Fields: *   stdout - The standard out
-           given by checkm after running.) -> structure: parameter "stdout"
-           of String
+           running the lineage_wf local method. * This returns nothing. Check
+           the contents of log_path and out_dir which were passed as *
+           parameters to see the output of running this function.) ->
+           structure:
         """
         return self._client.call_method(
             'kb_Msuite.lineage_wf',

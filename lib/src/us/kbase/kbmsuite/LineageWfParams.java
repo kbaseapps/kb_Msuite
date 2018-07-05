@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * * Required arguments:
  * *   bin_dir - required - Path to the directory where your bins are located
  * *   out_dir - required - Path to a directory where we will write output files
+ * *   log_path - required - Path to a file that will be written to with all log output from
+ * *     stdout and stderr while running `checkm lineage_wf`.
  * *   options - optional - A mapping of options to pass to lineage_wf. See the README.md
  * *     in the kb_Msuite repo for a list of all of these. For options that have no value, simply
  * *     pass an empty string.
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "bin_dir",
     "out_dir",
+    "log_path",
     "options"
 })
 public class LineageWfParams {
@@ -39,6 +42,8 @@ public class LineageWfParams {
     private java.lang.String binDir;
     @JsonProperty("out_dir")
     private java.lang.String outDir;
+    @JsonProperty("log_path")
+    private java.lang.String logPath;
     @JsonProperty("options")
     private Map<String, String> options;
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
@@ -73,6 +78,21 @@ public class LineageWfParams {
         return this;
     }
 
+    @JsonProperty("log_path")
+    public java.lang.String getLogPath() {
+        return logPath;
+    }
+
+    @JsonProperty("log_path")
+    public void setLogPath(java.lang.String logPath) {
+        this.logPath = logPath;
+    }
+
+    public LineageWfParams withLogPath(java.lang.String logPath) {
+        this.logPath = logPath;
+        return this;
+    }
+
     @JsonProperty("options")
     public Map<String, String> getOptions() {
         return options;
@@ -100,7 +120,7 @@ public class LineageWfParams {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((("LineageWfParams"+" [binDir=")+ binDir)+", outDir=")+ outDir)+", options=")+ options)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((("LineageWfParams"+" [binDir=")+ binDir)+", outDir=")+ outDir)+", logPath=")+ logPath)+", options=")+ options)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

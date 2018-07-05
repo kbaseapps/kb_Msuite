@@ -27,11 +27,11 @@ kb_Msuite::kb_MsuiteClient
 
 
 A KBase module: kb_Msuite
-This SDK module is developed to wrap the open source package CheckM which consists of a set of tools 
-for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. 
+This SDK module is developed to wrap the open source package CheckM which consists of a set of tools
+for assessing the quality of genomes recovered from isolates, single cells, or metagenomes.
 CheckM consists of a series of commands in order to support a number of different analyses and workflows.
 
-References: 
+References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
@@ -339,9 +339,9 @@ $result is a kb_Msuite.LineageWfResult
 LineageWfParams is a reference to a hash where the following keys are defined:
 	bin_dir has a value which is a string
 	out_dir has a value which is a string
+	log_path has a value which is a string
 	options has a value which is a reference to a hash where the key is a string and the value is a string
-LineageWfResult is a reference to a hash where the following keys are defined:
-	stdout has a value which is a string
+LineageWfResult is a reference to a hash where the following keys are defined
 
 </pre>
 
@@ -354,9 +354,9 @@ $result is a kb_Msuite.LineageWfResult
 LineageWfParams is a reference to a hash where the following keys are defined:
 	bin_dir has a value which is a string
 	out_dir has a value which is a string
+	log_path has a value which is a string
 	options has a value which is a reference to a hash where the key is a string and the value is a string
-LineageWfResult is a reference to a hash where the following keys are defined:
-	stdout has a value which is a string
+LineageWfResult is a reference to a hash where the following keys are defined
 
 
 =end text
@@ -720,6 +720,8 @@ report_ref has a value which is a string
 * Required arguments:
 *   bin_dir - required - Path to the directory where your bins are located
 *   out_dir - required - Path to a directory where we will write output files
+*   log_path - required - Path to a file that will be written to with all log output from
+*     stdout and stderr while running `checkm lineage_wf`.
 *   options - optional - A mapping of options to pass to lineage_wf. See the README.md
 *     in the kb_Msuite repo for a list of all of these. For options that have no value, simply
 *     pass an empty string.
@@ -733,6 +735,7 @@ report_ref has a value which is a string
 a reference to a hash where the following keys are defined:
 bin_dir has a value which is a string
 out_dir has a value which is a string
+log_path has a value which is a string
 options has a value which is a reference to a hash where the key is a string and the value is a string
 
 </pre>
@@ -744,6 +747,7 @@ options has a value which is a reference to a hash where the key is a string and
 a reference to a hash where the following keys are defined:
 bin_dir has a value which is a string
 out_dir has a value which is a string
+log_path has a value which is a string
 options has a value which is a reference to a hash where the key is a string and the value is a string
 
 
@@ -763,11 +767,8 @@ options has a value which is a reference to a hash where the key is a string and
 
 *
 * Output results of running the lineage_wf local method.
-* We simply give the raw standard out from checkm, which may be an error message (checkm does
-* not use stderr)
-*
-* Fields:
-*   stdout - The standard out given by checkm after running.
+* This returns nothing. Check the contents of log_path and out_dir which were passed as
+* parameters to see the output of running this function.
 
 
 =item Definition
@@ -775,18 +776,14 @@ options has a value which is a reference to a hash where the key is a string and
 =begin html
 
 <pre>
-a reference to a hash where the following keys are defined:
-stdout has a value which is a string
-
+a reference to a hash where the following keys are defined
 </pre>
 
 =end html
 
 =begin text
 
-a reference to a hash where the following keys are defined:
-stdout has a value which is a string
-
+a reference to a hash where the following keys are defined
 
 =end text
 

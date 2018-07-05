@@ -18,11 +18,11 @@ class kb_Msuite:
 
     Module Description:
     A KBase module: kb_Msuite
-This SDK module is developed to wrap the open source package CheckM which consists of a set of tools 
-for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. 
+This SDK module is developed to wrap the open source package CheckM which consists of a set of tools
+for assessing the quality of genomes recovered from isolates, single cells, or metagenomes.
 CheckM consists of a series of commands in order to support a number of different analyses and workflows.
 
-References: 
+References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
@@ -37,7 +37,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     ######################################### noqa
     VERSION = "1.2.3"
     GIT_URL = ""
-    GIT_COMMIT_HASH = "94063456c842ac0393adac330145970e14ae8338"
+    GIT_COMMIT_HASH = "92079594c52c4d8e9e546174e3c0d31bfa6cf408"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -137,18 +137,20 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            lineage_wf, which runs as a "local method". * * Required
            arguments: *   bin_dir - required - Path to the directory where
            your bins are located *   out_dir - required - Path to a directory
-           where we will write output files *   options - optional - A
-           mapping of options to pass to lineage_wf. See the README.md *    
-           in the kb_Msuite repo for a list of all of these. For options that
-           have no value, simply *     pass an empty string.) -> structure:
-           parameter "bin_dir" of String, parameter "out_dir" of String,
-           parameter "options" of mapping from String to String
+           where we will write output files *   log_path - required - Path to
+           a file that will be written to with all log output from *    
+           stdout and stderr while running `checkm lineage_wf`. *   options -
+           optional - A mapping of options to pass to lineage_wf. See the
+           README.md *     in the kb_Msuite repo for a list of all of these.
+           For options that have no value, simply *     pass an empty
+           string.) -> structure: parameter "bin_dir" of String, parameter
+           "out_dir" of String, parameter "log_path" of String, parameter
+           "options" of mapping from String to String
         :returns: instance of type "LineageWfResult" (* * Output results of
-           running the lineage_wf local method. * We simply give the raw
-           standard out from checkm, which may be an error message (checkm
-           does * not use stderr) * * Fields: *   stdout - The standard out
-           given by checkm after running.) -> structure: parameter "stdout"
-           of String
+           running the lineage_wf local method. * This returns nothing. Check
+           the contents of log_path and out_dir which were passed as *
+           parameters to see the output of running this function.) ->
+           structure:
         """
         # ctx is the context object
         # return variables are: result

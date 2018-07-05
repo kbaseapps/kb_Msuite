@@ -90,6 +90,8 @@ module kb_Msuite {
      * Required arguments:
      *   bin_dir - required - Path to the directory where your bins are located
      *   out_dir - required - Path to a directory where we will write output files
+     *   log_path - required - Path to a file that will be written to with all log output from
+     *     stdout and stderr while running `checkm lineage_wf`.
      *   options - optional - A mapping of options to pass to lineage_wf. See the README.md
      *     in the kb_Msuite repo for a list of all of these. For options that have no value, simply
      *     pass an empty string.
@@ -97,19 +99,16 @@ module kb_Msuite {
     typedef structure {
       string bin_dir;
       string out_dir;
+      string log_path;
       mapping <string, string> options;
     } LineageWfParams;
 
     /**
      * Output results of running the lineage_wf local method.
-     * We simply give the raw standard out from checkm, which may be an error message (checkm does
-     * not use stderr)
-     *
-     * Fields:
-     *   stdout - The standard out given by checkm after running.
+     * This returns nothing. Check the contents of log_path and out_dir which were passed as
+     * parameters to see the output of running this function.
      */
     typedef structure {
-      string stdout;
     } LineageWfResult;
 
 

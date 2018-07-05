@@ -17,10 +17,10 @@ import us.kbase.common.service.UnauthorizedException;
  * <p>Original spec-file module name: kb_Msuite</p>
  * <pre>
  * A KBase module: kb_Msuite
- * This SDK module is developed to wrap the open source package CheckM which consists of a set of tools 
- * for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. 
+ * This SDK module is developed to wrap the open source package CheckM which consists of a set of tools
+ * for assessing the quality of genomes recovered from isolates, single cells, or metagenomes.
  * CheckM consists of a series of commands in order to support a number of different analyses and workflows.
- * References: 
+ * References:
  * CheckM in github: http://ecogenomics.github.io/CheckM/
  * CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
  * Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043???1055.
