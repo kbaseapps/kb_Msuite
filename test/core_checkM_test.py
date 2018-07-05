@@ -530,3 +530,36 @@ class CoreCheckMTest(unittest.TestCase):
         }
         self.getImpl().run_checkM(self.getContext(), params)
         os.path.isfile(tetra_file)
+
+    def setup_local_method_data(self):
+        base_dir = os.path.dirname(__file__)
+        test_data_dir = os.path.join(base_dir, 'data', 'example-bins')
+        scratch_input_dir = os.path.join(self.scratch, 'lineage_wf_input_dir')
+        scratch_output_dir = os.path.join(self.scratch, 'lineage_wf_output_dir')
+        shutil.copytree(test_data_dir, scratch_input_dir)
+        os.mkdir(scratch_output_dir)
+        log_path = os.path.join(self.scratch, 'lineage_wf.log')
+        return scratch_input_dir, scratch_output_dir, log_path
+
+    def test_local_method(self):
+        """
+        Test a successful run of the .lineage_wf local method
+        This just does some very basic testing to make sure the executable runs.
+        """
+        input_dir, output_dir, log_path = self.setup_local_method_data()
+        self.getImpl().lineage_wf(self.getContext(), {
+            'input_dir': input_dir,
+            'output_dir': output_dir,
+            'log_path': log_path,
+            'options': {
+                '-x': 'fasta',
+                '--reduced_tree': ''
+            }
+        })
+        out_contents = os.listdir(output_dir)
+        self.assertEqual(out_contents, ['storage', 'lineage.ms', 'bins'])
+        self.assertTrue(os.path.exists(log_path))
+        # Remove test data
+        os.remove(log_path)
+        shutil.rmtree(input_dir)
+        shutil.rmtree(output_dir)

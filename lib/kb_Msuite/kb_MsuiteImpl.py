@@ -6,6 +6,7 @@ import json
 # from pprint import pprint
 
 from kb_Msuite.Utils.CheckMUtil import CheckMUtil
+from kb_Msuite.Utils.simple_run_checkm import run_checkm
 # from kb_Msuite.Utils.DataStagingUtils import DataStagingUtils
 #END_HEADER
 
@@ -17,15 +18,15 @@ class kb_Msuite:
 
     Module Description:
     A KBase module: kb_Msuite
-This SDK module is developed to wrap the open source package CheckM which consists of a set of tools 
-for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. 
+This SDK module is developed to wrap the open source package CheckM which consists of a set of tools
+for assessing the quality of genomes recovered from isolates, single cells, or metagenomes.
 CheckM consists of a series of commands in order to support a number of different analyses and workflows.
 
-References: 
+References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
-Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043???1055.
     '''
 
     ######## WARNING FOR GEVENT USERS ####### noqa
@@ -35,8 +36,8 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.2.3"
-    GIT_URL = "git@github.com:Tianhao-Gu/kb_Msuite.git"
-    GIT_COMMIT_HASH = "7ef86309406647b12adecc2f47c4c3a784317718"
+    GIT_URL = ""
+    GIT_COMMIT_HASH = "92079594c52c4d8e9e546174e3c0d31bfa6cf408"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -125,6 +126,51 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
         # At some point might do deeper type checking...
         if not isinstance(result, dict):
             raise ValueError('Method run_checkM_lineage_wf return value ' +
+                             'result is not type dict as required.')
+        # return the results
+        return [result]
+
+    def lineage_wf(self, ctx, params):
+        """
+        A "local method" for calling lineage_wf directly.
+        :param params: instance of type "LineageWfParams" (* * Parameters for
+           lineage_wf, which runs as a "local method". * * Required
+           arguments: *   bin_dir - required - Path to the directory where
+           your bins are located *   out_dir - required - Path to a directory
+           where we will write output files *   log_path - required - Path to
+           a file that will be written to with all log output from *    
+           stdout and stderr while running `checkm lineage_wf`. *   options -
+           optional - A mapping of options to pass to lineage_wf. See the
+           README.md *     in the kb_Msuite repo for a list of all of these.
+           For options that have no value, simply *     pass an empty
+           string.) -> structure: parameter "bin_dir" of String, parameter
+           "out_dir" of String, parameter "log_path" of String, parameter
+           "options" of mapping from String to String
+        :returns: instance of type "LineageWfResult" (* * Output results of
+           running the lineage_wf local method. * This returns nothing. Check
+           the contents of log_path and out_dir which were passed as *
+           parameters to see the output of running this function.) ->
+           structure:
+        """
+        # ctx is the context object
+        # return variables are: result
+        #BEGIN lineage_wf
+        assert params['log_path'], 'You must provide the path for a log file ("log_path")'
+        assert params['input_dir'], 'You must provide an input directory ("input_dir")'
+        assert params['output_dir'], 'You must provide an output directory ("output_dir")'
+        assert os.path.isdir(params['input_dir']), 'The input directory does not exist'
+        assert os.path.isdir(params['output_dir']), 'The output directory does not exist'
+        assert os.listdir(params['output_dir']) == [], 'The output directory must be empty'
+        in_dir = params['input_dir']
+        out_dir = params['output_dir']
+        log_path = params['log_path']
+        run_checkm(in_dir, out_dir, log_path, params.get('options'))
+        result = {}
+        #END lineage_wf
+
+        # At some point might do deeper type checking...
+        if not isinstance(result, dict):
+            raise ValueError('Method lineage_wf return value ' +
                              'result is not type dict as required.')
         # return the results
         return [result]

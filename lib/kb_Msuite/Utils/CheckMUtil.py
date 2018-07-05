@@ -131,7 +131,6 @@ class CheckMUtil:
                 plots_folder
                 seq_file
                 tetra_file
-
                 reduced_tree
                 thread
                 dist_value
