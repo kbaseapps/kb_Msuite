@@ -1,3 +1,7 @@
+### Version 1.3.1
+__Changes__
+- changed citation format to PLOS
+
 ### Version 1.2.2
 __Changes__
 - Added Genome and GenomeSet input types
@@ -20,4 +24,3 @@ __Changes__
 
 ### Version 1.0.0
 - Initial release
-
