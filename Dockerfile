@@ -51,7 +51,7 @@ RUN pip install cffi --upgrade \
 #
 #> sudo checkm data update
 #
-#This will prompt you for an installation directory for the required data files. You can update the data files in the future by re-running this command. If you are unable to automatically download these files (e.g., you are behind a proxy), the files can be manually downloaded from https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_v1.0.7.tar.gz. Decompress this file to an appropriate folder and run checkm data setRoot <data_directory> to inform CheckM of where the files have been placed.
+#This will prompt you for an installation directory for the required data files. You can update the data files in the future by re-running this command. If you are unable to automatically download these files (e.g., you are behind a proxy), the files can be manually downloaded from https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz. Decompress this file to an appropriate folder and run checkm data setRoot <data_directory> to inform CheckM of where the files have been placed.
 #
 #CheckM is now ready to run. For a list of CheckM commands type:
 #
@@ -100,7 +100,7 @@ RUN \
 
 # Install Pplacer
 # NOTE: The following block is replaced by the following section because the need of installing
-# opam and its respective dependencies has been a big hassle and unsuccessful 
+# opam and its respective dependencies has been a big hassle and unsuccessful
 # WORKDIR /kb/module
 #RUN \
 #  curl -s https://codeload.github.com/matsen/pplacer/tar.gz/v1.1.alpha19 > pplacer-1.1.alpha19.tar.gz && \
@@ -114,7 +114,7 @@ RUN \
 WORKDIR /kb/module
 RUN \
   wget https://github.com/matsen/pplacer/releases/download/v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip && \
-  unzip pplacer-linux-v1.1.alpha19.zip && \ 
+  unzip pplacer-linux-v1.1.alpha19.zip && \
   ln -s pplacer-Linux-v1.1.alpha19 pplacer && \
   rm -f pplacer-linux-v1.1.alpha19.zip && \
   rm -f pplacer-1.1.alpha19.tar.gz && \
@@ -124,13 +124,13 @@ ENV PATH "$PATH:/kb/deployment/bin/pplacer"
 
 
 # Install CheckM (collected packages: checkm-genome, pysam, dendropy, ScreamingBackpack)
-# Until seeing "Successfully installed ScreamingBackpack-0.2.333 checkm-genome-1.0.8 dendropy-4.2.0 pysam-0.10.0"
+# Until seeing "Successfully installed ScreamingBackpack-0.2.333 checkm-genome-1.0.16 dendropy-4.2.0 pysam-0.10.0"
 WORKDIR /kb/module
 RUN \
   pip install pysam \
   && pip install dendropy \
   && pip install ScreamingBackpack \
-  && pip install checkm-genome==1.0.8 \
+  && pip install checkm-genome==1.0.16 \
   && cp -R /usr/local/bin/checkm /kb/deployment/bin/CheckMBin
 
 # For checkm-genome required data
