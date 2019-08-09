@@ -127,7 +127,7 @@ ENV PATH "$PATH:/kb/deployment/bin/pplacer"
 # Until seeing "Successfully installed ScreamingBackpack-0.2.333 checkm-genome-1.0.16 dendropy-4.2.0 pysam-0.10.0"
 WORKDIR /kb/module
 RUN \
-  pip install pysam \
+  pip install pysam==0.9 \
   && pip install dendropy \
   && pip install ScreamingBackpack \
   && pip install checkm-genome==1.0.16 \
