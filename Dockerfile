@@ -130,7 +130,7 @@ RUN \
   pip install pysam==0.9 \
   && pip install dendropy \
   && pip install ScreamingBackpack \
-  && pip install checkm-genome==1.0.16 \
+  && pip install checkm-genome==1.0.18 \
   && cp -R /usr/local/bin/checkm /kb/deployment/bin/CheckMBin
 
 # For checkm-genome required data

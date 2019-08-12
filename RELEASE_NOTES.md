@@ -1,6 +1,6 @@
 ### Version 1.4.0
 __Changes__
-- Updated CheckM to v1.0.16
+- Updated CheckM to v1.0.18
 
 ### Version 1.3.1
 __Changes__

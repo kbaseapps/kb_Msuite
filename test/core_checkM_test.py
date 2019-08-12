@@ -557,7 +557,7 @@ class CoreCheckMTest(unittest.TestCase):
             }
         })
         out_contents = os.listdir(output_dir)
-        self.assertEqual(out_contents, ['storage', 'lineage.ms', 'bins'])
+        self.assertEqual(out_contents, ['bins', 'checkm.log', 'lineage.ms', 'storage'])
         self.assertTrue(os.path.exists(log_path))
         # Remove test data
         os.remove(log_path)
