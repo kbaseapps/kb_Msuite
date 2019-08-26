@@ -24,17 +24,15 @@ class OutputBuilder(object):
         self.plots_dir = plots_dir
         self.scratch = scratch_dir
         self.callback_url = callback_url
-
         self.DIST_PLOT_EXT = '.ref_dist_plots.png'
-
 
     def package_folder(self, folder_path, zip_file_name, zip_file_description):
         ''' Simple utility for packaging a folder and saving to shock '''
         if folder_path == self.scratch:
-            raise ValueError ("cannot package folder that is not a subfolder of scratch")
+            raise ValueError("cannot package folder that is not a subfolder of scratch")
         dfu = DataFileUtil(self.callback_url)
         if not os.path.exists(folder_path):
-            raise ValueError ("cannot package folder that doesn't exist: "+folder_path)
+            raise ValueError("cannot package folder that doesn't exist: "+folder_path)
         output = dfu.file_to_shock({'file_path': folder_path,
                                     'make_handle': 0,
                                     'pack': 'zip'})
@@ -42,14 +40,13 @@ class OutputBuilder(object):
                 'name': zip_file_name,
                 'description': zip_file_description}
 
-
     def build_critical_output(self, critical_out_dir):
         src = self.output_dir
         dest = critical_out_dir
 
         self._copy_file_ignore_errors('lineage.ms', src, dest)
 
-        storage_folder = os.path.join(dest, 'storage') 
+        storage_folder = os.path.join(dest, 'storage')
         if not os.path.exists(storage_folder):
             os.makedirs(storage_folder)
 
@@ -59,7 +56,6 @@ class OutputBuilder(object):
         self._copy_file_ignore_errors(os.path.join('storage', 'marker_gene_stats.tsv'), src, dest)
         self._copy_file_ignore_errors(os.path.join('storage', 'tree', 'concatenated.tre'), src, dest)
 
-
     def build_html_output_for_lineage_wf(self, html_dir, object_name):
         '''
         Based on the output of CheckM lineage_wf, build an HTML report
@@ -67,7 +63,15 @@ class OutputBuilder(object):
 
         # move plots we need into the html directory
         plot_name = 'bin_qa_plot.png'
-        shutil.copy(os.path.join(self.plots_dir, plot_name), os.path.join(html_dir, plot_name))
+        plot_path = os.path.join(self.plots_dir, plot_name)
+        plot_exists = os.path.isfile(plot_path)
+        if plot_exists:
+            shutil.copy(plot_path, os.path.join(html_dir, plot_name))
+        else:
+            log(
+                'Warning: the bin_qa_plot image was not generated. '
+                'This is most likely due to image and file size.'
+            )
         self._copy_ref_dist_plots(self.plots_dir, html_dir)
 
         # write the html report to file
@@ -77,18 +81,64 @@ class OutputBuilder(object):
         self._write_html_header(html, object_name)
         html.write('<body>\n')
 
+        # tabs
+        self._write_tabs(html)
+
         # include the single main summary figure
-        html.write('<img src="' + plot_name + '" width="90%" />\n')
-        html.write('<br><br><br>\n')
+        if plot_exists:
+            html.write('<div id="Plot" class="tabcontent">\n')
+            html.write('<img src="' + plot_name + '" width="90%" />\n')
+            html.write('<br><br><br>\n')
+            html.write('</div>\n')
+        else:
+            html.write(
+                '<p>Sorry, the Bin QA Plot was not generated. '
+                'This is likely due to having too many bins and '
+                'too large of an image size to properly render.</p>'
+            )
 
         # print out the info table
         self.build_summary_table(html, html_dir)
+
+        self._write_script(html)
 
         html.write('</body>\n</html>\n')
         html.close()
 
         return self.package_folder(html_dir, 'report.html', 'Assembled report from CheckM')
 
+    def _write_tabs(self, html):
+        tabs = '''
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Summary')" id="defaultOpen">Summary</button>
+            <button class="tablinks" onclick="openTab(event, 'Plot')">Bin QA Plot</button>
+        </div>
+        '''
+
+        html.write(tabs)
+
+    def _write_script(self, html):
+        script = '''
+        <script>
+            function openTab(evt, tabName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+        </script>
+        '''
+        html.write(script)
 
     def build_summary_table(self, html, html_dir):
 
@@ -109,7 +159,6 @@ class OutputBuilder(object):
                 data = ast.literal_eval(col[1])
                 bin_stats.append({'bid': bin_id, 'data': data})
 
-
         fields = [{'id': 'marker lineage', 'display': 'Marker Lineage'},
                   {'id': '# genomes', 'display': '# Genomes'},
                   {'id': '# markers', 'display': '# Markers'},
@@ -123,6 +172,7 @@ class OutputBuilder(object):
                   {'id': 'Completeness', 'display': 'Completeness', 'round': 3},
                   {'id': 'Contamination', 'display': 'Contamination', 'round': 3}]
 
+        html.write('<div id="Summary" class="tabcontent">\n')
         html.write('<table>\n')
         html.write('  <tr>\n')
         html.write('    <th><b>Bin Name</b></th>\n')
@@ -149,7 +199,7 @@ class OutputBuilder(object):
             html.write('  </tr>\n')
 
         html.write('</table>\n')
-
+        html.write('</div>\n')
 
     def _write_html_header(self, html, object_name):
 
@@ -185,6 +235,45 @@ class OutputBuilder(object):
             tr:hover {
                 background-color: #f5f5f5;
             }
+
+            /* Style the tab */
+            div.tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+            }
+
+            /* Style the buttons inside the tab */
+            div.tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+                font-size: 17px;
+            }
+
+            /* Change background color of buttons on hover */
+            div.tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current tablink class */
+            div.tab button.active {
+                background-color: #ccc;
+            }
+
+            /* Style the tab content */
+            .tabcontent {
+                display: none;
+                padding: 6px 12px;
+                border: 1px solid #ccc;
+                -webkit-animation: fadeEffect 1s;
+                animation: fadeEffect 1s;
+                border-top: none;
+            }
         </style>\n</head>\n'''
 
         html.write(style)
@@ -199,7 +288,6 @@ class OutputBuilder(object):
         except:
             # TODO: add error message reporting
             log('copy failed')
-
 
     def _write_dist_html_page(self, html_dir, bin_id):
 
@@ -217,7 +305,6 @@ class OutputBuilder(object):
         html.write('<br><br><br>\n')
         html.write('</body>\n</html>\n')
         html.close()
-
 
     def _copy_ref_dist_plots(self, plots_dir, dest_folder):
         for plotfile in os.listdir(plots_dir):
