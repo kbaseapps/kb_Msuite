@@ -35,9 +35,9 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.3"
-    GIT_URL = ""
-    GIT_COMMIT_HASH = "92079594c52c4d8e9e546174e3c0d31bfa6cf408"
+    VERSION = "1.4.0"
+    GIT_URL = "https://github.com/kbaseapps/kb_Msuite"
+    GIT_COMMIT_HASH = "a88720a80cc2d53a70f4c6191c78791b420651bc"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER

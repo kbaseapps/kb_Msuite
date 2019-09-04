@@ -4,7 +4,7 @@ import ast
 import sys
 import time
 
-from DataFileUtil.DataFileUtilClient import DataFileUtil
+from installed_clients.DataFileUtilClient import DataFileUtil
 
 
 def log(message, prefix_newline=False):

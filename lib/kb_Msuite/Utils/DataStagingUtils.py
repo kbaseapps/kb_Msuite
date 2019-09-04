@@ -3,10 +3,10 @@ import time
 import glob
 import subprocess
 
-from Workspace.WorkspaceClient import Workspace
-from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
-from SetAPI.SetAPIServiceClient import SetAPI
-from MetagenomeUtils.MetagenomeUtilsClient import MetagenomeUtils
+from installed_clients.WorkspaceClient import Workspace
+from installed_clients.AssemblyUtilClient import AssemblyUtil
+from installed_clients.SetAPIServiceClient import SetAPI
+from installed_clients.MetagenomeUtilsClient import MetagenomeUtils
 
 
 class DataStagingUtils(object):

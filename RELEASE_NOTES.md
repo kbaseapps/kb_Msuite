@@ -1,3 +1,7 @@
+### Version 1.4.0
+__Changes__
+- updated kbase module paths in lib to installed_clients
+
 ### Version 1.3.1
 __Changes__
 - changed citation format to PLOS

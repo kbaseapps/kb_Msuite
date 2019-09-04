@@ -14,15 +14,16 @@ RUN apt-get update
 RUN pip install coverage
 
 # Hope to solve the "Could not find .egg-info directory in install record for checkm-genome, etc."
-RUN pip install --upgrade setuptools pip
+#RUN pip install --upgrade setuptools pip
 
-# update security libraries in the base image
-RUN pip install cffi --upgrade \
-    && pip install pyopenssl --upgrade \
-    && pip install ndg-httpsclient --upgrade \
-    && pip install pyasn1 --upgrade \
-    && pip install requests --upgrade \
-    && pip install 'requests[security]' --upgrade
+## update security libraries in the base image
+#RUN pip install cffi --upgrade \
+#    && pip install pyopenssl --upgrade \
+#    && pip install ndg-httpsclient --upgrade \
+#    && pip install pyasn1 --upgrade \
+#    && pip install requests --upgrade \
+#    && pip install 'requests[security]' --upgrade
+
 
 ###### CheckM installation
 #  Directions from https://github.com/Ecogenomics/CheckM/wiki/Installation#how-to-install-checkm

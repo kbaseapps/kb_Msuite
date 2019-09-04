@@ -13,12 +13,12 @@ except:
 
 from pprint import pprint  # noqa: F401
 
-from Workspace.WorkspaceClient import Workspace as workspaceService
+from installed_clients.WorkspaceClient import Workspace as workspaceService
 
-from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
-from SetAPI.SetAPIServiceClient import SetAPI
-from GenomeFileUtil.GenomeFileUtilClient import GenomeFileUtil
-from MetagenomeUtils.MetagenomeUtilsClient import MetagenomeUtils
+from installed_clients.AssemblyUtilClient import AssemblyUtil
+from installed_clients.SetAPIServiceClient import SetAPI
+from installed_clients.GenomeFileUtilClient import GenomeFileUtil
+from installed_clients.MetagenomeUtilsClient import MetagenomeUtils
 
 from kb_Msuite.kb_MsuiteImpl import kb_Msuite
 from kb_Msuite.kb_MsuiteServer import MethodContext
