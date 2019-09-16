@@ -36,8 +36,8 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.4.0"
-    GIT_URL = "https://github.com/kbaseapps/kb_Msuite"
-    GIT_COMMIT_HASH = "a88720a80cc2d53a70f4c6191c78791b420651bc"
+    GIT_URL = "https://github.com/dcchivian/kb_Msuite"
+    GIT_COMMIT_HASH = "bb5ce28fd107b38e594685210b85c16b3585c0af"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -65,7 +65,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            bins, used just for running the tetra command tetra_File - specify
            the output/input tetra nucleotide frequency file (generated with
            the tetra command) dist_value - when running dist_plot, set this
-           to a value between 0 and 100 thread -  number of threads
+           to a value between 0 and 100 threads -  number of threads
            reduced_tree - if set to 1, run checkM with the reduced_tree flag,
            which will keep memory limited to less than 16gb (otherwise needs
            40+ GB, which NJS worker nodes do have) quiet - pass the --quite
@@ -74,7 +74,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            "bin_folder" of String, parameter "out_folder" of String,
            parameter "plots_folder" of String, parameter "seq_file" of
            String, parameter "tetra_file" of String, parameter "dist_value"
-           of Long, parameter "thread" of Long, parameter "reduced_tree" of
+           of Long, parameter "threads" of Long, parameter "reduced_tree" of
            type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
            1)), parameter "quiet" of type "boolean" (A boolean - 0 for false,
            1 for true. @range (0, 1))

@@ -54,7 +54,7 @@ class CheckMUtil:
         # 2) run the lineage workflow
         lineage_wf_options = {'bin_folder': input_dir,
                               'out_folder': output_dir,
-                              'thread': self.threads
+                              'threads': self.threads
                               }
         if ('reduced_tree' in params and params['reduced_tree'] is not None and
            int(params['reduced_tree'])) == 1:
@@ -106,7 +106,7 @@ class CheckMUtil:
         log('Computing tetranucleotide distributions...')
         tetra_options = {'seq_file': all_seq_fasta_file,
                          'tetra_file': tetra_file,
-                         'thread': self.threads,
+                         'threads': self.threads,
                          'quiet': 1
                          }
         self.run_checkM('tetra', tetra_options, dropOutput=True)
@@ -132,7 +132,7 @@ class CheckMUtil:
                 seq_file
                 tetra_file
                 reduced_tree
-                thread
+                threads
                 dist_value
         '''
         command = self._build_command(subcommand, options)
@@ -160,9 +160,9 @@ class CheckMUtil:
                              'Exit Code: ' + str(exitCode))
 
     def _process_universal_options(self, command_list, options):
-        if options.get('thread'):
+        if options.get('threads'):
             command_list.append('-t')
-            command_list.append(str(options.get('thread')))
+            command_list.append(str(options.get('threads')))
 
         if options.get('quiet') and str(options.get('quiet')) == '1':
             command_list.append('--quiet')

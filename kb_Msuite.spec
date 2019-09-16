@@ -35,7 +35,7 @@ module kb_Msuite {
 
         dist_value - when running dist_plot, set this to a value between 0 and 100
 
-        thread -  number of threads
+        threads -  number of threads
         reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb (otherwise needs 40+ GB, which NJS worker nodes do have)
         quiet - pass the --quite parameter to checkM, but doesn't seem to work for all subcommands
     */
@@ -51,7 +51,7 @@ module kb_Msuite {
 
         int dist_value;
 
-        int thread;
+        int threads;
         boolean reduced_tree;
         boolean quiet;
     } CheckMInputParams;

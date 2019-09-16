@@ -6,15 +6,34 @@ MAINTAINER KBase Developer
 # install line here, a git checkout to download code, or run any other
 # installation scripts.
 
-RUN apt-get update
+## upgrade python3 to v3.7
+#RUN apt update
+#RUN echo "Y" | apt install software-properties-common
+#RUN add-apt-repository ppa:deadsnakes/ppa
+#RUN apt update
+#RUN echo "Y" | apt install python3.7
+
+
+# update package managers
+#RUN apt-get update
+#RUN apt-get update && apt-get install -y python3-pip
+#RUN apt-get update && apt-get install -y python=3.6 python3-pip
+#RUN pip install --upgrade pip
+
+
+# install cython that pysam likes
+RUN apt-get update && apt-get install -y build-essential
+RUN pip install --upgrade pip setuptools Cython==0.25
+
+
 
 # Here we install a python coverage tool and an
 # https library that is out of date in the base image.
 
-RUN pip install coverage
+#RUN pip install coverage
 
 # Hope to solve the "Could not find .egg-info directory in install record for checkm-genome, etc."
-#RUN pip install --upgrade setuptools pip
+#RUN pip install --upgrade setuptools
 
 ## update security libraries in the base image
 #RUN pip install cffi --upgrade \
@@ -23,6 +42,7 @@ RUN pip install coverage
 #    && pip install pyasn1 --upgrade \
 #    && pip install requests --upgrade \
 #    && pip install 'requests[security]' --upgrade
+
 
 
 ###### CheckM installation
@@ -127,12 +147,18 @@ ENV PATH "$PATH:/kb/deployment/bin/pplacer"
 # Install CheckM (collected packages: checkm-genome, pysam, dendropy, ScreamingBackpack)
 # Until seeing "Successfully installed ScreamingBackpack-0.2.333 checkm-genome-1.0.8 dendropy-4.2.0 pysam-0.10.0"
 WORKDIR /kb/module
+
+# Pysam installation failing with pip, but working with pip3
+#  pip install pysam \
 RUN \
-  pip install pysam \
-  && pip install dendropy \
-  && pip install ScreamingBackpack \
-  && pip install checkm-genome==1.0.8 \
+  pip install pysam numpy \
+  && pip install checkm-genome==1.0.18 \
   && cp -R /usr/local/bin/checkm /kb/deployment/bin/CheckMBin
+#RUN pip3 install pysam \
+#  && pip3 install dendropy \
+#  && pip3 install checkm-genome==1.0.18
+#RUN pip install ScreamingBackpack
+#RUN cp -R /usr/local/bin/checkm /kb/deployment/bin/CheckMBin
 
 # For checkm-genome required data
 RUN \

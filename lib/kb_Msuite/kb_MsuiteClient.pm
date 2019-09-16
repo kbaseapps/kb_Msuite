@@ -137,7 +137,7 @@ CheckMInputParams is a reference to a hash where the following keys are defined:
 	seq_file has a value which is a string
 	tetra_file has a value which is a string
 	dist_value has a value which is an int
-	thread has a value which is an int
+	threads has a value which is an int
 	reduced_tree has a value which is a kb_Msuite.boolean
 	quiet has a value which is a kb_Msuite.boolean
 boolean is an int
@@ -157,7 +157,7 @@ CheckMInputParams is a reference to a hash where the following keys are defined:
 	seq_file has a value which is a string
 	tetra_file has a value which is a string
 	dist_value has a value which is an int
-	thread has a value which is an int
+	threads has a value which is an int
 	reduced_tree has a value which is a kb_Msuite.boolean
 	quiet has a value which is a kb_Msuite.boolean
 boolean is an int
@@ -584,7 +584,7 @@ tetra_File - specify the output/input tetra nucleotide frequency file (generated
 
 dist_value - when running dist_plot, set this to a value between 0 and 100
 
-thread -  number of threads
+threads -  number of threads
 reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb (otherwise needs 40+ GB, which NJS worker nodes do have)
 quiet - pass the --quite parameter to checkM, but doesn't seem to work for all subcommands
 
@@ -602,7 +602,7 @@ plots_folder has a value which is a string
 seq_file has a value which is a string
 tetra_file has a value which is a string
 dist_value has a value which is an int
-thread has a value which is an int
+threads has a value which is an int
 reduced_tree has a value which is a kb_Msuite.boolean
 quiet has a value which is a kb_Msuite.boolean
 
@@ -620,7 +620,7 @@ plots_folder has a value which is a string
 seq_file has a value which is a string
 tetra_file has a value which is a string
 dist_value has a value which is an int
-thread has a value which is an int
+threads has a value which is an int
 reduced_tree has a value which is a kb_Msuite.boolean
 quiet has a value which is a kb_Msuite.boolean
 

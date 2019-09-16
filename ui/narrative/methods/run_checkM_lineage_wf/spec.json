@@ -1,5 +1,5 @@
 {
-    "ver": "1.2.2",
+    "ver": "1.4.0",
     "authors": [
         "dylan","qzhang","msneddon","dparks"
     ],
@@ -98,6 +98,10 @@
                 {
                     "input_parameter": "save_all_plots",
                     "target_property": "save_plots_dir"
+                },
+                {
+                    "constant_value": "4",
+                    "target_property": "threads"
                 }
             ],
             "output_mapping": [

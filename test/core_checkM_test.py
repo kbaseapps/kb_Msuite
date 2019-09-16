@@ -229,7 +229,8 @@ class CoreCheckMTest(unittest.TestCase):
             'reduced_tree': 0,
             # 'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -266,7 +267,8 @@ class CoreCheckMTest(unittest.TestCase):
             'reduced_tree': 1,  # this must be 1 to regression test with --reduced_tree
             # 'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -305,7 +307,8 @@ class CoreCheckMTest(unittest.TestCase):
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
         print('RESULT:')
@@ -361,7 +364,8 @@ class CoreCheckMTest(unittest.TestCase):
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -397,7 +401,8 @@ class CoreCheckMTest(unittest.TestCase):
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -433,7 +438,8 @@ class CoreCheckMTest(unittest.TestCase):
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
