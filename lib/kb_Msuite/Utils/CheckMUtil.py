@@ -62,21 +62,29 @@ class CheckMUtil:
 
         self.run_checkM('lineage_wf', lineage_wf_options)
 
-        # 3) make the plots:
+        # 3) optionally filter bins by quality scores and save object
+        outputBuilder = OutputBuilder(output_dir, plots_dir, self.scratch, self.callback_url)
+        """
+        if self._get_data_obj_type (params['input_ref']) == 'KBaseMetagenomes.BinnedContigs' \
+           and params.get('filter_params'):
+
+            self._filter_binned_contigs (params, outputBuilder, input_dir, output_dir)
+        """
+
+        # 4) make the plots:
         self.build_checkM_lineage_wf_plots(input_dir, output_dir, plots_dir,
                                            all_seq_fasta_file, tetra_file)
 
-        # 4) Package results
-        outputBuilder = OutputBuilder(output_dir, plots_dir, self.scratch, self.callback_url)
+        # 5) Package results
         output_packages = self._build_output_packages(params, outputBuilder, input_dir)
 
-        # 5) build the HTML report
+        # 6) build the HTML report
         os.makedirs(html_dir)
         outputBuilder.build_html_output_for_lineage_wf(html_dir, params['input_ref'])
         html_zipped = outputBuilder.package_folder(html_dir, 'report.html',
                                                    'Summarized report from CheckM')
 
-        # 6) save report
+        # 7) save report
         report_params = {'message': '',
                          'direct_html_link_index': 0,
                          'html_links': [html_zipped],

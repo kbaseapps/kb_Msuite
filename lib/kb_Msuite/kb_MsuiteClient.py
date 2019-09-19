@@ -72,7 +72,13 @@ class kb_Msuite(object):
            true. @range (0, 1)), parameter "save_output_dir" of type
            "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
            parameter "save_plots_dir" of type "boolean" (A boolean - 0 for
-           false, 1 for true. @range (0, 1))
+           false, 1 for true. @range (0, 1)), parameter "filter_params" of
+           type "filter_binned_contigs_Params" (filter_binned_contigs -
+           grouped parameters to make new binned contig object with qual
+           above thresholds) -> structure: parameter "completenes_perc" of
+           Double, parameter "contamination_perc" of Double, parameter
+           "output_filtered_binnedcontigs_obj_name" of String, parameter
+           "threads" of Long
         :returns: instance of type "CheckMLineageWfResult" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """

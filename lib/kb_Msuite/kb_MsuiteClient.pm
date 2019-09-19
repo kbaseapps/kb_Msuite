@@ -240,7 +240,13 @@ CheckMLineageWfParams is a reference to a hash where the following keys are defi
 	reduced_tree has a value which is a kb_Msuite.boolean
 	save_output_dir has a value which is a kb_Msuite.boolean
 	save_plots_dir has a value which is a kb_Msuite.boolean
+	filter_params has a value which is a kb_Msuite.filter_binned_contigs_Params
+	threads has a value which is an int
 boolean is an int
+filter_binned_contigs_Params is a reference to a hash where the following keys are defined:
+	completenes_perc has a value which is a float
+	contamination_perc has a value which is a float
+	output_filtered_binnedcontigs_obj_name has a value which is a string
 CheckMLineageWfResult is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -259,7 +265,13 @@ CheckMLineageWfParams is a reference to a hash where the following keys are defi
 	reduced_tree has a value which is a kb_Msuite.boolean
 	save_output_dir has a value which is a kb_Msuite.boolean
 	save_plots_dir has a value which is a kb_Msuite.boolean
+	filter_params has a value which is a kb_Msuite.filter_binned_contigs_Params
+	threads has a value which is an int
 boolean is an int
+filter_binned_contigs_Params is a reference to a hash where the following keys are defined:
+	completenes_perc has a value which is a float
+	contamination_perc has a value which is a float
+	output_filtered_binnedcontigs_obj_name has a value which is a string
 CheckMLineageWfResult is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -631,6 +643,45 @@ quiet has a value which is a kb_Msuite.boolean
 
 
 
+=head2 filter_binned_contigs_Params
+
+=over 4
+
+
+
+=item Description
+
+filter_binned_contigs - grouped parameters to make new binned contig object with qual above thresholds
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+completenes_perc has a value which is a float
+contamination_perc has a value which is a float
+output_filtered_binnedcontigs_obj_name has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+completenes_perc has a value which is a float
+contamination_perc has a value which is a float
+output_filtered_binnedcontigs_obj_name has a value which is a string
+
+
+=end text
+
+=back
+
+
+
 =head2 CheckMLineageWfParams
 
 =over 4
@@ -653,6 +704,8 @@ workspace_name has a value which is a string
 reduced_tree has a value which is a kb_Msuite.boolean
 save_output_dir has a value which is a kb_Msuite.boolean
 save_plots_dir has a value which is a kb_Msuite.boolean
+filter_params has a value which is a kb_Msuite.filter_binned_contigs_Params
+threads has a value which is an int
 
 </pre>
 
@@ -666,6 +719,8 @@ workspace_name has a value which is a string
 reduced_tree has a value which is a kb_Msuite.boolean
 save_output_dir has a value which is a kb_Msuite.boolean
 save_plots_dir has a value which is a kb_Msuite.boolean
+filter_params has a value which is a kb_Msuite.filter_binned_contigs_Params
+threads has a value which is an int
 
 
 =end text

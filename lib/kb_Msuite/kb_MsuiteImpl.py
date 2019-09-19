@@ -37,7 +37,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     ######################################### noqa
     VERSION = "1.4.0"
     GIT_URL = "https://github.com/dcchivian/kb_Msuite"
-    GIT_COMMIT_HASH = "bb5ce28fd107b38e594685210b85c16b3585c0af"
+    GIT_COMMIT_HASH = "740a3b7cf449d029d5b14c35663fe937295b0d7e"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -108,7 +108,13 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            true. @range (0, 1)), parameter "save_output_dir" of type
            "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
            parameter "save_plots_dir" of type "boolean" (A boolean - 0 for
-           false, 1 for true. @range (0, 1))
+           false, 1 for true. @range (0, 1)), parameter "filter_params" of
+           type "filter_binned_contigs_Params" (filter_binned_contigs -
+           grouped parameters to make new binned contig object with qual
+           above thresholds) -> structure: parameter "completenes_perc" of
+           Double, parameter "contamination_perc" of Double, parameter
+           "output_filtered_binnedcontigs_obj_name" of String, parameter
+           "threads" of Long
         :returns: instance of type "CheckMLineageWfResult" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """

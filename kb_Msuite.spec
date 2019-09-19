@@ -62,6 +62,14 @@ module kb_Msuite {
         returns () authentication required;
 
 
+    /*
+        filter_binned_contigs - grouped parameters to make new binned contig object with qual above thresholds
+    */
+    typedef structure {
+        float completenes_perc;    /* 0-100, default 95% */
+        float contamination_perc;  /* 0-100, default: 2% */
+        string output_filtered_binnedcontigs_obj_name;
+    } filter_binned_contigs_Params;
 
     /*
         input_ref - reference to the input Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs data
@@ -73,6 +81,8 @@ module kb_Msuite {
         boolean reduced_tree;
         boolean save_output_dir;
         boolean save_plots_dir;
+        filter_binned_contigs_Params filter_params;
+        int threads;
     } CheckMLineageWfParams;
 
     typedef structure {

@@ -48,6 +48,33 @@ parameters :
         short-hint : |
             If selected, creates a downloadable zip file of all the generated plots.
 
+    completeness_perc :
+        ui-name : |
+            Completeness
+        short-hint : |
+            Set the CheckM phylogenetic marker completeness percentage that a bin must be greater or equal to be considered High Quality.
+
+    contamination_perc :
+        ui-name : |
+            Contamination
+        short-hint : |
+            Set the CheckM phylogenetic marker contamination percentage that a bin must be less than or equal to be considered High Quality.
+
+    output_filtered_binnedcontigs_obj_name :
+        ui-name : |
+            BinnedContigs HQ output
+        short-hint : |
+            Name for the BinnedContig object containing the filtered HQ bins.
+
+#
+# Configure the display and description of parameter groups
+parameter-groups :
+    filter_params :
+        ui-name : |
+            Filter by quality
+        short-hint : |
+            Select completeness and contamination percentage thresholds to create BinnedContigs object containing only those bins above thresholds
+
 description : |
     <p><p>This App runs the CheckM lineage workflow (lineage_wf) automatically on the provided data and produces a report. CheckM is part of the M-suite collection of bioinformatic tools from the <a href=”https://ecogenomic.org/”>Ecogenomics Group at the University of Queensland, Australia.</a></p>
 

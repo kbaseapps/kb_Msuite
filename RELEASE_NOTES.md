@@ -2,7 +2,8 @@
 __Changes__
 - updated kbase module paths in lib to installed_clients
 - updated CheckM to v1.0.18
-- updated KBase Docker base image to sdkbase2:python and switched installs to conda
+- updated KBase Docker base image to sdkbase2:python and added Cython lib fix
+- added options of Completeness / Contamination filtering of BinnedContigs object
 
 ### Version 1.3.1
 __Changes__
