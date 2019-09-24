@@ -602,7 +602,7 @@ class CoreCheckMTest(unittest.TestCase):
         return scratch_input_dir, scratch_output_dir, log_path
 
     # Uncomment to skip this test
-    # HIDE # HIDE @unittest.skip("skipped test_local_methodd()")
+    # HIDE @unittest.skip("skipped test_local_methodd()")
     def test_local_method(self):
         """
         Test a successful run of the .lineage_wf local method

@@ -69,6 +69,7 @@ class CheckMUtil:
 
         # 3) optionally filter bins by quality scores and save object
         created_objects = None
+        removed_bins = None
         outputBuilder = OutputBuilder(output_dir, plots_dir, self.scratch, self.callback_url)
         if dsu.get_data_obj_type (params['input_ref']) == 'KBaseMetagenomes.BinnedContigs' \
            and params.get('filter_params'):
@@ -83,6 +84,7 @@ class CheckMUtil:
             if filtered_obj_info == None:
                 print ("No Bins passed QC filters.  Not saving filtered BinnedContig object")
             else:
+                removed_bins = filtered_obj_info['removed_bin_IDs']
                 created_objects = [{'ref': filtered_obj_info['filtered_obj_ref'],
                                     'description': 'HQ BinnedContigs '+filtered_obj_info['filtered_obj_name']}]
             
@@ -95,7 +97,7 @@ class CheckMUtil:
 
         # 6) build the HTML report
         os.makedirs(html_dir)
-        outputBuilder.build_html_output_for_lineage_wf(html_dir, params['input_ref'])
+        outputBuilder.build_html_output_for_lineage_wf(html_dir, params['input_ref'], removed_bins=removed_bins)
         html_zipped = outputBuilder.package_folder(html_dir, 'report.html',
                                                    'Summarized report from CheckM')
 
