@@ -154,7 +154,7 @@
                     "target_property": "filter_params"
                 },
                 {
-                    "constant_value": "4",
+                    "constant_value": "8",
                     "target_property": "threads"
                 }
             ],

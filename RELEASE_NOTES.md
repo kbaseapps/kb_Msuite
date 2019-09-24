@@ -4,6 +4,7 @@ __Changes__
 - updated CheckM to v1.0.18
 - updated KBase Docker base image to sdkbase2:python and added Cython lib fix
 - added options of Completeness / Contamination filtering of BinnedContigs object
+- set thread count explicitly to 8
 
 ### Version 1.3.1
 __Changes__

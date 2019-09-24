@@ -5,6 +5,7 @@ import sys
 import time
 
 from installed_clients.DataFileUtilClient import DataFileUtil
+from installed_clients.MetagenomeUtilsClient import MetagenomeUtils
 
 
 def log(message, prefix_newline=False):
@@ -289,6 +290,16 @@ class OutputBuilder(object):
             # TODO: add error message reporting
             log('copy failed')
 
+    def _copy_file_new_name_ignore_errors(self, src_path, dst_path):
+        src = src_path
+        dest = dst_path
+        log('copying ' + src + ' to ' + dest)
+        try:
+            shutil.copy(src, dest)
+        except:
+            # TODO: add error message reporting
+            log('copy failed')
+
     def _write_dist_html_page(self, html_dir, bin_id):
 
         # write the html report to file
@@ -316,3 +327,26 @@ class OutputBuilder(object):
                 except:
                     # TODO: add error message reporting
                     log('copy of ' + plot_file_path + ' to html directory failed')
+
+
+    def save_binned_contigs(self, params, assembly_ref, filtered_bins_dir):
+        try:
+            mgu = MetagenomeUtils(self.callback_url)
+        except:
+            raise ValueError ("unable to connect with MetagenomeUtils")
+
+        filtered_binned_contig_obj_name = params['filter_params'].get('output_filtered_binnedcontigs_obj_name')
+        generate_binned_contig_param = {
+            'file_directory': filtered_bins_dir,
+            'assembly_ref': assembly_ref,
+            'binned_contig_name': filtered_binned_contig_obj_name,
+            'workspace_name': params.get('workspace_name')
+        }
+        filtered_binned_contig_obj_ref = mgu.file_to_binned_contigs(
+            generate_binned_contig_param).get('binned_contig_obj_ref')
+
+        return {
+            'obj_name': filtered_binned_contig_obj_name,
+            'obj_ref': filtered_binned_contig_obj_ref
+        }
+        
