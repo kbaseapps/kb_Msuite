@@ -35,9 +35,9 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.3"
-    GIT_URL = ""
-    GIT_COMMIT_HASH = "92079594c52c4d8e9e546174e3c0d31bfa6cf408"
+    VERSION = "1.4.0"
+    GIT_URL = "https://github.com/dcchivian/kb_Msuite"
+    GIT_COMMIT_HASH = "740a3b7cf449d029d5b14c35663fe937295b0d7e"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -65,7 +65,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            bins, used just for running the tetra command tetra_File - specify
            the output/input tetra nucleotide frequency file (generated with
            the tetra command) dist_value - when running dist_plot, set this
-           to a value between 0 and 100 thread -  number of threads
+           to a value between 0 and 100 threads -  number of threads
            reduced_tree - if set to 1, run checkM with the reduced_tree flag,
            which will keep memory limited to less than 16gb (otherwise needs
            40+ GB, which NJS worker nodes do have) quiet - pass the --quite
@@ -74,7 +74,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            "bin_folder" of String, parameter "out_folder" of String,
            parameter "plots_folder" of String, parameter "seq_file" of
            String, parameter "tetra_file" of String, parameter "dist_value"
-           of Long, parameter "thread" of Long, parameter "reduced_tree" of
+           of Long, parameter "threads" of Long, parameter "reduced_tree" of
            type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
            1)), parameter "quiet" of type "boolean" (A boolean - 0 for false,
            1 for true. @range (0, 1))
@@ -108,7 +108,13 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            true. @range (0, 1)), parameter "save_output_dir" of type
            "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
            parameter "save_plots_dir" of type "boolean" (A boolean - 0 for
-           false, 1 for true. @range (0, 1))
+           false, 1 for true. @range (0, 1)), parameter "filter_params" of
+           type "filter_binned_contigs_Params" (filter_binned_contigs -
+           grouped parameters to make new binned contig object with qual
+           above thresholds) -> structure: parameter "completenes_perc" of
+           Double, parameter "contamination_perc" of Double, parameter
+           "output_filtered_binnedcontigs_obj_name" of String, parameter
+           "threads" of Long
         :returns: instance of type "CheckMLineageWfResult" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """

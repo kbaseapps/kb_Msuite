@@ -25,7 +25,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "reduced_tree",
     "save_output_dir",
-    "save_plots_dir"
+    "save_plots_dir",
+    "filter_params",
+    "threads"
 })
 public class CheckMLineageWfParams {
 
@@ -39,6 +41,17 @@ public class CheckMLineageWfParams {
     private Long saveOutputDir;
     @JsonProperty("save_plots_dir")
     private Long savePlotsDir;
+    /**
+     * <p>Original spec-file type: filter_binned_contigs_Params</p>
+     * <pre>
+     * filter_binned_contigs - grouped parameters to make new binned contig object with qual above thresholds
+     * </pre>
+     * 
+     */
+    @JsonProperty("filter_params")
+    private FilterBinnedContigsParams filterParams;
+    @JsonProperty("threads")
+    private Long threads;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("input_ref")
@@ -116,6 +129,50 @@ public class CheckMLineageWfParams {
         return this;
     }
 
+    /**
+     * <p>Original spec-file type: filter_binned_contigs_Params</p>
+     * <pre>
+     * filter_binned_contigs - grouped parameters to make new binned contig object with qual above thresholds
+     * </pre>
+     * 
+     */
+    @JsonProperty("filter_params")
+    public FilterBinnedContigsParams getFilterParams() {
+        return filterParams;
+    }
+
+    /**
+     * <p>Original spec-file type: filter_binned_contigs_Params</p>
+     * <pre>
+     * filter_binned_contigs - grouped parameters to make new binned contig object with qual above thresholds
+     * </pre>
+     * 
+     */
+    @JsonProperty("filter_params")
+    public void setFilterParams(FilterBinnedContigsParams filterParams) {
+        this.filterParams = filterParams;
+    }
+
+    public CheckMLineageWfParams withFilterParams(FilterBinnedContigsParams filterParams) {
+        this.filterParams = filterParams;
+        return this;
+    }
+
+    @JsonProperty("threads")
+    public Long getThreads() {
+        return threads;
+    }
+
+    @JsonProperty("threads")
+    public void setThreads(Long threads) {
+        this.threads = threads;
+    }
+
+    public CheckMLineageWfParams withThreads(Long threads) {
+        this.threads = threads;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -128,7 +185,7 @@ public class CheckMLineageWfParams {
 
     @Override
     public String toString() {
-        return ((((((((((((("CheckMLineageWfParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", reducedTree=")+ reducedTree)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((("CheckMLineageWfParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", reducedTree=")+ reducedTree)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", filterParams=")+ filterParams)+", threads=")+ threads)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

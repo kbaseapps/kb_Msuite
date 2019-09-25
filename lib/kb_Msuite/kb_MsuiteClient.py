@@ -12,7 +12,7 @@ from __future__ import print_function
 try:
     # baseclient and this client are in a package
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
-except:
+except ImportError:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
 
@@ -23,7 +23,7 @@ class kb_Msuite(object):
             self, url=None, timeout=30 * 60, user_id=None,
             password=None, token=None, ignore_authrc=False,
             trust_all_ssl_certificates=False,
-            auth_svc='https://kbase.us/services/authorization/Sessions/Login'):
+            auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login'):
         if url is None:
             raise ValueError('A url is required')
         self._service_ver = None
@@ -45,7 +45,7 @@ class kb_Msuite(object):
            bins, used just for running the tetra command tetra_File - specify
            the output/input tetra nucleotide frequency file (generated with
            the tetra command) dist_value - when running dist_plot, set this
-           to a value between 0 and 100 thread -  number of threads
+           to a value between 0 and 100 threads -  number of threads
            reduced_tree - if set to 1, run checkM with the reduced_tree flag,
            which will keep memory limited to less than 16gb (otherwise needs
            40+ GB, which NJS worker nodes do have) quiet - pass the --quite
@@ -54,14 +54,13 @@ class kb_Msuite(object):
            "bin_folder" of String, parameter "out_folder" of String,
            parameter "plots_folder" of String, parameter "seq_file" of
            String, parameter "tetra_file" of String, parameter "dist_value"
-           of Long, parameter "thread" of Long, parameter "reduced_tree" of
+           of Long, parameter "threads" of Long, parameter "reduced_tree" of
            type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
            1)), parameter "quiet" of type "boolean" (A boolean - 0 for false,
            1 for true. @range (0, 1))
         """
-        return self._client.call_method(
-            'kb_Msuite.run_checkM',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_Msuite.run_checkM',
+                                        [params], self._service_ver, context)
 
     def run_checkM_lineage_wf(self, params, context=None):
         """
@@ -73,13 +72,18 @@ class kb_Msuite(object):
            true. @range (0, 1)), parameter "save_output_dir" of type
            "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
            parameter "save_plots_dir" of type "boolean" (A boolean - 0 for
-           false, 1 for true. @range (0, 1))
+           false, 1 for true. @range (0, 1)), parameter "filter_params" of
+           type "filter_binned_contigs_Params" (filter_binned_contigs -
+           grouped parameters to make new binned contig object with qual
+           above thresholds) -> structure: parameter "completenes_perc" of
+           Double, parameter "contamination_perc" of Double, parameter
+           "output_filtered_binnedcontigs_obj_name" of String, parameter
+           "threads" of Long
         :returns: instance of type "CheckMLineageWfResult" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_Msuite.run_checkM_lineage_wf',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_Msuite.run_checkM_lineage_wf',
+                                        [params], self._service_ver, context)
 
     def lineage_wf(self, params, context=None):
         """
@@ -103,9 +107,8 @@ class kb_Msuite(object):
            parameters to see the output of running this function.) ->
            structure:
         """
-        return self._client.call_method(
-            'kb_Msuite.lineage_wf',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_Msuite.lineage_wf',
+                                        [params], self._service_ver, context)
 
     def status(self, context=None):
         return self._client.call_method('kb_Msuite.status',

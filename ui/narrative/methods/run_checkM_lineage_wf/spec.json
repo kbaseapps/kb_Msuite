@@ -1,7 +1,7 @@
 {
-    "ver": "1.2.2",
+    "ver": "1.4.0",
     "authors": [
-        "dylan","qzhang","msneddon","dparks"
+        "dylan","qzhang","msneddon","dparks","tgu2","seanjungbluth"
     ],
     "contact": "http://kbase.us/contact-us/",
     "categories": ["active","communities","assembly"],
@@ -51,7 +51,7 @@
 		]
             }
         }, 
-         {
+        {
            "id": "save_all_plots",
             "optional": false,
             "advanced": true,
@@ -74,8 +74,58 @@
 		    }
 		]
             }
-         }
+        },
+        {
+            "id": "completeness_perc",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "95" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+		"min_float": 0.0,
+		"max_float": 100.0
+            }
+        }, 
+        {
+            "id": "contamination_perc",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "2" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+		"min_float": 0.0,
+		"max_float": 100.0
+            }
+        }, 
+        {
+            "id": "output_filtered_binnedcontigs_obj_name",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "CheckM_HQ_bins.BinnedContigs" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseMetagenomes.BinnedContigs" ],
+		"is_output_name" : true
+            }
+        } 
+
     ],
+
+    "parameter-groups": [
+	{
+            "id": "filter_params",
+	    "parameters": ["completeness_perc", "contamination_perc", "output_filtered_binnedcontigs_obj_name"],
+	    "optional": true,
+	    "allow_multiple": false,
+	    "with_border": true
+	}
+    ],
+
     "behavior": {
         "service-mapping": {
             "url": "",
@@ -98,6 +148,14 @@
                 {
                     "input_parameter": "save_all_plots",
                     "target_property": "save_plots_dir"
+                },
+                {
+                    "input_parameter": "filter_params",
+                    "target_property": "filter_params"
+                },
+                {
+                    "constant_value": "8",
+                    "target_property": "threads"
                 }
             ],
             "output_mapping": [

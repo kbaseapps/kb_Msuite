@@ -3,10 +3,10 @@ import time
 import glob
 import subprocess
 
-from Workspace.WorkspaceClient import Workspace
-from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
-from SetAPI.SetAPIServiceClient import SetAPI
-from MetagenomeUtils.MetagenomeUtilsClient import MetagenomeUtils
+from installed_clients.WorkspaceClient import Workspace
+from installed_clients.AssemblyUtilClient import AssemblyUtil
+from installed_clients.SetAPIServiceClient import SetAPI
+from installed_clients.MetagenomeUtilsClient import MetagenomeUtils
 
 
 class DataStagingUtils(object):
@@ -40,8 +40,9 @@ class DataStagingUtils(object):
         # config
         #SERVICE_VER = 'dev'
         SERVICE_VER = 'release'
+        ws = Workspace(self.ws_url)
 
-        # generate a folder in scratch to hold the input
+        # 1) generate a folder in scratch to hold the input
         suffix = str(int(time.time() * 1000))
         input_dir = os.path.join(self.scratch, 'bins_' + suffix)
         all_seq_fasta = os.path.join(self.scratch, 'all_sequences_' + suffix + '.' + fasta_file_extension)
@@ -50,23 +51,8 @@ class DataStagingUtils(object):
 
 
         # 2) based on type, download the files
-        ws = Workspace(self.ws_url)
-        input_info = ws.get_object_info3({'objects': [{'ref': input_ref}]})['infos'][0]
-        # 0 obj_id objid - the numerical id of the object.
-        # 1 obj_name name - the name of the object.
-        # 2 type_string type - the type of the object.
-        # 3 timestamp save_date - the save date of the object.
-        # 4 obj_ver ver - the version of the object.
-        # 5 username saved_by - the user that saved or copied the object.
-        # 6 ws_id wsid - the workspace containing the object.
-        # 7 ws_name workspace - the workspace containing the object.
-        # 8 string chsum - the md5 checksum of the object.
-        # 9 int size - the size of the object in bytes.
-        # 10 usermeta meta - arbitrary user-supplied metadata about
-        #     the object.
-        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-        obj_name = input_info[NAME_I]
-        type_name = input_info[TYPE_I].split('-')[0]
+        obj_name = self.get_data_obj_name (input_ref)
+        type_name = self.get_data_obj_type (input_ref)
 
         # auClient
         try:
@@ -280,3 +266,74 @@ class DataStagingUtils(object):
         if exitCode != 0:
             raise ValueError('Error running command: ' + ' '.join(cat_cmd) + '\n' +
                              'Exit Code: ' + str(exitCode))
+
+    def get_bin_fasta_files(self, input_dir, fasta_extension):
+        bin_fasta_files = dict()
+        for (dirpath, dirnames, filenames) in os.walk(input_dir):
+            # DEBUG
+            #print ("DIRPATH: "+dirpath)
+            #print ("DIRNAMES: "+", ".join(dirnames))
+            #print ("FILENAMES: "+", ".join(filenames))
+            for filename in filenames:
+                if not os.path.isfile(os.path.join(input_dir, filename)):
+                    continue
+                if filename.endswith('.'+fasta_extension):
+                    fasta_file = filename
+                    bin_ID = fasta_file.replace('.'+fasta_extension,'')
+                    bin_ID = bin_ID.replace('out_header.','')
+                    fasta_path = os.path.join (input_dir,fasta_file)
+                    bin_fasta_files[bin_ID] = fasta_path
+                    #bin_fasta_files[bin_ID] = fasta_file
+                    #print ("ACCEPTED: "+bin_ID+" FILE:"+fasta_file)  # DEBUG
+
+        return bin_fasta_files
+
+    def get_data_obj_type_by_name(self, input_ref, remove_module=False):
+        # 0 obj_id objid - the numerical id of the object.
+        # 1 obj_name name - the name of the object.
+        # 2 type_string type - the type of the object.
+        # 3 timestamp save_date - the save date of the object.
+        # 4 obj_ver ver - the version of the object.
+        # 5 username saved_by - the user that saved or copied the object.
+        # 6 ws_id wsid - the workspace containing the object.
+        # 7 ws_name workspace - the workspace containing the object.
+        # 8 string chsum - the md5 checksum of the object.
+        # 9 int size - the size of the object in bytes.
+        # 10 usermeta meta - arbitrary user-supplied metadata about
+        #     the object.
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        ws = Workspace(self.ws_url)
+        input_info = ws.get_object_info3({'objects': [{'ref': input_ref}]})['infos'][0]
+        obj_name = input_info[NAME_I]
+        type_name = input_info[TYPE_I].split('-')[0]
+        if remove_module:
+            type_name = type_name.split('.')[1]
+        return { obj_name: type_name }
+
+    def get_data_obj_name(self, input_ref):
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        ws = Workspace(self.ws_url)
+        input_info = ws.get_object_info3({'objects': [{'ref': input_ref}]})['infos'][0]
+        obj_name = input_info[NAME_I]
+        #type_name = input_info[TYPE_I].split('-')[0]
+        return obj_name
+
+    def get_data_obj_type(self, input_ref, remove_module=False):
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        ws = Workspace(self.ws_url)
+        input_info = ws.get_object_info3({'objects': [{'ref': input_ref}]})['infos'][0]
+        #obj_name = input_info[NAME_I]
+        type_name = input_info[TYPE_I].split('-')[0]
+        if remove_module:
+            type_name = type_name.split('.')[1]
+        return type_name
+
+    def read_assembly_ref_from_binnedcontigs(self, input_ref):
+        ws = Workspace(self.ws_url)
+        try:
+            binned_contig_obj = ws.get_objects2({'objects':[{'ref':input_ref}]})['data'][0]['data']
+        except Exception as e:
+            raise ValueError('Unable to fetch '+str(input_ref)+' object from workspace: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+
+        return binned_contig_obj['assembly_ref']

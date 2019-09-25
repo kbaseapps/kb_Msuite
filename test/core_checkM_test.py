@@ -13,12 +13,12 @@ except:
 
 from pprint import pprint  # noqa: F401
 
-from Workspace.WorkspaceClient import Workspace as workspaceService
+from installed_clients.WorkspaceClient import Workspace as workspaceService
 
-from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
-from SetAPI.SetAPIServiceClient import SetAPI
-from GenomeFileUtil.GenomeFileUtilClient import GenomeFileUtil
-from MetagenomeUtils.MetagenomeUtilsClient import MetagenomeUtils
+from installed_clients.AssemblyUtilClient import AssemblyUtil
+from installed_clients.SetAPIServiceClient import SetAPI
+from installed_clients.GenomeFileUtilClient import GenomeFileUtil
+from installed_clients.MetagenomeUtilsClient import MetagenomeUtils
 
 from kb_Msuite.kb_MsuiteImpl import kb_Msuite
 from kb_Msuite.kb_MsuiteServer import MethodContext
@@ -58,12 +58,16 @@ class CoreCheckMTest(unittest.TestCase):
         cls.wsURL = cls.cfg['workspace-url']
         cls.wsClient = workspaceService(cls.wsURL)
         cls.serviceImpl = kb_Msuite(cls.cfg)
-        cls.scratch = cls.cfg['scratch']
         cls.callback_url = os.environ['SDK_CALLBACK_URL']
+        cls.scratch = cls.cfg['scratch']
+        cls.suffix = int(time.time() * 1000)
+        #cls.scratch = cls.cfg['scratch']+'_'+str(suffix)
+        #cls.cfg['scratch'] = cls.scratch
+        #if not os.path.exists(cls.scratch):
+        #    os.mkdir(cls.scratch)
         cls.checkm_runner = CheckMUtil(cls.cfg, cls.ctx)
 
-        suffix = int(time.time() * 1000)
-        cls.wsName = "test_kb_Msuite_" + str(suffix)
+        cls.wsName = "test_kb_Msuite_" + str(cls.suffix)
         cls.ws_info = cls.wsClient.create_workspace({'workspace': cls.wsName})
         cls.au = AssemblyUtil(os.environ['SDK_CALLBACK_URL'])
         cls.setAPI = SetAPI(url=cls.cfg['srv-wiz-url'], token=cls.ctx['token'])
@@ -89,6 +93,8 @@ class CoreCheckMTest(unittest.TestCase):
             cls.wsClient.delete_workspace({'workspace': cls.wsName})
             print('Test workspace ' + cls.wsName + ' was deleted')
         pass
+        #if os.path.exists(cls.scratch):
+        #    os.rmdir(cls.scratch)
 
     def getWsClient(self):
         return self.__class__.wsClient
@@ -214,7 +220,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 1: single assembly
     #
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
     def test_checkM_lineage_wf_full_app_single_assembly(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_assembly'
         print ("\n=================================================================")
@@ -229,7 +235,8 @@ class CoreCheckMTest(unittest.TestCase):
             'reduced_tree': 0,
             # 'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 8
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -251,7 +258,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 2: Regression test (CheckM <= v1.0.7) for single problem assembly
     #
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
     def test_checkM_lineage_wf_full_app_single_problem_assembly(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_problem_assembly'
         print ("\n=================================================================")
@@ -266,7 +273,8 @@ class CoreCheckMTest(unittest.TestCase):
             'reduced_tree': 1,  # this must be 1 to regression test with --reduced_tree
             # 'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 8
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -288,7 +296,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 3: binned contigs
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
     def test_checkM_lineage_wf_full_app_binned_contigs(self):
         method_name = 'test_checkM_lineage_wf_full_app_binned_contigs'
         print ("\n=================================================================")
@@ -305,7 +313,8 @@ class CoreCheckMTest(unittest.TestCase):
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 8
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
         print('RESULT:')
@@ -326,7 +335,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 4: Regression test for empty binned contigs object
     #
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
     def test_checkM_lineage_wf_full_app_binned_contigs_EMPTY(self):
         method_name = 'test_checkM_lineage_wf_full_app_binned_contigs_EMPTY'
         print ("\n=================================================================")
@@ -347,7 +356,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 5: Assembly Set
     #
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
     def test_checkM_lineage_wf_full_app_assemblySet(self):
         method_name = 'test_checkM_lineage_wf_full_app_assemblySet'
         print ("\n=================================================================")
@@ -361,7 +370,8 @@ class CoreCheckMTest(unittest.TestCase):
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 8
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -383,7 +393,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 6: Single Genome
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_genome")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_genome")
     def test_checkM_lineage_wf_full_app_single_genome(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_genome'
         print ("\n=================================================================")
@@ -397,7 +407,8 @@ class CoreCheckMTest(unittest.TestCase):
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 8
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -419,7 +430,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 7: Genome Set
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_genomeSet")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_genomeSet")
     def test_checkM_lineage_wf_full_app_genomeSet(self):
         method_name = 'test_checkM_lineage_wf_full_app_genomeSet'
         print ("\n=================================================================")
@@ -433,7 +444,8 @@ class CoreCheckMTest(unittest.TestCase):
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
-            'save_plots_dir': 1
+            'save_plots_dir': 1,
+            'threads': 8
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -531,16 +543,66 @@ class CoreCheckMTest(unittest.TestCase):
         self.getImpl().run_checkM(self.getContext(), params)
         os.path.isfile(tetra_file)
 
+    # Test 11: filter binned contigs to HQ binned contigs
+    #
+    # Uncomment to skip this test
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_filter_binned_contigs")
+    def test_checkM_lineage_wf_full_app_binned_contigs(self):
+        method_name = 'test_checkM_lineage_wf_full_app_filter_binned_contigs'
+        print ("\n=================================================================")
+        print ("RUNNING "+method_name+"()")
+        print ("=================================================================\n")
+
+        # Even with the reduced_tree option, this will take a long time and crash if your
+        # machine has less than ~16gb memory
+
+        # run checkM lineage_wf app on BinnedContigs
+        input_ref = self.binned_contigs_ref1
+        filter_params = {
+            'completeness_perc': 95.0,
+            'contamination_perc': 1.5,
+            'output_filtered_binnedcontigs_obj_name': 'filter.BinnedContigs'
+        }
+        params = {
+            'workspace_name': self.ws_info[1],
+            'input_ref': input_ref,
+            'reduced_tree': 1,
+            'save_output_dir': 1,
+            'save_plots_dir': 1,
+            'filter_params': filter_params,
+            'threads': 8
+        }
+        result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
+        print('RESULT:')
+        pprint(result)
+
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
+
+        # make sure the report was created and includes the HTML report and download links
+        rep = self.getWsClient().get_objects2({'objects':
+                                              [{'ref': result['report_ref']}]})['data'][0]['data']
+
+        self.assertEquals(rep['direct_html_link_index'], 0)
+        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['html_links']), 1)
+        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+
+
     def setup_local_method_data(self):
         base_dir = os.path.dirname(__file__)
         test_data_dir = os.path.join(base_dir, 'data', 'example-bins')
         scratch_input_dir = os.path.join(self.scratch, 'lineage_wf_input_dir')
-        scratch_output_dir = os.path.join(self.scratch, 'lineage_wf_output_dir')
+        #scratch_output_dir = os.path.join(self.scratch, 'lineage_wf_output_dir')
+        scratch_output_dir = os.path.join(self.scratch, 'lineage_wf_output_dir'+'_'+str(self.suffix))
         shutil.copytree(test_data_dir, scratch_input_dir)
-        os.mkdir(scratch_output_dir)
+        if not os.path.exists(scratch_output_dir):
+            os.mkdir(scratch_output_dir)
         log_path = os.path.join(self.scratch, 'lineage_wf.log')
         return scratch_input_dir, scratch_output_dir, log_path
 
+    # Uncomment to skip this test
+    # HIDE @unittest.skip("skipped test_local_methodd()")
     def test_local_method(self):
         """
         Test a successful run of the .lineage_wf local method
@@ -556,8 +618,9 @@ class CoreCheckMTest(unittest.TestCase):
                 '--reduced_tree': ''
             }
         })
-        out_contents = os.listdir(output_dir)
-        self.assertEqual(out_contents, ['storage', 'lineage.ms', 'bins'])
+        out_contents = sorted(os.listdir(output_dir))
+        #self.assertEqual(out_contents, ['storage', 'lineage.ms', 'bins'])
+        self.assertEqual(out_contents, ['bins', 'checkm.log', 'lineage.ms', 'storage'])
         self.assertTrue(os.path.exists(log_path))
         # Remove test data
         os.remove(log_path)

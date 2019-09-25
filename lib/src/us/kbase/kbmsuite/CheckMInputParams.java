@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  *            just for running the tetra command
  * tetra_File - specify the output/input tetra nucleotide frequency file (generated with the tetra command)
  * dist_value - when running dist_plot, set this to a value between 0 and 100
- * thread -  number of threads
+ * threads -  number of threads
  * reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb (otherwise needs 40+ GB, which NJS worker nodes do have)
  * quiet - pass the --quite parameter to checkM, but doesn't seem to work for all subcommands
  * </pre>
@@ -39,7 +39,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "seq_file",
     "tetra_file",
     "dist_value",
-    "thread",
+    "threads",
     "reduced_tree",
     "quiet"
 })
@@ -59,8 +59,8 @@ public class CheckMInputParams {
     private String tetraFile;
     @JsonProperty("dist_value")
     private Long distValue;
-    @JsonProperty("thread")
-    private Long thread;
+    @JsonProperty("threads")
+    private Long threads;
     @JsonProperty("reduced_tree")
     private Long reducedTree;
     @JsonProperty("quiet")
@@ -172,18 +172,18 @@ public class CheckMInputParams {
         return this;
     }
 
-    @JsonProperty("thread")
-    public Long getThread() {
-        return thread;
+    @JsonProperty("threads")
+    public Long getThreads() {
+        return threads;
     }
 
-    @JsonProperty("thread")
-    public void setThread(Long thread) {
-        this.thread = thread;
+    @JsonProperty("threads")
+    public void setThreads(Long threads) {
+        this.threads = threads;
     }
 
-    public CheckMInputParams withThread(Long thread) {
-        this.thread = thread;
+    public CheckMInputParams withThreads(Long threads) {
+        this.threads = threads;
         return this;
     }
 
@@ -229,7 +229,7 @@ public class CheckMInputParams {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((("CheckMInputParams"+" [subcommand=")+ subcommand)+", binFolder=")+ binFolder)+", outFolder=")+ outFolder)+", plotsFolder=")+ plotsFolder)+", seqFile=")+ seqFile)+", tetraFile=")+ tetraFile)+", distValue=")+ distValue)+", thread=")+ thread)+", reducedTree=")+ reducedTree)+", quiet=")+ quiet)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((("CheckMInputParams"+" [subcommand=")+ subcommand)+", binFolder=")+ binFolder)+", outFolder=")+ outFolder)+", plotsFolder=")+ plotsFolder)+", seqFile=")+ seqFile)+", tetraFile=")+ tetraFile)+", distValue=")+ distValue)+", threads=")+ threads)+", reducedTree=")+ reducedTree)+", quiet=")+ quiet)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

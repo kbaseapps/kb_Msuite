@@ -4,7 +4,8 @@ import ast
 import sys
 import time
 
-from DataFileUtil.DataFileUtilClient import DataFileUtil
+from installed_clients.DataFileUtilClient import DataFileUtil
+from installed_clients.MetagenomeUtilsClient import MetagenomeUtils
 
 
 def log(message, prefix_newline=False):
@@ -56,7 +57,7 @@ class OutputBuilder(object):
         self._copy_file_ignore_errors(os.path.join('storage', 'marker_gene_stats.tsv'), src, dest)
         self._copy_file_ignore_errors(os.path.join('storage', 'tree', 'concatenated.tre'), src, dest)
 
-    def build_html_output_for_lineage_wf(self, html_dir, object_name):
+    def build_html_output_for_lineage_wf(self, html_dir, object_name, removed_bins=None):
         '''
         Based on the output of CheckM lineage_wf, build an HTML report
         '''
@@ -75,14 +76,15 @@ class OutputBuilder(object):
         self._copy_ref_dist_plots(self.plots_dir, html_dir)
 
         # write the html report to file
-        html = open(os.path.join(html_dir, 'report.html'), 'w')
+        html = open(os.path.join(html_dir, 'CheckM_plot.html'), 'w')
 
         # header
-        self._write_html_header(html, object_name)
+        report_type = 'Plot'
+        self._write_html_header(html, object_name, report_type)
         html.write('<body>\n')
 
         # tabs
-        self._write_tabs(html)
+        self._write_tabs(html, report_type)
 
         # include the single main summary figure
         if plot_exists:
@@ -97,8 +99,23 @@ class OutputBuilder(object):
                 'too large of an image size to properly render.</p>'
             )
 
+        # close the CheckM plot
+        html.write('</body>\n</html>\n')
+        html.close()
+
+
         # print out the info table
-        self.build_summary_table(html, html_dir)
+        html = open(os.path.join(html_dir, 'CheckM_'+report_type+'.html'), 'w')
+
+        # header
+        report_type = 'Table'
+        self._write_html_header(html, object_name, report_type)
+        html.write('<body>\n')
+
+        # tabs
+        self._write_tabs(html, report_type)
+
+        self.build_summary_table(html, html_dir, removed_bins=removed_bins)
 
         self._write_script(html)
 
@@ -107,15 +124,24 @@ class OutputBuilder(object):
 
         return self.package_folder(html_dir, 'report.html', 'Assembled report from CheckM')
 
-    def _write_tabs(self, html):
-        tabs = '''
-        <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Summary')" id="defaultOpen">Summary</button>
-            <button class="tablinks" onclick="openTab(event, 'Plot')">Bin QA Plot</button>
-        </div>
-        '''
+    def _write_tabs(self, html, report_type):
+        #tabs = '''
+        #<div class="tab">
+        #    <button class="tablinks" onclick="openTab(event, 'Summary')" id="defaultOpen">Summary</button>
+        #    <button class="tablinks" onclick="openTab(event, 'Plot')">Bin QA Plot</button>
+        #</div>
+        #<div>
+        #'''
+
+        # buttons are hidden if popups blocked
+        if report_type == 'Plot':
+            tabs = '<div><b>CheckM PLOT</b> | <a href="CheckM_Table.html">CheckM Table</a></div>'
+        else:
+            tabs = '<div><a href="CheckM_Plot.html">CheckM Plot</a> | <b>CheckM TABLE</b></div>'
 
         html.write(tabs)
+
+
 
     def _write_script(self, html):
         script = '''
@@ -140,14 +166,14 @@ class OutputBuilder(object):
         '''
         html.write(script)
 
-    def build_summary_table(self, html, html_dir):
+    def build_summary_table(self, html, html_dir, removed_bins=None):
 
         stats_file = os.path.join(self.output_dir, 'storage', 'bin_stats_ext.tsv')
         if not os.path.isfile(stats_file):
             log('Warning! no stats file found (looking at: ' + stats_file + ')')
             return
 
-        bin_stats = []
+        bin_stats = dict()
         with open(stats_file) as lf:
             for line in lf:
                 if not line:
@@ -155,9 +181,9 @@ class OutputBuilder(object):
                 if line.startswith('#'):
                     continue
                 col = line.split('\t')
-                bin_id = col[0]
+                bin_id = str(col[0])
                 data = ast.literal_eval(col[1])
-                bin_stats.append({'bid': bin_id, 'data': data})
+                bin_stats[bin_id] = data
 
         fields = [{'id': 'marker lineage', 'display': 'Marker Lineage'},
                   {'id': '# genomes', 'display': '# Genomes'},
@@ -180,19 +206,23 @@ class OutputBuilder(object):
             html.write('    <th>' + f['display'] + '</th>\n')
         html.write('  </tr>\n')
 
-        for b in bin_stats:
-            html.write('  <tr>\n')
-            dist_plot_file = os.path.join(html_dir, str(b['bid']) + self.DIST_PLOT_EXT)
-            if os.path.isfile(dist_plot_file):
-                self._write_dist_html_page(html_dir, b['bid'])
-                html.write('    <td><a href="' + b['bid'] + '.html">' + b['bid'] + '</td>\n')
+        for bid in sorted(bin_stats.keys()):
+            if removed_bins and bid in removed_bins:
+                row_bgcolor = '#FEB4B2'
             else:
-                html.write('    <td>' + b['bid'] + '</td>\n')
+                row_bgcolor = 'white'
+            html.write('  <tr style="background-color:'+row_bgcolor+'">\n')
+            dist_plot_file = os.path.join(html_dir, str(bid) + self.DIST_PLOT_EXT)
+            if os.path.isfile(dist_plot_file):
+                self._write_dist_html_page(html_dir, bid)
+                html.write('    <td><a href="' + bid + '.html">' + bid + '</td>\n')
+            else:
+                html.write('    <td>' + bid + '</td>\n')
             for f in fields:
-                if f['id'] in b['data']:
-                    value = str(b['data'][f['id']])
+                if f['id'] in bin_stats[bid]:
+                    value = str(bin_stats[bid][f['id']])
                     if f.get('round'):
-                        value = str(round(b['data'][f['id']], f['round']))
+                        value = str(round(bin_stats[bid][f['id']], f['round']))
                     html.write('    <td>' + value + '</td>\n')
                 else:
                     html.write('    <td></td>\n')
@@ -201,11 +231,11 @@ class OutputBuilder(object):
         html.write('</table>\n')
         html.write('</div>\n')
 
-    def _write_html_header(self, html, object_name):
+    def _write_html_header(self, html, object_name, report_type):
 
         html.write('<html>\n')
         html.write('<head>\n')
-        html.write('<title>CheckM Report for ' + object_name + '</title>')
+        html.write('<title>CheckM '+report_type+' Report for ' + object_name + '</title>')
 
         style = '''
         <style style="text/css">
@@ -289,6 +319,16 @@ class OutputBuilder(object):
             # TODO: add error message reporting
             log('copy failed')
 
+    def _copy_file_new_name_ignore_errors(self, src_path, dst_path):
+        src = src_path
+        dest = dst_path
+        log('copying ' + src + ' to ' + dest)
+        try:
+            shutil.copy(src, dest)
+        except:
+            # TODO: add error message reporting
+            log('copy failed')
+
     def _write_dist_html_page(self, html_dir, bin_id):
 
         # write the html report to file
@@ -316,3 +356,26 @@ class OutputBuilder(object):
                 except:
                     # TODO: add error message reporting
                     log('copy of ' + plot_file_path + ' to html directory failed')
+
+
+    def save_binned_contigs(self, params, assembly_ref, filtered_bins_dir):
+        try:
+            mgu = MetagenomeUtils(self.callback_url)
+        except:
+            raise ValueError ("unable to connect with MetagenomeUtils")
+
+        filtered_binned_contig_obj_name = params['filter_params'].get('output_filtered_binnedcontigs_obj_name')
+        generate_binned_contig_param = {
+            'file_directory': filtered_bins_dir,
+            'assembly_ref': assembly_ref,
+            'binned_contig_name': filtered_binned_contig_obj_name,
+            'workspace_name': params.get('workspace_name')
+        }
+        filtered_binned_contig_obj_ref = mgu.file_to_binned_contigs(
+            generate_binned_contig_param).get('binned_contig_obj_ref')
+
+        return {
+            'obj_name': filtered_binned_contig_obj_name,
+            'obj_ref': filtered_binned_contig_obj_ref
+        }
+        

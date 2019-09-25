@@ -1,3 +1,13 @@
+### Version 1.4.0
+__Changes__
+- updated kbase module paths in lib to installed_clients
+- updated CheckM to v1.0.18
+- updated KBase Docker base image to sdkbase2:python and added Cython lib fix
+- added QC filtering options Completeness / Contamination for BinnedContigs
+- split Plot and Table HTML reports into separate pages
+- indicate in Table HTML report which bins were filtered out by QC
+- set thread count explicitly to 8
+
 ### Version 1.3.1
 __Changes__
 - changed citation format to PLOS
