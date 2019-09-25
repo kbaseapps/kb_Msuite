@@ -364,7 +364,7 @@ class OutputBuilder(object):
         except:
             raise ValueError ("unable to connect with MetagenomeUtils")
 
-        filtered_binned_contig_obj_name = params['filter_params'].get('output_filtered_binnedcontigs_obj_name')
+        filtered_binned_contig_obj_name = params.get('output_filtered_binnedcontigs_obj_name')
         generate_binned_contig_param = {
             'file_directory': filtered_bins_dir,
             'assembly_ref': assembly_ref,

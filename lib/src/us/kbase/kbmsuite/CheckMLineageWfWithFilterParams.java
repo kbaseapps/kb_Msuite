@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: CheckMLineageWfParams</p>
+ * <p>Original spec-file type: CheckMLineageWf_withFilter_Params</p>
  * <pre>
- * input_ref - reference to the input Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs data
+ * input_ref - reference to the input BinnedContigs data
  * </pre>
  * 
  */
@@ -26,9 +26,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "reduced_tree",
     "save_output_dir",
     "save_plots_dir",
+    "completenes_perc",
+    "contamination_perc",
+    "output_filtered_binnedcontigs_obj_name",
     "threads"
 })
-public class CheckMLineageWfParams {
+public class CheckMLineageWfWithFilterParams {
 
     @JsonProperty("input_ref")
     private String inputRef;
@@ -40,6 +43,12 @@ public class CheckMLineageWfParams {
     private Long saveOutputDir;
     @JsonProperty("save_plots_dir")
     private Long savePlotsDir;
+    @JsonProperty("completenes_perc")
+    private Double completenesPerc;
+    @JsonProperty("contamination_perc")
+    private Double contaminationPerc;
+    @JsonProperty("output_filtered_binnedcontigs_obj_name")
+    private String outputFilteredBinnedcontigsObjName;
     @JsonProperty("threads")
     private Long threads;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -54,7 +63,7 @@ public class CheckMLineageWfParams {
         this.inputRef = inputRef;
     }
 
-    public CheckMLineageWfParams withInputRef(String inputRef) {
+    public CheckMLineageWfWithFilterParams withInputRef(String inputRef) {
         this.inputRef = inputRef;
         return this;
     }
@@ -69,7 +78,7 @@ public class CheckMLineageWfParams {
         this.workspaceName = workspaceName;
     }
 
-    public CheckMLineageWfParams withWorkspaceName(String workspaceName) {
+    public CheckMLineageWfWithFilterParams withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
@@ -84,7 +93,7 @@ public class CheckMLineageWfParams {
         this.reducedTree = reducedTree;
     }
 
-    public CheckMLineageWfParams withReducedTree(Long reducedTree) {
+    public CheckMLineageWfWithFilterParams withReducedTree(Long reducedTree) {
         this.reducedTree = reducedTree;
         return this;
     }
@@ -99,7 +108,7 @@ public class CheckMLineageWfParams {
         this.saveOutputDir = saveOutputDir;
     }
 
-    public CheckMLineageWfParams withSaveOutputDir(Long saveOutputDir) {
+    public CheckMLineageWfWithFilterParams withSaveOutputDir(Long saveOutputDir) {
         this.saveOutputDir = saveOutputDir;
         return this;
     }
@@ -114,8 +123,53 @@ public class CheckMLineageWfParams {
         this.savePlotsDir = savePlotsDir;
     }
 
-    public CheckMLineageWfParams withSavePlotsDir(Long savePlotsDir) {
+    public CheckMLineageWfWithFilterParams withSavePlotsDir(Long savePlotsDir) {
         this.savePlotsDir = savePlotsDir;
+        return this;
+    }
+
+    @JsonProperty("completenes_perc")
+    public Double getCompletenesPerc() {
+        return completenesPerc;
+    }
+
+    @JsonProperty("completenes_perc")
+    public void setCompletenesPerc(Double completenesPerc) {
+        this.completenesPerc = completenesPerc;
+    }
+
+    public CheckMLineageWfWithFilterParams withCompletenesPerc(Double completenesPerc) {
+        this.completenesPerc = completenesPerc;
+        return this;
+    }
+
+    @JsonProperty("contamination_perc")
+    public Double getContaminationPerc() {
+        return contaminationPerc;
+    }
+
+    @JsonProperty("contamination_perc")
+    public void setContaminationPerc(Double contaminationPerc) {
+        this.contaminationPerc = contaminationPerc;
+    }
+
+    public CheckMLineageWfWithFilterParams withContaminationPerc(Double contaminationPerc) {
+        this.contaminationPerc = contaminationPerc;
+        return this;
+    }
+
+    @JsonProperty("output_filtered_binnedcontigs_obj_name")
+    public String getOutputFilteredBinnedcontigsObjName() {
+        return outputFilteredBinnedcontigsObjName;
+    }
+
+    @JsonProperty("output_filtered_binnedcontigs_obj_name")
+    public void setOutputFilteredBinnedcontigsObjName(String outputFilteredBinnedcontigsObjName) {
+        this.outputFilteredBinnedcontigsObjName = outputFilteredBinnedcontigsObjName;
+    }
+
+    public CheckMLineageWfWithFilterParams withOutputFilteredBinnedcontigsObjName(String outputFilteredBinnedcontigsObjName) {
+        this.outputFilteredBinnedcontigsObjName = outputFilteredBinnedcontigsObjName;
         return this;
     }
 
@@ -129,7 +183,7 @@ public class CheckMLineageWfParams {
         this.threads = threads;
     }
 
-    public CheckMLineageWfParams withThreads(Long threads) {
+    public CheckMLineageWfWithFilterParams withThreads(Long threads) {
         this.threads = threads;
         return this;
     }
@@ -146,7 +200,7 @@ public class CheckMLineageWfParams {
 
     @Override
     public String toString() {
-        return ((((((((((((((("CheckMLineageWfParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", reducedTree=")+ reducedTree)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", threads=")+ threads)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((("CheckMLineageWfWithFilterParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", reducedTree=")+ reducedTree)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", completenesPerc=")+ completenesPerc)+", contaminationPerc=")+ contaminationPerc)+", outputFilteredBinnedcontigsObjName=")+ outputFilteredBinnedcontigsObjName)+", threads=")+ threads)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

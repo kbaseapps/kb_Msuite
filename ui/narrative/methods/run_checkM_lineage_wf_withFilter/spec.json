@@ -74,14 +74,53 @@
 		    }
 		]
             }
-        }
+        },
+        {
+            "id": "completeness_perc",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "95" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+		"min_float": 0.0,
+		"max_float": 100.0
+            }
+        }, 
+        {
+            "id": "contamination_perc",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "2" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+		"min_float": 0.0,
+		"max_float": 100.0
+            }
+        }, 
+        {
+            "id": "output_filtered_binnedcontigs_obj_name",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "CheckM_HQ_bins.BinnedContigs" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseMetagenomes.BinnedContigs" ],
+		"is_output_name" : true
+            }
+        } 
+
     ],
 
     "behavior": {
         "service-mapping": {
             "url": "",
             "name": "kb_Msuite",
-            "method": "run_checkM_lineage_wf",
+            "method": "run_checkM_lineage_wf_withFilter",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",
@@ -99,6 +138,18 @@
                 {
                     "input_parameter": "save_all_plots",
                     "target_property": "save_plots_dir"
+                },
+                {
+                    "input_parameter": "completeness_perc",
+                    "target_property": "completeness_perc"
+                },
+                {
+                    "input_parameter": "contamination_perc",
+                    "target_property": "contamination_perc"
+                },
+                {
+                    "input_parameter": "output_filtered_binnedcontigs_obj_name",
+                    "target_property": "output_filtered_binnedcontigs_obj_name"
                 },
                 {
                     "constant_value": "8",

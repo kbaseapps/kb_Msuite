@@ -63,15 +63,6 @@ module kb_Msuite {
 
 
     /*
-        filter_binned_contigs - grouped parameters to make new binned contig object with qual above thresholds
-    */
-    typedef structure {
-        float completenes_perc;    /* 0-100, default 95% */
-        float contamination_perc;  /* 0-100, default: 2% */
-        string output_filtered_binnedcontigs_obj_name;
-    } filter_binned_contigs_Params;
-
-    /*
         input_ref - reference to the input Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs data
     */
     typedef structure {
@@ -81,7 +72,6 @@ module kb_Msuite {
         boolean reduced_tree;
         boolean save_output_dir;
         boolean save_plots_dir;
-        filter_binned_contigs_Params filter_params;
         int threads;
     } CheckMLineageWfParams;
 
@@ -92,6 +82,31 @@ module kb_Msuite {
 
     funcdef run_checkM_lineage_wf(CheckMLineageWfParams params)
         returns (CheckMLineageWfResult result) authentication required;
+
+
+    /*
+        input_ref - reference to the input BinnedContigs data
+    */
+    typedef structure {
+        string input_ref;
+        string workspace_name;
+
+        boolean reduced_tree;
+        boolean save_output_dir;
+        boolean save_plots_dir;
+        float completeness_perc;   /* 0-100, default 95% */
+        float contamination_perc;  /* 0-100, default: 2% */
+        string output_filtered_binnedcontigs_obj_name;
+        int threads;
+    } CheckMLineageWf_withFilter_Params;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } CheckMLineageWf_withFilter_Result;
+
+    funcdef run_checkM_lineage_wf_withFilter(CheckMLineageWf_withFilter_Params params)
+        returns (CheckMLineageWf_withFilter_Result result) authentication required;
 
 
     /**
