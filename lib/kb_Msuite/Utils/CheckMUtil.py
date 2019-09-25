@@ -72,7 +72,7 @@ class CheckMUtil:
         removed_bins = None
         outputBuilder = OutputBuilder(output_dir, plots_dir, self.scratch, self.callback_url)
         if dsu.get_data_obj_type (params['input_ref']) == 'KBaseMetagenomes.BinnedContigs' \
-           and params.get('filter_params'):
+           and params.get('output_filtered_binnedcontigs_obj_name'):
 
             filtered_obj_info = self._filter_binned_contigs (params, 
                                                              dsu, 
@@ -262,7 +262,7 @@ class CheckMUtil:
                                fasta_extension):
         filtered_binned_contig_obj_name = None
         filtered_binned_contig_obj_ref  = None
-        if not params.get('filter_params'):
+        if not params.get('output_filtered_binnedcontigs_obj_name'):
             return None
 
         # prep fs stuff and get bin IDs
@@ -300,14 +300,14 @@ class CheckMUtil:
         some_bins_are_HQ = False
         test_completeness = False
         test_contamination = False
-        if params['filter_params'].get('completeness_perc') \
-           and float(params['filter_params'].get('completeness_perc')) > 0.0:
+        if params.get('completeness_perc') \
+           and float(params.get('completeness_perc')) > 0.0:
             test_completeness = True
-            completeness_thresh = float(params['filter_params'].get('completeness_perc'))
-        if params['filter_params'].get('contamination_perc') \
-           and float(params['filter_params'].get('contamination_perc')) < 100.0:
+            completeness_thresh = float(params.get('completeness_perc'))
+        if params.get('contamination_perc') \
+           and float(params.get('contamination_perc')) < 100.0:
             test_contamination = True
-            contamination_thresh = float(params['filter_params'].get('contamination_perc'))
+            contamination_thresh = float(params.get('contamination_perc'))
         
         for bin_ID in bin_IDs:
             bin_is_HQ = True

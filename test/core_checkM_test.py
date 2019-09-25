@@ -547,8 +547,8 @@ class CoreCheckMTest(unittest.TestCase):
     #
     # Uncomment to skip this test
     # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_filter_binned_contigs")
-    def test_checkM_lineage_wf_full_app_binned_contigs(self):
-        method_name = 'test_checkM_lineage_wf_full_app_filter_binned_contigs'
+    def test_checkM_lineage_wf_withFilter_binned_contigs(self):
+        method_name = 'test_checkM_lineage_wf_withFilter_binned_contigs'
         print ("\n=================================================================")
         print ("RUNNING "+method_name+"()")
         print ("=================================================================\n")
@@ -558,21 +558,18 @@ class CoreCheckMTest(unittest.TestCase):
 
         # run checkM lineage_wf app on BinnedContigs
         input_ref = self.binned_contigs_ref1
-        filter_params = {
-            'completeness_perc': 95.0,
-            'contamination_perc': 1.5,
-            'output_filtered_binnedcontigs_obj_name': 'filter.BinnedContigs'
-        }
         params = {
             'workspace_name': self.ws_info[1],
             'input_ref': input_ref,
             'reduced_tree': 1,
             'save_output_dir': 1,
             'save_plots_dir': 1,
-            'filter_params': filter_params,
+            'completeness_perc': 95.0,
+            'contamination_perc': 1.5,
+            'output_filtered_binnedcontigs_obj_name': 'filter.BinnedContigs',
             'threads': 8
         }
-        result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
+        result = self.getImpl().run_checkM_lineage_wf_withFilter(self.getContext(), params)[0]
         print('RESULT:')
         pprint(result)
 

@@ -346,6 +346,10 @@ class Application(object):
                              name='kb_Msuite.run_checkM_lineage_wf',
                              types=[dict])
         self.method_authentication['kb_Msuite.run_checkM_lineage_wf'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_Msuite.run_checkM_lineage_wf_withFilter,
+                             name='kb_Msuite.run_checkM_lineage_wf_withFilter',
+                             types=[dict])
+        self.method_authentication['kb_Msuite.run_checkM_lineage_wf_withFilter'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_Msuite.lineage_wf,
                              name='kb_Msuite.lineage_wf',
                              types=[dict])

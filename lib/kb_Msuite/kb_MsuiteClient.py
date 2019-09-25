@@ -72,17 +72,32 @@ class kb_Msuite(object):
            true. @range (0, 1)), parameter "save_output_dir" of type
            "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
            parameter "save_plots_dir" of type "boolean" (A boolean - 0 for
-           false, 1 for true. @range (0, 1)), parameter "filter_params" of
-           type "filter_binned_contigs_Params" (filter_binned_contigs -
-           grouped parameters to make new binned contig object with qual
-           above thresholds) -> structure: parameter "completenes_perc" of
-           Double, parameter "contamination_perc" of Double, parameter
-           "output_filtered_binnedcontigs_obj_name" of String, parameter
-           "threads" of Long
+           false, 1 for true. @range (0, 1)), parameter "threads" of Long
         :returns: instance of type "CheckMLineageWfResult" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
         return self._client.call_method('kb_Msuite.run_checkM_lineage_wf',
+                                        [params], self._service_ver, context)
+
+    def run_checkM_lineage_wf_withFilter(self, params, context=None):
+        """
+        :param params: instance of type "CheckMLineageWf_withFilter_Params"
+           (input_ref - reference to the input BinnedContigs data) ->
+           structure: parameter "input_ref" of String, parameter
+           "workspace_name" of String, parameter "reduced_tree" of type
+           "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
+           parameter "save_output_dir" of type "boolean" (A boolean - 0 for
+           false, 1 for true. @range (0, 1)), parameter "save_plots_dir" of
+           type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
+           1)), parameter "completenes_perc" of Double, parameter
+           "contamination_perc" of Double, parameter
+           "output_filtered_binnedcontigs_obj_name" of String, parameter
+           "threads" of Long
+        :returns: instance of type "CheckMLineageWf_withFilter_Result" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method('kb_Msuite.run_checkM_lineage_wf_withFilter',
                                         [params], self._service_ver, context)
 
     def lineage_wf(self, params, context=None):

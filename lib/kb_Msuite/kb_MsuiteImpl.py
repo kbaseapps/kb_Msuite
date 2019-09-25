@@ -37,7 +37,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     ######################################### noqa
     VERSION = "1.4.0"
     GIT_URL = "https://github.com/dcchivian/kb_Msuite"
-    GIT_COMMIT_HASH = "740a3b7cf449d029d5b14c35663fe937295b0d7e"
+    GIT_COMMIT_HASH = "54716393b9bb86fe8f62847f4ba25366dd7d4615"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -108,13 +108,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            true. @range (0, 1)), parameter "save_output_dir" of type
            "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
            parameter "save_plots_dir" of type "boolean" (A boolean - 0 for
-           false, 1 for true. @range (0, 1)), parameter "filter_params" of
-           type "filter_binned_contigs_Params" (filter_binned_contigs -
-           grouped parameters to make new binned contig object with qual
-           above thresholds) -> structure: parameter "completenes_perc" of
-           Double, parameter "contamination_perc" of Double, parameter
-           "output_filtered_binnedcontigs_obj_name" of String, parameter
-           "threads" of Long
+           false, 1 for true. @range (0, 1)), parameter "threads" of Long
         :returns: instance of type "CheckMLineageWfResult" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -132,6 +126,42 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
         # At some point might do deeper type checking...
         if not isinstance(result, dict):
             raise ValueError('Method run_checkM_lineage_wf return value ' +
+                             'result is not type dict as required.')
+        # return the results
+        return [result]
+
+    def run_checkM_lineage_wf_withFilter(self, ctx, params):
+        """
+        :param params: instance of type "CheckMLineageWf_withFilter_Params"
+           (input_ref - reference to the input BinnedContigs data) ->
+           structure: parameter "input_ref" of String, parameter
+           "workspace_name" of String, parameter "reduced_tree" of type
+           "boolean" (A boolean - 0 for false, 1 for true. @range (0, 1)),
+           parameter "save_output_dir" of type "boolean" (A boolean - 0 for
+           false, 1 for true. @range (0, 1)), parameter "save_plots_dir" of
+           type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
+           1)), parameter "completenes_perc" of Double, parameter
+           "contamination_perc" of Double, parameter
+           "output_filtered_binnedcontigs_obj_name" of String, parameter
+           "threads" of Long
+        :returns: instance of type "CheckMLineageWf_withFilter_Result" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: result
+        #BEGIN run_checkM_lineage_wf_withFilter
+        print('--->\nRunning kb_Msuite.run_checkM_lineage_wf_withFilter\nparams:')
+        print(json.dumps(params, indent=1))
+
+        cmu = CheckMUtil(self.config, ctx)
+        result = cmu.run_checkM_lineage_wf(params)
+
+        #END run_checkM_lineage_wf_withFilter
+
+        # At some point might do deeper type checking...
+        if not isinstance(result, dict):
+            raise ValueError('Method run_checkM_lineage_wf_withFilter return value ' +
                              'result is not type dict as required.')
         # return the results
         return [result]

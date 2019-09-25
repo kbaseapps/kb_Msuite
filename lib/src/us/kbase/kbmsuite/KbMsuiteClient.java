@@ -202,6 +202,23 @@ public class KbMsuiteClient {
     }
 
     /**
+     * <p>Original spec-file function name: run_checkM_lineage_wf_withFilter</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbmsuite.CheckMLineageWfWithFilterParams CheckMLineageWfWithFilterParams} (original type "CheckMLineageWf_withFilter_Params")
+     * @return   parameter "result" of type {@link us.kbase.kbmsuite.CheckMLineageWfWithFilterResult CheckMLineageWfWithFilterResult} (original type "CheckMLineageWf_withFilter_Result")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public CheckMLineageWfWithFilterResult runCheckMLineageWfWithFilter(CheckMLineageWfWithFilterParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<CheckMLineageWfWithFilterResult>> retType = new TypeReference<List<CheckMLineageWfWithFilterResult>>() {};
+        List<CheckMLineageWfWithFilterResult> res = caller.jsonrpcCall("kb_Msuite.run_checkM_lineage_wf_withFilter", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: lineage_wf</p>
      * <pre>
      * *
