@@ -41,6 +41,7 @@ class DataStagingUtils(object):
         # config
         #SERVICE_VER = 'dev'
         SERVICE_VER = 'release'
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
         ws = Workspace(self.ws_url)
 
         # 1) generate a folder in scratch to hold the input
@@ -359,7 +360,7 @@ class DataStagingUtils(object):
             bin_summary_info[bin_ID] = { 'n_contigs': bin_item['n_contigs'],
                                          'gc': bin_item['gc'],
                                          'sum_contig_len': bin_item['sum_contig_len'],
-                                         'cov': bin_item['cov']
+                                         'cov': round (100.0 * float(bin_item['cov']), 1)
                                      }
         # write summary file for just those bins present in bin_dir
         header_line = ['Bin name', 'Completeness', 'Genome size', 'GC content']
