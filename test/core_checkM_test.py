@@ -220,7 +220,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 1: single assembly
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
     def test_checkM_lineage_wf_full_app_single_assembly(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_assembly'
         print ("\n=================================================================")
@@ -258,7 +258,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 2: Regression test (CheckM <= v1.0.7) for single problem assembly
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
     def test_checkM_lineage_wf_full_app_single_problem_assembly(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_problem_assembly'
         print ("\n=================================================================")
@@ -296,7 +296,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 3: binned contigs
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
     def test_checkM_lineage_wf_full_app_binned_contigs(self):
         method_name = 'test_checkM_lineage_wf_full_app_binned_contigs'
         print ("\n=================================================================")
@@ -335,7 +335,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 4: Regression test for empty binned contigs object
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
     def test_checkM_lineage_wf_full_app_binned_contigs_EMPTY(self):
         method_name = 'test_checkM_lineage_wf_full_app_binned_contigs_EMPTY'
         print ("\n=================================================================")
@@ -356,7 +356,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 5: Assembly Set
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
     def test_checkM_lineage_wf_full_app_assemblySet(self):
         method_name = 'test_checkM_lineage_wf_full_app_assemblySet'
         print ("\n=================================================================")
@@ -393,7 +393,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 6: Single Genome
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_genome")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_genome")
     def test_checkM_lineage_wf_full_app_single_genome(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_genome'
         print ("\n=================================================================")
@@ -430,7 +430,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 7: Genome Set
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_lineage_wf_full_app_genomeSet")
+    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_genomeSet")
     def test_checkM_lineage_wf_full_app_genomeSet(self):
         method_name = 'test_checkM_lineage_wf_full_app_genomeSet'
         print ("\n=================================================================")
@@ -599,7 +599,7 @@ class CoreCheckMTest(unittest.TestCase):
         return scratch_input_dir, scratch_output_dir, log_path
 
     # Uncomment to skip this test
-    @unittest.skip("skipped test_local_method()")
+    # HIDE @unittest.skip("skipped test_local_method()")
     def test_local_method(self):
         """
         Test a successful run of the .lineage_wf local method

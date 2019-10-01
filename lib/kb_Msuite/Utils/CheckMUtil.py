@@ -4,6 +4,7 @@ import os
 import uuid
 import subprocess
 import sys
+import re
 import ast
 import json
 from decimal import Decimal
@@ -270,8 +271,10 @@ class CheckMUtil:
             os.makedirs(filtered_bins_dir)
         bin_stats_ext_file = os.path.join(output_dir, 'storage', 'bin_stats_ext.tsv')
         bin_fasta_files_by_bin_ID = dataStagingUtils.get_bin_fasta_files(input_dir, self.fasta_extension)
-        bin_IDs = sorted(bin_fasta_files_by_bin_ID.keys())
-        for bin_ID in bin_IDs:
+        bin_IDs = []
+        for full_bin_ID in sorted(bin_fasta_files_by_bin_ID.keys()):
+            bin_ID = re.sub('^[^\.]+\.', '', full_bin_ID.replace(self.fasta_extension,''))
+            bin_IDs.append(bin_ID)
             log("Contigs Fasta file found for Bin ID: "+bin_ID)
 
         # read CheckM stats to get completeness and contamination scores
@@ -282,8 +285,9 @@ class CheckMUtil:
         with open (bin_stats_ext_file, 'r') as bin_stats_ext_handle:
             for bin_stats_line in bin_stats_ext_handle:
                 bin_stats_line.rstrip()
-                [bin_ID, bin_stats_json_str] = bin_stats_line.split("\t")
-                bin_ID = bin_ID.replace('out_header.','')
+                [full_bin_ID, bin_stats_json_str] = bin_stats_line.split("\t")
+                bin_ID = re.sub('^[^\.]+\.', '', full_bin_ID.replace(self.fasta_extension,''))
+
                 bin_stats_json_str = json.dumps(ast.literal_eval(bin_stats_json_str))
                 bin_stats_obj[bin_ID] = json.loads(bin_stats_json_str, parse_float=Decimal)
         for bin_ID in bin_IDs:
