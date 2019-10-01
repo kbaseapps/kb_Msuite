@@ -315,6 +315,7 @@ class CheckMUtil:
         
         bin_basename = 'Bin'
         for bin_ID in bin_IDs:
+            full_bin_ID = bin_basename+'.'+bin_ID
             bin_is_HQ = True
             this_comp = QC_scores[bin_ID]['completeness']
             this_cont = QC_scores[bin_ID]['contamination']
@@ -331,7 +332,7 @@ class CheckMUtil:
                 log("Bin "+bin_ID+" passed QC filters.  Adding to new BinnedContigs")
                 some_bins_are_HQ = True
                 retained_bin_IDs[bin_ID] = True
-                src_path = bin_fasta_files_by_bin_ID[bin_ID]
+                src_path = bin_fasta_files_by_bin_ID[full_bin_ID]
                 dst_path = os.path.join(filtered_bins_dir, bin_basename+'.'+str(bin_ID)+'.'+self.binned_contigs_builder_fasta_extension)
                 outputBuilder._copy_file_new_name_ignore_errors (src_path, dst_path)
         for bin_ID in bin_IDs:
