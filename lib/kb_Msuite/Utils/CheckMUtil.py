@@ -41,9 +41,10 @@ class CheckMUtil:
             raise ValueError('workspace_name field was not set in params for run_checkM_lineage_wf')
 
         # 1) stage input data
-        fasta_extension = 'fna'
+        self.fasta_extension = 'fna'
+        self.binned_contigs_builder_fasta_extension = 'fasta'
         dsu = DataStagingUtils(self.config, self.ctx)
-        staged_input = dsu.stage_input(params['input_ref'], fasta_extension)
+        staged_input = dsu.stage_input(params['input_ref'], self.fasta_extension)
         input_dir = staged_input['input_dir']
         suffix = staged_input['folder_suffix']
         all_seq_fasta_file = staged_input['all_seq_fasta']
@@ -79,10 +80,9 @@ class CheckMUtil:
                                                              outputBuilder, 
                                                              input_dir, 
                                                              output_dir, 
-                                                             filtered_bins_dir,
-                                                             fasta_extension)
+                                                             filtered_bins_dir)
             if filtered_obj_info == None:
-                print ("No Bins passed QC filters.  Not saving filtered BinnedContig object")
+                log("No Bins passed QC filters.  Not saving filtered BinnedContig object")
             else:
                 removed_bins = filtered_obj_info['removed_bin_IDs']
                 created_objects = [{'ref': filtered_obj_info['filtered_obj_ref'],
@@ -97,8 +97,9 @@ class CheckMUtil:
 
         # 6) build the HTML report
         os.makedirs(html_dir)
-        outputBuilder.build_html_output_for_lineage_wf(html_dir, params['input_ref'], removed_bins=removed_bins)
-        html_zipped = outputBuilder.package_folder(html_dir, 'report.html',
+        html_files = outputBuilder.build_html_output_for_lineage_wf(html_dir, params['input_ref'], removed_bins=removed_bins)
+        html_zipped = outputBuilder.package_folder(html_dir, 
+                                                   html_files[0],
                                                    'Summarized report from CheckM')
 
         # 7) save report
@@ -258,8 +259,7 @@ class CheckMUtil:
                                outputBuilder, 
                                input_dir, 
                                output_dir, 
-                               filtered_bins_dir,
-                               fasta_extension):
+                               filtered_bins_dir):
         filtered_binned_contig_obj_name = None
         filtered_binned_contig_obj_ref  = None
         if not params.get('output_filtered_binnedcontigs_obj_name'):
@@ -269,10 +269,10 @@ class CheckMUtil:
         if not os.path.exists(filtered_bins_dir):
             os.makedirs(filtered_bins_dir)
         bin_stats_ext_file = os.path.join(output_dir, 'storage', 'bin_stats_ext.tsv')
-        bin_fasta_files_by_bin_ID = dataStagingUtils.get_bin_fasta_files(input_dir, fasta_extension)
+        bin_fasta_files_by_bin_ID = dataStagingUtils.get_bin_fasta_files(input_dir, self.fasta_extension)
         bin_IDs = sorted(bin_fasta_files_by_bin_ID.keys())
         for bin_ID in bin_IDs:
-            print ("Contigs Fasta file found for Bin ID: "+bin_ID)
+            log("Contigs Fasta file found for Bin ID: "+bin_ID)
 
         # read CheckM stats to get completeness and contamination scores
         bin_stats_obj = dict()
@@ -293,8 +293,8 @@ class CheckMUtil:
             QC_scores[bin_ID] = dict()
             QC_scores[bin_ID]['completeness'] = float(bin_stats_obj[bin_ID]['Completeness'])
             QC_scores[bin_ID]['contamination'] = float(bin_stats_obj[bin_ID]['Contamination'])
-            print ("Bin "+bin_ID+" CheckM COMPLETENESS:  "+str(QC_scores[bin_ID]['completeness']))
-            print ("Bin "+bin_ID+" CheckM CONTAMINATION: "+str(QC_scores[bin_ID]['contamination']))
+            log("Bin "+bin_ID+" CheckM COMPLETENESS:  "+str(QC_scores[bin_ID]['completeness']))
+            log("Bin "+bin_ID+" CheckM CONTAMINATION: "+str(QC_scores[bin_ID]['contamination']))
 
         # copy filtered bin scaffold files to filtered dir
         some_bins_are_HQ = False
@@ -309,25 +309,26 @@ class CheckMUtil:
             test_contamination = True
             contamination_thresh = float(params.get('contamination_perc'))
         
+        bin_basename = 'Bin'
         for bin_ID in bin_IDs:
             bin_is_HQ = True
             this_comp = QC_scores[bin_ID]['completeness']
             this_cont = QC_scores[bin_ID]['contamination']
             if test_completeness and this_comp < completeness_thresh:
                 bin_is_HQ = False
-                print ("Bin "+bin_ID+" Completeness of "+str(this_comp)+" below thresh "+str(completeness_thresh))
+                log("Bin "+bin_ID+" Completeness of "+str(this_comp)+" below thresh "+str(completeness_thresh))
             if test_contamination and this_cont > contamination_thresh:
                 bin_is_HQ = False
-                print ("Bin "+bin_ID+" Contamination of "+str(this_cont)+" above thresh "+str(contamination_thresh))
+                log("Bin "+bin_ID+" Contamination of "+str(this_cont)+" above thresh "+str(contamination_thresh))
             
             if not bin_is_HQ:
-                print ("Bin "+bin_ID+" didn't pass QC filters.  Skipping.")
+                log("Bin "+bin_ID+" didn't pass QC filters.  Skipping.")
             else:
-                print ("Bin "+bin_ID+" passed QC filters.  Adding to new BinnedContigs")
+                log("Bin "+bin_ID+" passed QC filters.  Adding to new BinnedContigs")
                 some_bins_are_HQ = True
                 retained_bin_IDs[bin_ID] = True
                 src_path = bin_fasta_files_by_bin_ID[bin_ID]
-                dst_path = os.path.join(filtered_bins_dir, 'Bin'+'.'+str(bin_ID)+'.'+fasta_extension)
+                dst_path = os.path.join(filtered_bins_dir, bin_basename+'.'+str(bin_ID)+'.'+self.binned_contigs_builder_fasta_extension)
                 outputBuilder._copy_file_new_name_ignore_errors (src_path, dst_path)
         for bin_ID in bin_IDs:
             if bin_ID not in retained_bin_IDs:
@@ -337,6 +338,7 @@ class CheckMUtil:
         if not some_bins_are_HQ:
             return None
         assembly_ref = dataStagingUtils.read_assembly_ref_from_binnedcontigs(params['input_ref'])
+        bin_summary_path = dataStagingUtils.build_bin_summary_file_from_binnedcontigs_obj (params['input_ref'], filtered_bins_dir, bin_basename, self.binned_contigs_builder_fasta_extension)
         new_binned_contigs_info = outputBuilder.save_binned_contigs (params, assembly_ref, filtered_bins_dir)
 
         return { 'filtered_obj_name': new_binned_contigs_info['obj_name'],

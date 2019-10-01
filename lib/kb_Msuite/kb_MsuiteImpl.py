@@ -36,8 +36,8 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.4.0"
-    GIT_URL = "https://github.com/dcchivian/kb_Msuite"
-    GIT_COMMIT_HASH = "54716393b9bb86fe8f62847f4ba25366dd7d4615"
+    GIT_URL = "https://github.com/kbaseapps/kb_Msuite"
+    GIT_COMMIT_HASH = "a27b0c19a554c371abdd945c48391644a7356fcd"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -140,7 +140,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            parameter "save_output_dir" of type "boolean" (A boolean - 0 for
            false, 1 for true. @range (0, 1)), parameter "save_plots_dir" of
            type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
-           1)), parameter "completenes_perc" of Double, parameter
+           1)), parameter "completeness_perc" of Double, parameter
            "contamination_perc" of Double, parameter
            "output_filtered_binnedcontigs_obj_name" of String, parameter
            "threads" of Long

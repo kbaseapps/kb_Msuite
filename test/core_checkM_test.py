@@ -220,7 +220,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 1: single assembly
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_assembly")
     def test_checkM_lineage_wf_full_app_single_assembly(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_assembly'
         print ("\n=================================================================")
@@ -253,12 +253,12 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
-        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+        self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
     # Test 2: Regression test (CheckM <= v1.0.7) for single problem assembly
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_problem_assembly")
     def test_checkM_lineage_wf_full_app_single_problem_assembly(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_problem_assembly'
         print ("\n=================================================================")
@@ -291,12 +291,12 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
-        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+        self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
     # Test 3: binned contigs
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs")
     def test_checkM_lineage_wf_full_app_binned_contigs(self):
         method_name = 'test_checkM_lineage_wf_full_app_binned_contigs'
         print ("\n=================================================================")
@@ -330,12 +330,12 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
-        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+        self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
     # Test 4: Regression test for empty binned contigs object
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_binned_contigs_EMPTY")
     def test_checkM_lineage_wf_full_app_binned_contigs_EMPTY(self):
         method_name = 'test_checkM_lineage_wf_full_app_binned_contigs_EMPTY'
         print ("\n=================================================================")
@@ -356,7 +356,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 5: Assembly Set
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_assemblySet")
     def test_checkM_lineage_wf_full_app_assemblySet(self):
         method_name = 'test_checkM_lineage_wf_full_app_assemblySet'
         print ("\n=================================================================")
@@ -388,12 +388,12 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
-        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+        self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
     # Test 6: Single Genome
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_genome")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_single_genome")
     def test_checkM_lineage_wf_full_app_single_genome(self):
         method_name = 'test_checkM_lineage_wf_full_app_single_genome'
         print ("\n=================================================================")
@@ -425,12 +425,12 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
-        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+        self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
     # Test 7: Genome Set
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_checkM_lineage_wf_full_app_genomeSet")
+    @unittest.skip("skipped test_checkM_lineage_wf_full_app_genomeSet")
     def test_checkM_lineage_wf_full_app_genomeSet(self):
         method_name = 'test_checkM_lineage_wf_full_app_genomeSet'
         print ("\n=================================================================")
@@ -462,7 +462,7 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
-        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+        self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
     # Test 8: Data staging (intended data not checked into git repo: SKIP)
     #
@@ -524,7 +524,7 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('shock_id', res)
         self.assertIn('name', res)
         self.assertIn('description', res)
-        self.assertEqual(res['name'], 'report.html')
+        self.assertEqual(res['name'], 'CheckM_Plot.html')
 
     # Test 10: tetra wiring (intended data not checked into git repo: SKIP)
     #
@@ -583,7 +583,7 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertEquals(rep['direct_html_link_index'], 0)
         self.assertEquals(len(rep['file_links']), 2)
         self.assertEquals(len(rep['html_links']), 1)
-        self.assertEquals(rep['html_links'][0]['name'], 'report.html')
+        self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
 
     def setup_local_method_data(self):
@@ -599,7 +599,7 @@ class CoreCheckMTest(unittest.TestCase):
         return scratch_input_dir, scratch_output_dir, log_path
 
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_local_methodd()")
+    @unittest.skip("skipped test_local_method()")
     def test_local_method(self):
         """
         Test a successful run of the .lineage_wf local method
