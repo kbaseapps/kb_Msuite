@@ -358,7 +358,7 @@ class DataStagingUtils(object):
             
             #print ("BIN_ID: "+bin_ID)  # DEBUG
             bin_summary_info[bin_ID] = { 'n_contigs': bin_item['n_contigs'],
-                                         'gc': bin_item['gc'],
+                                         'gc': round (100.0 * float(bin_item['gc']), 1),
                                          'sum_contig_len': bin_item['sum_contig_len'],
                                          'cov': round (100.0 * float(bin_item['cov']), 1)
                                      }
