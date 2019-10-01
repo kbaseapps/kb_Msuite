@@ -61,6 +61,7 @@ class OutputBuilder(object):
         '''
         Based on the output of CheckM lineage_wf, build an HTML report
         '''
+        html_files = []
 
         # move plots we need into the html directory
         plot_name = 'bin_qa_plot.png'
@@ -76,10 +77,12 @@ class OutputBuilder(object):
         self._copy_ref_dist_plots(self.plots_dir, html_dir)
 
         # write the html report to file
-        html = open(os.path.join(html_dir, 'CheckM_plot.html'), 'w')
+        report_type = 'Plot'
+        html_file = 'CheckM_'+report_type+'.html'
+        html_files.append(html_file)
+        html = open(os.path.join(html_dir, html_file), 'w')
 
         # header
-        report_type = 'Plot'
         self._write_html_header(html, object_name, report_type)
         html.write('<body>\n')
 
@@ -105,10 +108,12 @@ class OutputBuilder(object):
 
 
         # print out the info table
-        html = open(os.path.join(html_dir, 'CheckM_'+report_type+'.html'), 'w')
+        report_type = 'Table'
+        html_file = 'CheckM_'+report_type+'.html'
+        html_files.append(html_file)
+        html = open(os.path.join(html_dir, html_file), 'w')
 
         # header
-        report_type = 'Table'
         self._write_html_header(html, object_name, report_type)
         html.write('<body>\n')
 
@@ -122,7 +127,8 @@ class OutputBuilder(object):
         html.write('</body>\n</html>\n')
         html.close()
 
-        return self.package_folder(html_dir, 'report.html', 'Assembled report from CheckM')
+        return html_files
+
 
     def _write_tabs(self, html, report_type):
         #tabs = '''

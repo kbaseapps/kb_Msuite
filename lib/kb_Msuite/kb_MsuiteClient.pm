@@ -344,7 +344,7 @@ CheckMLineageWf_withFilter_Params is a reference to a hash where the following k
 	reduced_tree has a value which is a kb_Msuite.boolean
 	save_output_dir has a value which is a kb_Msuite.boolean
 	save_plots_dir has a value which is a kb_Msuite.boolean
-	completenes_perc has a value which is a float
+	completeness_perc has a value which is a float
 	contamination_perc has a value which is a float
 	output_filtered_binnedcontigs_obj_name has a value which is a string
 	threads has a value which is an int
@@ -367,7 +367,7 @@ CheckMLineageWf_withFilter_Params is a reference to a hash where the following k
 	reduced_tree has a value which is a kb_Msuite.boolean
 	save_output_dir has a value which is a kb_Msuite.boolean
 	save_plots_dir has a value which is a kb_Msuite.boolean
-	completenes_perc has a value which is a float
+	completeness_perc has a value which is a float
 	contamination_perc has a value which is a float
 	output_filtered_binnedcontigs_obj_name has a value which is a string
 	threads has a value which is an int
@@ -842,7 +842,7 @@ workspace_name has a value which is a string
 reduced_tree has a value which is a kb_Msuite.boolean
 save_output_dir has a value which is a kb_Msuite.boolean
 save_plots_dir has a value which is a kb_Msuite.boolean
-completenes_perc has a value which is a float
+completeness_perc has a value which is a float
 contamination_perc has a value which is a float
 output_filtered_binnedcontigs_obj_name has a value which is a string
 threads has a value which is an int
@@ -859,7 +859,7 @@ workspace_name has a value which is a string
 reduced_tree has a value which is a kb_Msuite.boolean
 save_output_dir has a value which is a kb_Msuite.boolean
 save_plots_dir has a value which is a kb_Msuite.boolean
-completenes_perc has a value which is a float
+completeness_perc has a value which is a float
 contamination_perc has a value which is a float
 output_filtered_binnedcontigs_obj_name has a value which is a string
 threads has a value which is an int

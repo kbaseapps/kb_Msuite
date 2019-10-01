@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "reduced_tree",
     "save_output_dir",
     "save_plots_dir",
-    "completenes_perc",
+    "completeness_perc",
     "contamination_perc",
     "output_filtered_binnedcontigs_obj_name",
     "threads"
@@ -43,8 +43,8 @@ public class CheckMLineageWfWithFilterParams {
     private Long saveOutputDir;
     @JsonProperty("save_plots_dir")
     private Long savePlotsDir;
-    @JsonProperty("completenes_perc")
-    private Double completenesPerc;
+    @JsonProperty("completeness_perc")
+    private Double completenessPerc;
     @JsonProperty("contamination_perc")
     private Double contaminationPerc;
     @JsonProperty("output_filtered_binnedcontigs_obj_name")
@@ -128,18 +128,18 @@ public class CheckMLineageWfWithFilterParams {
         return this;
     }
 
-    @JsonProperty("completenes_perc")
-    public Double getCompletenesPerc() {
-        return completenesPerc;
+    @JsonProperty("completeness_perc")
+    public Double getCompletenessPerc() {
+        return completenessPerc;
     }
 
-    @JsonProperty("completenes_perc")
-    public void setCompletenesPerc(Double completenesPerc) {
-        this.completenesPerc = completenesPerc;
+    @JsonProperty("completeness_perc")
+    public void setCompletenessPerc(Double completenessPerc) {
+        this.completenessPerc = completenessPerc;
     }
 
-    public CheckMLineageWfWithFilterParams withCompletenesPerc(Double completenesPerc) {
-        this.completenesPerc = completenesPerc;
+    public CheckMLineageWfWithFilterParams withCompletenessPerc(Double completenessPerc) {
+        this.completenessPerc = completenessPerc;
         return this;
     }
 
@@ -200,7 +200,7 @@ public class CheckMLineageWfWithFilterParams {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((("CheckMLineageWfWithFilterParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", reducedTree=")+ reducedTree)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", completenesPerc=")+ completenesPerc)+", contaminationPerc=")+ contaminationPerc)+", outputFilteredBinnedcontigsObjName=")+ outputFilteredBinnedcontigsObjName)+", threads=")+ threads)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((("CheckMLineageWfWithFilterParams"+" [inputRef=")+ inputRef)+", workspaceName=")+ workspaceName)+", reducedTree=")+ reducedTree)+", saveOutputDir=")+ saveOutputDir)+", savePlotsDir=")+ savePlotsDir)+", completenessPerc=")+ completenessPerc)+", contaminationPerc=")+ contaminationPerc)+", outputFilteredBinnedcontigsObjName=")+ outputFilteredBinnedcontigsObjName)+", threads=")+ threads)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

@@ -89,7 +89,7 @@ class kb_Msuite(object):
            parameter "save_output_dir" of type "boolean" (A boolean - 0 for
            false, 1 for true. @range (0, 1)), parameter "save_plots_dir" of
            type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
-           1)), parameter "completenes_perc" of Double, parameter
+           1)), parameter "completeness_perc" of Double, parameter
            "contamination_perc" of Double, parameter
            "output_filtered_binnedcontigs_obj_name" of String, parameter
            "threads" of Long
