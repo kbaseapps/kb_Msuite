@@ -103,6 +103,7 @@ class OutputBuilder(object):
             )
 
         # close the CheckM plot
+        #self._write_script(html)  # don't need for tabs anymore
         html.write('</body>\n</html>\n')
         html.close()
 
@@ -121,8 +122,7 @@ class OutputBuilder(object):
         self._write_tabs(html, report_type)
 
         self.build_summary_table(html, html_dir, removed_bins=removed_bins)
-
-        self._write_script(html)
+        #self._write_script(html)  # don't need for tabs anymore
 
         html.write('</body>\n</html>\n')
         html.close()
@@ -146,7 +146,6 @@ class OutputBuilder(object):
             tabs = '<div><a href="CheckM_Plot.html">CheckM Plot</a> | <b>CheckM TABLE</b></div>'
 
         html.write(tabs)
-
 
 
     def _write_script(self, html):
@@ -272,6 +271,10 @@ class OutputBuilder(object):
                 background-color: #f5f5f5;
             }
 
+        </style>\n</head>\n'''
+
+        # the css for tabs is conflicting so replace with simple html links
+        '''
             /* Style the tab */
             div.tab {
                 overflow: hidden;
@@ -310,7 +313,7 @@ class OutputBuilder(object):
                 animation: fadeEffect 1s;
                 border-top: none;
             }
-        </style>\n</head>\n'''
+        '''
 
         html.write(style)
         html.write('</head>\n')
