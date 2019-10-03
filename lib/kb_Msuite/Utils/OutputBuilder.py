@@ -224,7 +224,7 @@ class OutputBuilder(object):
             if removed_bins:
                 bin_id = re.sub('^[^\.]+\.', '', bid)
                 if bin_id in removed_bins:
-                    row_bgcolor = '#FEB4B2'
+                    row_bgcolor = '#F9E3E2'
                     row_opening = '<tr style="background-color:'+row_bgcolor+'">'
             html.write('  '+row_opening+'\n')
             dist_plot_file = os.path.join(html_dir, str(bid) + self.DIST_PLOT_EXT)
