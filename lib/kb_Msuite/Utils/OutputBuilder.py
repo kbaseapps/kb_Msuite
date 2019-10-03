@@ -88,12 +88,12 @@ class OutputBuilder(object):
 
         # tabs
         self._write_tabs(html, report_type)
+        html.write('<br><br><br><br>\n')
 
         # include the single main summary figure
         if plot_exists:
             html.write('<div id="Plot" class="tabcontent">\n')
             html.write('<img src="' + plot_name + '" width="90%" />\n')
-            html.write('<br><br><br>\n')
             html.write('</div>\n')
         else:
             html.write(
@@ -120,7 +120,7 @@ class OutputBuilder(object):
 
         # tabs
         self._write_tabs(html, report_type)
-
+        html.write('<br><br><br><br>\n')
         self.build_summary_table(html, html_dir, removed_bins=removed_bins)
         #self._write_script(html)  # don't need for tabs anymore
 
@@ -200,8 +200,8 @@ class OutputBuilder(object):
                   {'id': '3', 'display': '3'},
                   {'id': '4', 'display': '4'},
                   {'id': '5+', 'display': '5+'},
-                  {'id': 'Completeness', 'display': 'Completeness', 'round': 3},
-                  {'id': 'Contamination', 'display': 'Contamination', 'round': 3}]
+                  {'id': 'Completeness', 'display': 'Completeness', 'round': 2},
+                  {'id': 'Contamination', 'display': 'Contamination', 'round': 2}]
 
         html.write('<div id="Summary" class="tabcontent">\n')
         html.write('<table>\n')
@@ -210,6 +210,13 @@ class OutputBuilder(object):
         for f in fields:
             html.write('    <th>' + f['display'] + '</th>\n')
         html.write('  </tr>\n')
+
+
+        # DEBUG
+        for bid in sorted(bin_stats.keys()):
+            print ("BIN STATS BID: "+bid)
+        for bid in removed_bins:
+            print ("REMOVED BID: "+bid)
 
         for bid in sorted(bin_stats.keys()):
             if removed_bins and bid in removed_bins:
@@ -235,6 +242,70 @@ class OutputBuilder(object):
 
         html.write('</table>\n')
         html.write('</div>\n')
+
+
+    def build_summary_tsv_file(self, tab_text_dir, tab_text_file):
+
+        if not os.path.exists(tab_text_dir):
+            os.makedirs(tab_text_dir)
+
+        stats_file = os.path.join(self.output_dir, 'storage', 'bin_stats_ext.tsv')
+        if not os.path.isfile(stats_file):
+            log('Warning! no stats file found (looking at: ' + stats_file + ')')
+            return
+
+        bin_stats = dict()
+        with open(stats_file) as lf:
+            for line in lf:
+                if not line:
+                    continue
+                if line.startswith('#'):
+                    continue
+                col = line.split('\t')
+                bin_id = str(col[0])
+                data = ast.literal_eval(col[1])
+                bin_stats[bin_id] = data
+
+        fields = [{'id': 'marker lineage', 'display': 'Marker Lineage'},
+                  {'id': '# genomes', 'display': '# Genomes'},
+                  {'id': '# markers', 'display': '# Markers'},
+                  {'id': '# marker sets', 'display': '# Marker Sets'},
+                  {'id': '0', 'display': '0'},
+                  {'id': '1', 'display': '1'},
+                  {'id': '2', 'display': '2'},
+                  {'id': '3', 'display': '3'},
+                  {'id': '4', 'display': '4'},
+                  {'id': '5+', 'display': '5+'},
+                  {'id': 'Completeness', 'display': 'Completeness', 'round': 2},
+                  {'id': 'Contamination', 'display': 'Contamination', 'round': 2}]
+
+        tab_text_files = []
+        tab_text_path = os.path.join (tab_text_dir, tab_text_file)
+        tab_text_files.append(tab_text_path)
+        with open (tab_text_path, 'w') as out_handle:
+
+            out_header = ['Bin Name']
+            for f in fields:
+                out_header.append(f['display'])
+            out_handle.write("\t".join(out_header))
+
+            # DEBUG
+            for bid in sorted(bin_stats.keys()):
+                print ("BIN STATS BID: "+bid)
+
+            for bid in sorted(bin_stats.keys()):
+                row = []
+                row.append(bid)
+                for f in fields:
+                    if f['id'] in bin_stats[bid]:
+                        value = str(bin_stats[bid][f['id']])
+                        if f.get('round'):
+                            value = str(round(bin_stats[bid][f['id']], f['round']))
+                        row.append(str(value))
+                out_handle.write("\t".join(row))
+
+        return tab_text_files
+
 
     def _write_html_header(self, html, object_name, report_type):
 

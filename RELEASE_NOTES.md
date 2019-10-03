@@ -6,6 +6,7 @@ __Changes__
 - added App that filters BinnedContigs by Completeness / Contamination
 - split Plot and Table HTML reports into separate pages
 - indicate in Table HTML report which bins were filtered out by QC
+- added TSV summary table for download
 - set thread count explicitly to 8
 
 ### Version 1.3.1

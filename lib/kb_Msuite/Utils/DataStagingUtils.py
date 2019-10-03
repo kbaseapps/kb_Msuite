@@ -281,8 +281,7 @@ class DataStagingUtils(object):
                     continue
                 if filename.endswith('.'+fasta_extension):
                     fasta_file = filename
-                    bin_ID = fasta_file.replace('.'+fasta_extension,'')
-                    bin_ID = bin_ID.replace('out_header.','')
+                    bin_ID = re.sub('^[^\.]+\.', '', fasta_file.replace('.'+fasta_extension,''))
                     fasta_path = os.path.join (input_dir,fasta_file)
                     bin_fasta_files[bin_ID] = fasta_path
                     #bin_fasta_files[bin_ID] = fasta_file
@@ -366,8 +365,8 @@ class DataStagingUtils(object):
         header_line = ['Bin name', 'Completeness', 'Genome size', 'GC content']
         bin_fasta_files_by_bin_ID = self.get_bin_fasta_files(bin_dir, fasta_extension)
         bin_IDs = []
-        for full_bin_ID in sorted(bin_fasta_files_by_bin_ID.keys()):
-            bin_ID = re.sub('^[^\.]+\.', '', full_bin_ID)
+        for bin_ID in sorted(bin_fasta_files_by_bin_ID.keys()):
+            bin_ID = re.sub('^[^\.]+\.', '', bin_ID.replace('.'+fasta_extension,''))
             bin_IDs.append(bin_ID)
         summary_file_path = os.path.join (bin_dir, bin_basename+'.'+'summary')
 
