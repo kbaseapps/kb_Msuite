@@ -422,7 +422,7 @@ class OutputBuilder(object):
         html.write('<title>CheckM Dist Plots for Bin' + bin_id + '</title>')
         html.write('<style style="text/css">\n a { color: #337ab7; } \n a:hover { color: #23527c; }\n</style>\n')
         html.write('<body>\n')
-        html.write('<br><a href="report.html">Back to summary</a><br>\n')
+        html.write('<br><a href="CheckM_Table.html">Back to summary</a><br>\n')
         html.write('<center><h2>Bin: ' + bin_id + '</h2></center>\n')
         html.write('<img src="' + bin_id + self.DIST_PLOT_EXT + '" width="90%" />\n')
         html.write('<br><br><br>\n')
