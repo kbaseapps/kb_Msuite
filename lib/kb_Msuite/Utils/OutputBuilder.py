@@ -220,12 +220,13 @@ class OutputBuilder(object):
             print ("REMOVED BID: "+bid)
 
         for bid in sorted(bin_stats.keys()):
-            row_bgcolor = 'white'
+            row_opening = '<tr>'
             if removed_bins:
                 bin_id = re.sub('^[^\.]+\.', '', bid)
                 if bin_id in removed_bins:
                     row_bgcolor = '#FEB4B2'
-            html.write('  <tr style="background-color:'+row_bgcolor+'">\n')
+                    row_opening = '<tr style="background-color:'+row_bgcolor+'">'
+            html.write('  '+row_opening+'\n')
             dist_plot_file = os.path.join(html_dir, str(bid) + self.DIST_PLOT_EXT)
             if os.path.isfile(dist_plot_file):
                 self._write_dist_html_page(html_dir, bid)
