@@ -214,17 +214,17 @@ class OutputBuilder(object):
 
 
         # DEBUG
-        for bid in sorted(bin_stats.keys()):
-            print ("BIN STATS BID: "+bid)
-        for bid in removed_bins:
-            print ("REMOVED BID: "+bid)
+        #for bid in sorted(bin_stats.keys()):
+        #    print ("BIN STATS BID: "+bid)
+        #for bid in removed_bins:
+        #    print ("REMOVED BID: "+bid)
 
         for bid in sorted(bin_stats.keys()):
             row_opening = '<tr>'
             if removed_bins:
                 bin_id = re.sub('^[^\.]+\.', '', bid)
                 if bin_id in removed_bins:
-                    row_bgcolor = '#FEB4B2'
+                    row_bgcolor = '#F9E3E2'
                     row_opening = '<tr style="background-color:'+row_bgcolor+'">'
             html.write('  '+row_opening+'\n')
             dist_plot_file = os.path.join(html_dir, str(bid) + self.DIST_PLOT_EXT)
@@ -293,8 +293,8 @@ class OutputBuilder(object):
             out_handle.write("\t".join(out_header)+"\n")
 
             # DEBUG
-            for bid in sorted(bin_stats.keys()):
-                print ("BIN STATS BID: "+bid)
+            #for bid in sorted(bin_stats.keys()):
+            #    print ("BIN STATS BID: "+bid)
 
             for bid in sorted(bin_stats.keys()):
                 row = []
