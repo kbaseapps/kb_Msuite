@@ -251,7 +251,7 @@ class CoreCheckMTest(unittest.TestCase):
                                               [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
-        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['file_links']), 3)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
@@ -289,7 +289,7 @@ class CoreCheckMTest(unittest.TestCase):
                                               [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
-        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['file_links']), 3)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
@@ -328,7 +328,7 @@ class CoreCheckMTest(unittest.TestCase):
                                               [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
-        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['file_links']), 3)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
@@ -386,7 +386,7 @@ class CoreCheckMTest(unittest.TestCase):
                                               [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
-        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['file_links']), 3)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
@@ -423,7 +423,7 @@ class CoreCheckMTest(unittest.TestCase):
                                               [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
-        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['file_links']), 3)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
@@ -460,7 +460,7 @@ class CoreCheckMTest(unittest.TestCase):
                                               [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
-        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['file_links']), 3)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 
@@ -581,7 +581,7 @@ class CoreCheckMTest(unittest.TestCase):
                                               [{'ref': result['report_ref']}]})['data'][0]['data']
 
         self.assertEquals(rep['direct_html_link_index'], 0)
-        self.assertEquals(len(rep['file_links']), 2)
+        self.assertEquals(len(rep['file_links']), 3)
         self.assertEquals(len(rep['html_links']), 1)
         self.assertEquals(rep['html_links'][0]['name'], 'CheckM_Plot.html')
 

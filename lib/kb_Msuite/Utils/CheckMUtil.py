@@ -272,8 +272,7 @@ class CheckMUtil:
         bin_stats_ext_file = os.path.join(output_dir, 'storage', 'bin_stats_ext.tsv')
         bin_fasta_files_by_bin_ID = dataStagingUtils.get_bin_fasta_files(input_dir, self.fasta_extension)
         bin_IDs = []
-        for full_bin_ID in sorted(bin_fasta_files_by_bin_ID.keys()):
-            bin_ID = re.sub('^[^\.]+\.', '', full_bin_ID.replace(self.fasta_extension,''))
+        for bin_ID in sorted(bin_fasta_files_by_bin_ID.keys()):
             bin_IDs.append(bin_ID)
             log("Contigs Fasta file found for Bin ID: "+bin_ID)
 
@@ -315,7 +314,6 @@ class CheckMUtil:
         
         bin_basename = 'Bin'
         for bin_ID in bin_IDs:
-            full_bin_ID = bin_basename+'.'+bin_ID
             bin_is_HQ = True
             this_comp = QC_scores[bin_ID]['completeness']
             this_cont = QC_scores[bin_ID]['contamination']
@@ -332,7 +330,7 @@ class CheckMUtil:
                 log("Bin "+bin_ID+" passed QC filters.  Adding to new BinnedContigs")
                 some_bins_are_HQ = True
                 retained_bin_IDs[bin_ID] = True
-                src_path = bin_fasta_files_by_bin_ID[full_bin_ID]
+                src_path = bin_fasta_files_by_bin_ID[bin_ID]
                 dst_path = os.path.join(filtered_bins_dir, bin_basename+'.'+str(bin_ID)+'.'+self.binned_contigs_builder_fasta_extension)
                 outputBuilder._copy_file_new_name_ignore_errors (src_path, dst_path)
         for bin_ID in bin_IDs:
@@ -355,6 +353,18 @@ class CheckMUtil:
 
     def _build_output_packages(self, params, outputBuilder, input_dir):
         output_packages = []
+
+
+        # create bin report summary TSV table text file
+        log('creating TSV summary table text file')
+        tab_text_dir = os.path.join(outputBuilder.output_dir, 'tab_text')
+        tab_text_file = 'CheckM_summary_table.tsv'
+        tab_text_files = outputBuilder.build_summary_tsv_file(tab_text_dir, tab_text_file)
+        tab_text_zipped = outputBuilder.package_folder(tab_text_dir, 
+                                                       tab_text_file,
+                                                       'TSV Summary Table from CheckM')
+        output_packages.append(tab_text_zipped)
+
 
         # if 'save_output_dir' in params and str(params['save_output_dir']) == '1':
         if True:
