@@ -214,10 +214,10 @@ class OutputBuilder(object):
 
 
         # DEBUG
-        for bid in sorted(bin_stats.keys()):
-            print ("BIN STATS BID: "+bid)
-        for bid in removed_bins:
-            print ("REMOVED BID: "+bid)
+        #for bid in sorted(bin_stats.keys()):
+        #    print ("BIN STATS BID: "+bid)
+        #for bid in removed_bins:
+        #    print ("REMOVED BID: "+bid)
 
         for bid in sorted(bin_stats.keys()):
             row_opening = '<tr>'
@@ -293,8 +293,8 @@ class OutputBuilder(object):
             out_handle.write("\t".join(out_header)+"\n")
 
             # DEBUG
-            for bid in sorted(bin_stats.keys()):
-                print ("BIN STATS BID: "+bid)
+            #for bid in sorted(bin_stats.keys()):
+            #    print ("BIN STATS BID: "+bid)
 
             for bid in sorted(bin_stats.keys()):
                 row = []
