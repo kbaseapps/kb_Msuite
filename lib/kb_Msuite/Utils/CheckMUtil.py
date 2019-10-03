@@ -361,7 +361,7 @@ class CheckMUtil:
         tab_text_file = 'CheckM_summary_table.tsv'
         tab_text_files = outputBuilder.build_summary_tsv_file(tab_text_dir, tab_text_file)
         tab_text_zipped = outputBuilder.package_folder(tab_text_dir, 
-                                                       tab_text_file,
+                                                       tab_text_file+'.zip',
                                                        'TSV Summary Table from CheckM')
         output_packages.append(tab_text_zipped)
 

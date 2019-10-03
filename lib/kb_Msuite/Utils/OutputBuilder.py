@@ -88,7 +88,7 @@ class OutputBuilder(object):
 
         # tabs
         self._write_tabs(html, report_type)
-        html.write('<br><br><br><br>\n')
+        html.write('<br><br><br>\n')
 
         # include the single main summary figure
         if plot_exists:
@@ -120,7 +120,7 @@ class OutputBuilder(object):
 
         # tabs
         self._write_tabs(html, report_type)
-        html.write('<br><br><br><br>\n')
+        html.write('<br><br><br>\n')
         self.build_summary_table(html, html_dir, removed_bins=removed_bins)
         #self._write_script(html)  # don't need for tabs anymore
 
@@ -219,8 +219,10 @@ class OutputBuilder(object):
             print ("REMOVED BID: "+bid)
 
         for bid in sorted(bin_stats.keys()):
-            if removed_bins and bid in removed_bins:
-                row_bgcolor = '#FEB4B2'
+            if removed_bins:
+                bin_id = re.sub('^[^\.]+\.', '', bid)
+                if bin_id in removed_bins:
+                    row_bgcolor = '#FEB4B2'
             else:
                 row_bgcolor = 'white'
             html.write('  <tr style="background-color:'+row_bgcolor+'">\n')
@@ -287,7 +289,7 @@ class OutputBuilder(object):
             out_header = ['Bin Name']
             for f in fields:
                 out_header.append(f['display'])
-            out_handle.write("\t".join(out_header))
+            out_handle.write("\t".join(out_header)+"\n")
 
             # DEBUG
             for bid in sorted(bin_stats.keys()):
@@ -302,7 +304,7 @@ class OutputBuilder(object):
                         if f.get('round'):
                             value = str(round(bin_stats[bid][f['id']], f['round']))
                         row.append(str(value))
-                out_handle.write("\t".join(row))
+                out_handle.write("\t".join(row)+"\n")
 
         return tab_text_files
 
