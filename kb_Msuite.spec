@@ -18,7 +18,16 @@ module kb_Msuite {
     */
     typedef int boolean;
 
-    typedef string FASTA_format; /*".fna"*/
+    /* An X/Y/Z style reference  
+       e.g. "WS_ID/OBJ_ID/VER" 
+    */
+    typedef string obj_ref;
+
+    /* the FASTA extension
+       e.g. ".fna"
+    */
+    typedef string FASTA_format; 
+
 
     /*
         Runs CheckM as a command line local function.
@@ -103,6 +112,7 @@ module kb_Msuite {
     typedef structure {
         string report_name;
         string report_ref;
+        obj_ref binned_contig_obj_ref;
     } CheckMLineageWf_withFilter_Result;
 
     funcdef run_checkM_lineage_wf_withFilter(CheckMLineageWf_withFilter_Params params)

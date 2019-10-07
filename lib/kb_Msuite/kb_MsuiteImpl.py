@@ -37,7 +37,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
     ######################################### noqa
     VERSION = "1.4.0"
     GIT_URL = "https://github.com/kbaseapps/kb_Msuite"
-    GIT_COMMIT_HASH = "a27b0c19a554c371abdd945c48391644a7356fcd"
+    GIT_COMMIT_HASH = "d0b7da86da423aa43bb33139d35cff996de19e4f"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -146,7 +146,8 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            "threads" of Long
         :returns: instance of type "CheckMLineageWf_withFilter_Result" ->
            structure: parameter "report_name" of String, parameter
-           "report_ref" of String
+           "report_ref" of String, parameter "binned_contig_obj_ref" of type
+           "obj_ref" ("WS_ID/OBJ_ID/VER")
         """
         # ctx is the context object
         # return variables are: result

@@ -70,6 +70,7 @@ class CheckMUtil:
         self.run_checkM('lineage_wf', lineage_wf_options)
 
         # 3) optionally filter bins by quality scores and save object
+        binned_contig_obj_ref = None
         created_objects = None
         removed_bins = None
         outputBuilder = OutputBuilder(output_dir, plots_dir, self.scratch, self.callback_url)
@@ -85,8 +86,9 @@ class CheckMUtil:
             if filtered_obj_info == None:
                 log("No Bins passed QC filters.  Not saving filtered BinnedContig object")
             else:
+                binned_contig_obj_ref = filtered_obj_info['filtered_obj_ref']
                 removed_bins = filtered_obj_info['removed_bin_IDs']
-                created_objects = [{'ref': filtered_obj_info['filtered_obj_ref'],
+                created_objects = [{'ref': binned_contig_obj_ref,
                                     'description': 'HQ BinnedContigs '+filtered_obj_info['filtered_obj_name']}]
             
         # 4) make the plots:
@@ -117,8 +119,13 @@ class CheckMUtil:
         kr = KBaseReport(self.callback_url)
         report_output = kr.create_extended_report(report_params)
 
-        return {'report_name': report_output['name'],
-                'report_ref': report_output['ref']}
+        returnVal =  {'report_name': report_output['name'],
+                      'report_ref': report_output['ref']}
+        if binned_contig_obj_ref:
+            returnVal.update({'binned_contig_obj_ref': binned_contig_obj_ref})
+
+        return returnVal
+
 
     def build_checkM_lineage_wf_plots(self, bin_folder, out_folder, plots_folder,
                                       all_seq_fasta_file, tetra_file):
