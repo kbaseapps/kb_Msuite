@@ -20,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "report_name",
-    "report_ref"
+    "report_ref",
+    "binned_contig_obj_ref"
 })
 public class CheckMLineageWfWithFilterResult {
 
@@ -28,6 +29,8 @@ public class CheckMLineageWfWithFilterResult {
     private String reportName;
     @JsonProperty("report_ref")
     private String reportRef;
+    @JsonProperty("binned_contig_obj_ref")
+    private String binnedContigObjRef;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("report_name")
@@ -60,6 +63,21 @@ public class CheckMLineageWfWithFilterResult {
         return this;
     }
 
+    @JsonProperty("binned_contig_obj_ref")
+    public String getBinnedContigObjRef() {
+        return binnedContigObjRef;
+    }
+
+    @JsonProperty("binned_contig_obj_ref")
+    public void setBinnedContigObjRef(String binnedContigObjRef) {
+        this.binnedContigObjRef = binnedContigObjRef;
+    }
+
+    public CheckMLineageWfWithFilterResult withBinnedContigObjRef(String binnedContigObjRef) {
+        this.binnedContigObjRef = binnedContigObjRef;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -72,7 +90,7 @@ public class CheckMLineageWfWithFilterResult {
 
     @Override
     public String toString() {
-        return ((((((("CheckMLineageWfWithFilterResult"+" [reportName=")+ reportName)+", reportRef=")+ reportRef)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("CheckMLineageWfWithFilterResult"+" [reportName=")+ reportName)+", reportRef=")+ reportRef)+", binnedContigObjRef=")+ binnedContigObjRef)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

@@ -352,6 +352,8 @@ boolean is an int
 CheckMLineageWf_withFilter_Result is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
+	binned_contig_obj_ref has a value which is a kb_Msuite.obj_ref
+obj_ref is a string
 
 </pre>
 
@@ -375,6 +377,8 @@ boolean is an int
 CheckMLineageWf_withFilter_Result is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
+	binned_contig_obj_ref has a value which is a kb_Msuite.obj_ref
+obj_ref is a string
 
 
 =end text
@@ -648,10 +652,46 @@ an int
 
 
 
+=head2 obj_ref
+
+=over 4
+
+
+
+=item Description
+
+"WS_ID/OBJ_ID/VER"
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
 =head2 FASTA_format
 
 =over 4
 
+
+
+=item Description
+
+".fna"
 
 
 =item Definition
@@ -885,6 +925,7 @@ threads has a value which is an int
 a reference to a hash where the following keys are defined:
 report_name has a value which is a string
 report_ref has a value which is a string
+binned_contig_obj_ref has a value which is a kb_Msuite.obj_ref
 
 </pre>
 
@@ -895,6 +936,7 @@ report_ref has a value which is a string
 a reference to a hash where the following keys are defined:
 report_name has a value which is a string
 report_ref has a value which is a string
+binned_contig_obj_ref has a value which is a kb_Msuite.obj_ref
 
 
 =end text

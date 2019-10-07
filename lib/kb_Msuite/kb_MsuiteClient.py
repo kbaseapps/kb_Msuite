@@ -95,7 +95,8 @@ class kb_Msuite(object):
            "threads" of Long
         :returns: instance of type "CheckMLineageWf_withFilter_Result" ->
            structure: parameter "report_name" of String, parameter
-           "report_ref" of String
+           "report_ref" of String, parameter "binned_contig_obj_ref" of type
+           "obj_ref" ("WS_ID/OBJ_ID/VER")
         """
         return self._client.call_method('kb_Msuite.run_checkM_lineage_wf_withFilter',
                                         [params], self._service_ver, context)

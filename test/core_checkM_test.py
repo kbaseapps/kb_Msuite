@@ -236,7 +236,7 @@ class CoreCheckMTest(unittest.TestCase):
             # 'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1,
-            'threads': 8
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -274,7 +274,7 @@ class CoreCheckMTest(unittest.TestCase):
             # 'save_output_dir': 0,  # DEBUG
             'save_output_dir': 1,  # DEBUG
             'save_plots_dir': 1,
-            'threads': 8
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -314,7 +314,7 @@ class CoreCheckMTest(unittest.TestCase):
             'reduced_tree': 1,
             'save_output_dir': 1,
             'save_plots_dir': 1,
-            'threads': 8
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
         print('RESULT:')
@@ -371,7 +371,7 @@ class CoreCheckMTest(unittest.TestCase):
             'reduced_tree': 1,
             'save_output_dir': 1,
             'save_plots_dir': 1,
-            'threads': 8
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -408,7 +408,7 @@ class CoreCheckMTest(unittest.TestCase):
             'reduced_tree': 1,
             'save_output_dir': 1,
             'save_plots_dir': 1,
-            'threads': 8
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -445,7 +445,7 @@ class CoreCheckMTest(unittest.TestCase):
             'reduced_tree': 1,
             'save_output_dir': 1,
             'save_plots_dir': 1,
-            'threads': 8
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf(self.getContext(), params)[0]
 
@@ -567,7 +567,7 @@ class CoreCheckMTest(unittest.TestCase):
             'completeness_perc': 95.0,
             'contamination_perc': 1.5,
             'output_filtered_binnedcontigs_obj_name': 'filter.BinnedContigs',
-            'threads': 8
+            'threads': 4
         }
         result = self.getImpl().run_checkM_lineage_wf_withFilter(self.getContext(), params)[0]
         print('RESULT:')
