@@ -92,7 +92,7 @@ class DataStagingUtils(object):
         # AssemblySet
         #
         elif type_name == 'KBaseSets.AssemblySet':
-            
+
             # read assemblySet
             try:
                 assemblySet_obj = setAPI_Client.get_assembly_set_v1 ({'ref':input_ref, 'include_item_info':1})
@@ -100,7 +100,7 @@ class DataStagingUtils(object):
                 raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
             assembly_refs = []
             assembly_names = []
-            for assembly_item in assemblySet_obj['data']['items']:            
+            for assembly_item in assemblySet_obj['data']['items']:
                 this_assembly_ref = assembly_item['ref']
                 # assembly obj info
                 try:
@@ -109,7 +109,7 @@ class DataStagingUtils(object):
                 except Exception as e:
                     raise ValueError('Unable to get object from workspace: (' + this_assembly_ref +'): ' + str(e))
                 assembly_refs.append(this_assembly_ref)
-                assembly_names.append(this_assembly_name)    
+                assembly_names.append(this_assembly_name)
 
             # create file data (name for file is what's reported in results)
             for ass_i,assembly_ref in enumerate(assembly_refs):
@@ -221,7 +221,7 @@ class DataStagingUtils(object):
         counts the number of non-header, non-whitespace characters in a FASTA file
         '''
         seq_len = 0
-        with open (fasta_path, 'r', 0) as fasta_handle:
+        with open (fasta_path, 'r') as fasta_handle:
             for line in fasta_handle:
                 line = line.strip()
                 if line.startswith('>'):
@@ -354,7 +354,7 @@ class DataStagingUtils(object):
         for bin_item in binned_contig_obj['bins']:
             #print ("BIN_ITEM[bid]: "+bin_item['bid'])  # DEBUG
             bin_ID = re.sub ('^[^\.]+\.', '', bin_item['bid'].replace('.'+fasta_extension,''))
-            
+
             #print ("BIN_ID: "+bin_ID)  # DEBUG
             bin_summary_info[bin_ID] = { 'n_contigs': bin_item['n_contigs'],
                                          'gc': round (100.0 * float(bin_item['gc']), 1),

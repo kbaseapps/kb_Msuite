@@ -17,7 +17,7 @@ elif [ "${1}" = "async" ] ; then
   sh ./scripts/run_async.sh
 elif [ "${1}" = "init" ] ; then
   echo "Initialize module"
-  cp /miniconda/lib/python2.7/site-packages/checkm/DATA_CONFIG.orig /data/DATA_CONFIG
+  cp /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG.orig /data/DATA_CONFIG
   mkdir /data/checkm_data
   cd /data/checkm_data
   echo "downloading: https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz"
