@@ -18,15 +18,15 @@ module kb_Msuite {
     */
     typedef int boolean;
 
-    /* An X/Y/Z style reference  
-       e.g. "WS_ID/OBJ_ID/VER" 
+    /* An X/Y/Z style reference
+       e.g. "WS_ID/OBJ_ID/VER"
     */
     typedef string obj_ref;
 
     /* the FASTA extension
        e.g. ".fna"
     */
-    typedef string FASTA_format; 
+    typedef string FASTA_format;
 
 
     /*
@@ -46,7 +46,7 @@ module kb_Msuite {
 
         threads -  number of threads
         reduced_tree - if set to 1, run checkM with the reduced_tree flag, which will keep memory limited to less than 16gb (otherwise needs 40+ GB, which NJS worker nodes do have)
-        quiet - pass the --quite parameter to checkM, but doesn't seem to work for all subcommands
+        quiet - pass the --quiet parameter to checkM, but doesn't seem to work for all subcommands
     */
     typedef structure {
         string subcommand;
@@ -75,6 +75,8 @@ module kb_Msuite {
         input_ref - reference to the input Assembly, AssemblySet, Genome, GenomeSet, or BinnedContigs data
     */
     typedef structure {
+        string dir_name;    /* for use in tests */
+
         string input_ref;
         string workspace_name;
 
@@ -97,16 +99,19 @@ module kb_Msuite {
         input_ref - reference to the input BinnedContigs data
     */
     typedef structure {
+        string dir_name;    /* for use in tests */
+
         string input_ref;
         string workspace_name;
 
         boolean reduced_tree;
         boolean save_output_dir;
         boolean save_plots_dir;
+        int threads;
+
         float completeness_perc;   /* 0-100, default 95% */
         float contamination_perc;  /* 0-100, default: 2% */
         string output_filtered_binnedcontigs_obj_name;
-        int threads;
     } CheckMLineageWf_withFilter_Params;
 
     typedef structure {

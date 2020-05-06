@@ -6,6 +6,10 @@ python ./scripts/prepare_deploy_cfg.py ./deploy.cfg ./work/config.properties
 
 if [ -f ./work/token ] ; then
   export KB_AUTH_TOKEN=$(<./work/token)
+elif [ ! -z ${KBASE_TEST_TOKEN} ] ; then
+  # put the test token into work/token
+  cat <<< ${KBASE_TEST_TOKEN} > ./work/token
+  export KB_AUTH_TOKEN=${KBASE_TEST_TOKEN}
 fi
 
 if [ $# -eq 0 ] ; then
@@ -21,11 +25,15 @@ elif [ "${1}" = "init" ] ; then
   mkdir /data/checkm_data
   cd /data/checkm_data
   echo "downloading: https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz"
+  if [ -e /kb/module/checkm_data_2015_01_16.tar.gz ] ; then
+    cp /kb/module/checkm_data_2015_01_16.tar.gz .
+  else
   wget -q https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz
+  fi
   tar -xzf checkm_data_2015_01_16.tar.gz
   rm -r checkm_data_2015_01_16.tar.gz
   echo /data/checkm_data | checkm data setRoot /data/checkm_data
-  echo y | checkm data update # ensure you have the latest (32) data files from the ACE server
+#  echo y | checkm data update # ensure you have the latest (32) data files from the ACE server
   if [ -d "/data/checkm_data/genome_tree" ] ; then
     touch /data/__READY__
   else
