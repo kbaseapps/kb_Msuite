@@ -15,7 +15,7 @@ TEST_SCRIPT_NAME = run_tests.sh
 
 default: compile
 
-all: compile build build-startup-script build-executable-script build-test-script
+all: compile build build-startup-script build-executable-script
 
 compile:
 	kb-sdk compile $(SPEC_FILE) \

@@ -6,7 +6,7 @@
 #
 ############################################################
 
-from __future__ import print_function
+
 # the following is a hack to get the baseclient to import whether we're in a
 # package or not. This makes pep8 unhappy hence the annotations.
 try:
@@ -14,7 +14,7 @@ try:
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
 except ImportError:
     # no they aren't
-    from baseclient import BaseClient as _BaseClient  # @Reimport
+    from .baseclient import BaseClient as _BaseClient  # @Reimport
 
 
 class MetagenomeUtils(object):
@@ -25,7 +25,7 @@ class MetagenomeUtils(object):
             trust_all_ssl_certificates=False,
             auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login',
             service_ver='release',
-            async_job_check_time_ms=100, async_job_check_time_scale_percent=150, 
+            async_job_check_time_ms=100, async_job_check_time_scale_percent=150,
             async_job_check_max_time_ms=300000):
         if url is None:
             raise ValueError('A url is required')
@@ -119,7 +119,7 @@ class MetagenomeUtils(object):
         shock_id: Excel file stored in shock
         workspace_name: the name of the workspace object gets saved to
         optional params:
-        binned_contigs_name: saved BinnedContig name. 
+        binned_contigs_name: saved BinnedContig name.
                              Auto append timestamp from excel if not given.
         :param params: instance of type "ImportExcelParams" -> structure:
            parameter "shock_id" of String, parameter "workspace_name" of

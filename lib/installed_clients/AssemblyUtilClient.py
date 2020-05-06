@@ -6,7 +6,7 @@
 #
 ############################################################
 
-from __future__ import print_function
+
 # the following is a hack to get the baseclient to import whether we're in a
 # package or not. This makes pep8 unhappy hence the annotations.
 try:
@@ -14,7 +14,7 @@ try:
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
 except ImportError:
     # no they aren't
-    from baseclient import BaseClient as _BaseClient  # @Reimport
+    from .baseclient import BaseClient as _BaseClient  # @Reimport
 
 
 class AssemblyUtil(object):
@@ -25,7 +25,7 @@ class AssemblyUtil(object):
             trust_all_ssl_certificates=False,
             auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login',
             service_ver='release',
-            async_job_check_time_ms=100, async_job_check_time_scale_percent=150, 
+            async_job_check_time_ms=100, async_job_check_time_scale_percent=150,
             async_job_check_max_time_ms=300000):
         if url is None:
             raise ValueError('A url is required')
@@ -81,7 +81,7 @@ class AssemblyUtil(object):
            min_contig_length - if set and value is greater than 1, this will
            only include sequences with length greater or equal to the
            min_contig_length specified, discarding all other sequences
-           taxon_ref         - sets the taxon_ref if present contig_info     
+           taxon_ref         - sets the taxon_ref if present contig_info
            - map from contig_id to a small structure that can be used to set
            the is_circular and description fields for Assemblies (optional)
            Uploader options not yet supported taxon_reference: The ws

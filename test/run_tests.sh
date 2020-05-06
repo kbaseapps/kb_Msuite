@@ -9,5 +9,6 @@ python -m compileall lib/ test/
 cd $script_dir/../test
 rm -rf tmp
 mkdir -p tmp
+# run the checkm tests
+checkm test tmp
 python -m nose --with-coverage --cover-package=kb_Msuite --cover-html --cover-html-dir=/kb/module/work/test_coverage --nocapture  --nologcapture .
-# coverage run -m unittest -v --locals discover

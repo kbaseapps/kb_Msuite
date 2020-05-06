@@ -77,11 +77,11 @@ class CheckMUtil:
         if dsu.get_data_obj_type (params['input_ref']) == 'KBaseMetagenomes.BinnedContigs' \
            and params.get('output_filtered_binnedcontigs_obj_name'):
 
-            filtered_obj_info = self._filter_binned_contigs (params, 
-                                                             dsu, 
-                                                             outputBuilder, 
-                                                             input_dir, 
-                                                             output_dir, 
+            filtered_obj_info = self._filter_binned_contigs (params,
+                                                             dsu,
+                                                             outputBuilder,
+                                                             input_dir,
+                                                             output_dir,
                                                              filtered_bins_dir)
             if filtered_obj_info == None:
                 log("No Bins passed QC filters.  Not saving filtered BinnedContig object")
@@ -90,7 +90,7 @@ class CheckMUtil:
                 removed_bins = filtered_obj_info['removed_bin_IDs']
                 created_objects = [{'ref': binned_contig_obj_ref,
                                     'description': 'HQ BinnedContigs '+filtered_obj_info['filtered_obj_name']}]
-            
+
         # 4) make the plots:
         self.build_checkM_lineage_wf_plots(input_dir, output_dir, plots_dir,
                                            all_seq_fasta_file, tetra_file)
@@ -101,7 +101,7 @@ class CheckMUtil:
         # 6) build the HTML report
         os.makedirs(html_dir)
         html_files = outputBuilder.build_html_output_for_lineage_wf(html_dir, params['input_ref'], removed_bins=removed_bins)
-        html_zipped = outputBuilder.package_folder(html_dir, 
+        html_zipped = outputBuilder.package_folder(html_dir,
                                                    html_files[0],
                                                    'Summarized report from CheckM')
 
@@ -131,12 +131,12 @@ class CheckMUtil:
                                       all_seq_fasta_file, tetra_file):
 
         # first build generic plot for entire dataset
-        log('Creating basic QA plot (checkm bin_qa_plot) ...')
-        bin_qa_plot_options = {'bin_folder': bin_folder,
-                               'out_folder': out_folder,
-                               'plots_folder': plots_folder
-                               }
-        self.run_checkM('bin_qa_plot', bin_qa_plot_options, dropOutput=True)
+#         log('Creating basic QA plot (checkm bin_qa_plot) ...')
+#         bin_qa_plot_options = {'bin_folder': bin_folder,
+#                                'out_folder': out_folder,
+#                                'plots_folder': plots_folder
+#                                }
+#         self.run_checkM('bin_qa_plot', bin_qa_plot_options, dropOutput=True)
 
         # compute tetranucleotide frequencies based on the concatenated fasta file
         log('Computing tetranucleotide distributions...')
@@ -160,7 +160,7 @@ class CheckMUtil:
 
     def run_checkM(self, subcommand, options, dropOutput=False):
         '''
-            subcommand is the checkm subcommand (eg lineage_wf, tetra, bin_qa_plot)
+            subcommand is the checkm subcommand (eg lineage_wf, tetra)
             options indicate, depending on the subcommand:
                 bin_folder
                 out_folder
@@ -231,12 +231,12 @@ class CheckMUtil:
             command.append(options['bin_folder'])
             command.append(options['out_folder'])
 
-        elif subcommand == 'bin_qa_plot':
-            self._validate_options(options, checkBin=True, checkOut=True, checkPlots=True,
-                                   subcommand='bin_qa_plot')
-            command.append(options['out_folder'])
-            command.append(options['bin_folder'])
-            command.append(options['plots_folder'])
+#         elif subcommand == 'bin_qa_plot':
+#             self._validate_options(options, checkBin=True, checkOut=True, checkPlots=True,
+#                                    subcommand='bin_qa_plot')
+#             command.append(options['out_folder'])
+#             command.append(options['bin_folder'])
+#             command.append(options['plots_folder'])
 
         elif subcommand == 'tetra':
             self._validate_options(options, checkTetraFile=True, subcommand='tetra')
@@ -261,12 +261,12 @@ class CheckMUtil:
 
         return command
 
-    def _filter_binned_contigs(self, 
+    def _filter_binned_contigs(self,
                                params,
                                dataStagingUtils,
-                               outputBuilder, 
-                               input_dir, 
-                               output_dir, 
+                               outputBuilder,
+                               input_dir,
+                               output_dir,
                                filtered_bins_dir):
         filtered_binned_contig_obj_name = None
         filtered_binned_contig_obj_ref  = None
@@ -318,7 +318,7 @@ class CheckMUtil:
            and float(params.get('contamination_perc')) < 100.0:
             test_contamination = True
             contamination_thresh = float(params.get('contamination_perc'))
-        
+
         bin_basename = 'Bin'
         for bin_ID in bin_IDs:
             bin_is_HQ = True
@@ -330,7 +330,7 @@ class CheckMUtil:
             if test_contamination and this_cont > contamination_thresh:
                 bin_is_HQ = False
                 log("Bin "+bin_ID+" Contamination of "+str(this_cont)+" above thresh "+str(contamination_thresh))
-            
+
             if not bin_is_HQ:
                 log("Bin "+bin_ID+" didn't pass QC filters.  Skipping.")
             else:
@@ -367,7 +367,7 @@ class CheckMUtil:
         tab_text_dir = os.path.join(outputBuilder.output_dir, 'tab_text')
         tab_text_file = 'CheckM_summary_table.tsv'
         tab_text_files = outputBuilder.build_summary_tsv_file(tab_text_dir, tab_text_file)
-        tab_text_zipped = outputBuilder.package_folder(tab_text_dir, 
+        tab_text_zipped = outputBuilder.package_folder(tab_text_dir,
                                                        tab_text_file+'.zip',
                                                        'TSV Summary Table from CheckM')
         output_packages.append(tab_text_zipped)

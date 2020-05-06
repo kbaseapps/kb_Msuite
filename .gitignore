@@ -4,3 +4,4 @@ sdk.cfg
 *.py.bak-*
 .DS_Store
 *.pyc
+.vscode
