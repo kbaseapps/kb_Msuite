@@ -130,11 +130,6 @@ class CoreCheckMTest(unittest.TestCase):
         cls.appdir = cls.cfg['appdir']
 
         cls.test_data_dir = os.path.join(cls.scratch, 'test_data')
-
-        exists = os.path.exists(cls.test_data_dir)
-        print('test data dir exists: ' + str(exists))
-        os.makedirs(cls.test_data_dir, exist_ok=True)
-
         cls.suffix = test_time_stamp
         cls.checkm_runner = CheckMUtil(cls.cfg, cls.ctx)
 
@@ -148,8 +143,6 @@ class CoreCheckMTest(unittest.TestCase):
         cls.kr = KBaseReport(os.environ['SDK_CALLBACK_URL'])
 
         cls.data_loaded = False
-        # prepare WS data
-        # cls.prepare_data()
 
     @classmethod
     def tearDownClass(cls):
@@ -169,6 +162,11 @@ class CoreCheckMTest(unittest.TestCase):
 
     def getConfig(self):
         return self.__class__.serviceImpl.config
+
+    def setUp(self):
+        print("Running prepare data")
+        self.prepare_data()
+        print("Done")
 
     def _prep_assembly(self, assembly):
         '''
@@ -197,11 +195,6 @@ class CoreCheckMTest(unittest.TestCase):
             'Saved Assembly': saved_assembly,
             assembly['attr']: getattr(self, assembly['attr']),
         })
-
-    def setUp(self):
-        print("Running prepare data")
-        self.prepare_data()
-        print("Done")
 
     def _prep_assemblyset(self, assemblyset):
         '''
