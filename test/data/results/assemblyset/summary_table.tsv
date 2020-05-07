@@ -1,0 +1,4 @@
+Bin Name	Marker Lineage	# Genomes	# Markers	# Marker Sets	0	1	2	3	4	5+	Completeness	Contamination	Has Plot File
+Assembly.A.176KB	k__Bacteria	138	338	246	255	83	0	0	0	0	16.59592822636301	0.0	True
+Assembly.B.654KB	k__Bacteria	2993	137	81	0	137	0	0	0	0	100.0	0.0	True
+Virus.Assembly.1KB	root	5656	56	24	56	0	0	0	0	0	0.0	0.0	True

@@ -1,0 +1,4 @@
+Bin Name	Marker Lineage	# Genomes	# Markers	# Marker Sets	0	1	2	3	4	5+	Completeness	Contamination	Has Plot File
+Genome.A.469KB	k__Bacteria	138	338	246	255	83	0	0	0	0	16.6	0.0	True
+Genome.B.1_6MB	k__Bacteria	2993	137	81	0	137	0	0	0	0	100.0	0.0	True
+Virus.Genome.4KB	root	5656	56	24	56	0	0	0	0	0	0.0	0.0	True

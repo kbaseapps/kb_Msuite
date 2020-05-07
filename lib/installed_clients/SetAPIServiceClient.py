@@ -6,7 +6,7 @@
 #
 ############################################################
 
-from __future__ import print_function
+
 # the following is a hack to get the baseclient to import whether we're in a
 # package or not. This makes pep8 unhappy hence the annotations.
 try:
@@ -14,7 +14,7 @@ try:
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
 except ImportError:
     # no they aren't
-    from baseclient import BaseClient as _BaseClient  # @Reimport
+    from .baseclient import BaseClient as _BaseClient  # @Reimport
 
 
 class SetAPI(object):
@@ -1572,7 +1572,7 @@ class SetAPI(object):
            metadata about an object. Arbitrary key-value pairs provided by
            the user.) -> mapping from String to String, parameter "elements"
            of mapping from String to type "GenomeSetItem" (When saving an
-           GenomeSet, only 'ref' is required. You should never set 'info'. 
+           GenomeSet, only 'ref' is required. You should never set 'info'.
            'info' is provided optionally when fetching the GenomeSet.
            ref_path is optionally returned by get_genome_set_v1() when its
            input parameter 'include_set_item_ref_paths' is set to 1.) ->
@@ -1740,7 +1740,7 @@ class SetAPI(object):
            metadata about an object. Arbitrary key-value pairs provided by
            the user.) -> mapping from String to String, parameter "elements"
            of mapping from String to type "GenomeSetItem" (When saving an
-           GenomeSet, only 'ref' is required. You should never set 'info'. 
+           GenomeSet, only 'ref' is required. You should never set 'info'.
            'info' is provided optionally when fetching the GenomeSet.
            ref_path is optionally returned by get_genome_set_v1() when its
            input parameter 'include_set_item_ref_paths' is set to 1.) ->

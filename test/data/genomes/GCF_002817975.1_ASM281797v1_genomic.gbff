@@ -1,0 +1,74 @@
+LOCUS       NC_043092               1276 bp    DNA     linear   VRL 28-JUN-2019
+DEFINITION  Falconid adenovirus 1 hexon-associated protein gene, partial cds.
+ACCESSION   NC_043092
+VERSION     NC_043092.1
+DBLINK      BioProject: PRJNA485481
+KEYWORDS    RefSeq.
+SOURCE      Falconid adenovirus 1
+  ORGANISM  Falconid adenovirus 1
+            Viruses; Adenoviridae; Aviadenovirus; Falcon aviadenovirus A.
+REFERENCE   1  (bases 1 to 1276)
+  AUTHORS   Tomaszewski,E.K. and Phalen,D.N.
+  TITLE     Falcon adenovirus in an American kestrel (Falco sparverius)
+  JOURNAL   J. Avian Med. Surg. 21 (2), 135-139 (2007)
+   PUBMED   18065135
+REFERENCE   2  (bases 1 to 1276)
+  CONSRTM   NCBI Genome Project
+  TITLE     Direct Submission
+  JOURNAL   Submitted (28-JUN-2019) National Center for Biotechnology
+            Information, NIH, Bethesda, MD 20894, USA
+REFERENCE   3  (bases 1 to 1276)
+  AUTHORS   Tomaszewski,E.K. and Phalen,D.N.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (24-MAR-2006) VTPB, TAMU, College Station, TX 77843-4467,
+            USA
+COMMENT     PROVISIONAL REFSEQ: This record has not yet been subject to final
+            NCBI review. The reference sequence is identical to DQ460220.
+            COMPLETENESS: full length.
+FEATURES             Location/Qualifiers
+     source          1..1276
+                     /organism="Falconid adenovirus 1"
+                     /mol_type="genomic DNA"
+                     /db_xref="taxon:380253"
+                     /country="USA"
+     gene            1..1276
+                     /locus_tag="FK838_gp1"
+                     /db_xref="GeneID:40524865"
+     CDS             <1..>1276
+                     /locus_tag="FK838_gp1"
+                     /codon_start=3
+                     /product="hexon-associated protein"
+                     /protein_id="YP_009664772.1"
+                     /db_xref="GeneID:40524865"
+                     /translation="RNWGLKYRSQLLGNSRYCQFHIQVPQKYFAIKSLLLLPGTYTYE
+                     WVLRKDPNMVLQSTLGNDLRLDGARIVYQEVNLMASFMPMDHNTSNQLELMMRNAVND
+                     QTFADYLGAKSALYSVPAQSTVLTINVPARTWEGMRGWSFTRLKAEETPQQGAQYDIN
+                     FRYSGSIPYQDGTFYLNHTFRNMSILFDTSINWPGNDRMLTPNMFEIKRSPAADAEGY
+                     GMSQSTITKDWFLVQMATNYNYVYNGYRFWPDRHYFHYDFLRNFDPMSMQGPDFNNTD
+                     TFDLVTYTPEPNQTYQDEQNKIRNNSGMVADRAGAPFNKRQGQLWPSNWPYPLIGKES
+                     LPVEKILNYRKFLCDNYLWTIPFSSDFMYMGELTDLGQNPMYTNNSHSMVINLEMDPM
+                     DENTLVYMLYGVFDTVRVNQPERNVLAMAYFRT"
+ORIGIN      
+        1 accgtaactg gggtctgaaa tatagatctc aactcttggg taattcccgt tactgccaat
+       61 tccacattca agttcctcag aagtatttcg cgatcaaaag tctactctta ctcccgggca
+      121 cgtatacata cgaatgggtg ttgcgcaaag atccaaatat ggtactacag tccacattag
+      181 gtaatgattt gcgtttggac ggagccagaa ttgtgtatca agaggttaac ctcatggcct
+      241 ctttcatgcc tatggatcat aatacgagca atcaactaga attaatgatg cgcaacgctg
+      301 tcaacgacca aacattcgct gactatctcg gtgccaaaag cgctctgtat agcgttcccg
+      361 ctcaatccac cgttctgaca attaacgttc ccgcgagaac ttgggaaggg atgagaggat
+      421 ggtcctttac gcgtctcaag gcagaagaaa caccacaaca gggggctcag tacgacatca
+      481 actttagata ctctggctct attccatatc aagatggaac gttctacttg aatcacactt
+      541 tccgaaatat gagcatccta tttgacacct ccatcaactg gccaggaaac gacaggatgc
+      601 ttactccgaa tatgttcgaa attaaacgct ctccggctgc cgatgctgaa ggttacggta
+      661 tgagccagag caccattact aaagactggt ttctcgttca gatggctacc aactacaact
+      721 atgtgtacaa cggttatagg ttctggccgg atcgtcatta cttccactat gactttctgc
+      781 gtaatttcga tcctatgtct atgcaaggac cagatttcaa taacacggac accttcgatc
+      841 tggttactta cacaccagag cccaaccaga cataccaaga cgaacaaaat aaaataagaa
+      901 ataactctgg catggtagcc gaccgagccg gtgcgccgtt caataaacgt caaggacaat
+      961 tatggccatc taactggcca tatccgctta tcggtaaaga aagtttgccc gtagaaaaaa
+     1021 ttctaaacta taggaagttc ctatgcgata attacttgtg gaccatacca ttcagctcag
+     1081 actttatgta tatgggagaa ctaactgatc taggtcagaa ccccatgtat actaacaact
+     1141 cacatagcat ggtaattaac ttagaaatgg accccatgga tgaaaacacg ttagtctaca
+     1201 tgctttacgg ggtattcgac acggtgcgtg taaaccaacc tgagagaaac gtcctggcca
+     1261 tggcttactt ccgtac
+//

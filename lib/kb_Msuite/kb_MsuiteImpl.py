@@ -2,12 +2,8 @@
 #BEGIN_HEADER
 import os
 import json
-
-# from pprint import pprint
-
 from kb_Msuite.Utils.CheckMUtil import CheckMUtil
 from kb_Msuite.Utils.simple_run_checkm import run_checkm
-# from kb_Msuite.Utils.DataStagingUtils import DataStagingUtils
 #END_HEADER
 
 
@@ -26,7 +22,7 @@ References:
 CheckM in github: http://ecogenomics.github.io/CheckM/
 CheckM docs: https://github.com/Ecogenomics/CheckM/wiki
 
-Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043???1055.
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
     '''
 
     ######## WARNING FOR GEVENT USERS ####### noqa
@@ -68,7 +64,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            to a value between 0 and 100 threads -  number of threads
            reduced_tree - if set to 1, run checkM with the reduced_tree flag,
            which will keep memory limited to less than 16gb (otherwise needs
-           40+ GB, which NJS worker nodes do have) quiet - pass the --quite
+           40+ GB, which NJS worker nodes do have) quiet - pass the --quiet
            parameter to checkM, but doesn't seem to work for all subcommands)
            -> structure: parameter "subcommand" of String, parameter
            "bin_folder" of String, parameter "out_folder" of String,
@@ -84,8 +80,8 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
         print('--->\nRunning kb_Msuite.run_checkM\nparams:')
         print(json.dumps(params, indent=1))
 
-        for key, value in params.iteritems():
-            if isinstance(value, basestring):
+        for key, value in list(params.items()):
+            if isinstance(value, str):
                 params[key] = value.strip()
 
         if 'subcommand' not in params:
@@ -140,14 +136,13 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            parameter "save_output_dir" of type "boolean" (A boolean - 0 for
            false, 1 for true. @range (0, 1)), parameter "save_plots_dir" of
            type "boolean" (A boolean - 0 for false, 1 for true. @range (0,
-           1)), parameter "completeness_perc" of Double, parameter
-           "contamination_perc" of Double, parameter
-           "output_filtered_binnedcontigs_obj_name" of String, parameter
-           "threads" of Long
+           1)), parameter "threads" of Long, parameter "completeness_perc" of
+           Double, parameter "contamination_perc" of Double, parameter
+           "output_filtered_binnedcontigs_obj_name" of String
         :returns: instance of type "CheckMLineageWf_withFilter_Result" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String, parameter "binned_contig_obj_ref" of type
-           "obj_ref" ("WS_ID/OBJ_ID/VER")
+           "obj_ref" (An X/Y/Z style reference e.g. "WS_ID/OBJ_ID/VER")
         """
         # ctx is the context object
         # return variables are: result
@@ -175,7 +170,7 @@ Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: asses
            arguments: *   bin_dir - required - Path to the directory where
            your bins are located *   out_dir - required - Path to a directory
            where we will write output files *   log_path - required - Path to
-           a file that will be written to with all log output from *    
+           a file that will be written to with all log output from *
            stdout and stderr while running `checkm lineage_wf`. *   options -
            optional - A mapping of options to pass to lineage_wf. See the
            README.md *     in the kb_Msuite repo for a list of all of these.

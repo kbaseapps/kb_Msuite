@@ -1,0 +1,26 @@
+[%
+
+    page_title        = 'CheckM Dist Plots for Bin ' _ bin_id;
+
+    WRAPPER 'views/inc/page_wrapper.tt';
+    PROCESS 'views/inc/macros.tt';
+
+    page_content = [
+      {
+        name    => bin_id,
+        name_lc => 'picture',
+        content => 'image',
+        config  => {
+          img_alt => 'CheckM dist plot for bin ' _ bin_id,
+          img_src => 'plots/' _ bin_id _ plot_file_ext,
+          caption => '<p>CheckM dist plot for bin ' _ bin_id _ '</p>' _
+                     '<p><a href="checkm_results.html">Back to summary</a></p>',
+        },
+      },
+    ];
+
+    tabbed_layout( page_content = page_content );
+
+    END; # end wrapper
+
+%]

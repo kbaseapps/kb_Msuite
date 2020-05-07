@@ -6,7 +6,7 @@
 #
 ############################################################
 
-from __future__ import print_function
+
 # the following is a hack to get the baseclient to import whether we're in a
 # package or not. This makes pep8 unhappy hence the annotations.
 try:
@@ -14,7 +14,7 @@ try:
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
 except ImportError:
     # no they aren't
-    from baseclient import BaseClient as _BaseClient  # @Reimport
+    from .baseclient import BaseClient as _BaseClient  # @Reimport
 
 
 class KBaseReport(object):
@@ -25,7 +25,7 @@ class KBaseReport(object):
             trust_all_ssl_certificates=False,
             auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login',
             service_ver='release',
-            async_job_check_time_ms=100, async_job_check_time_scale_percent=150, 
+            async_job_check_time_ms=100, async_job_check_time_scale_percent=150,
             async_job_check_max_time_ms=300000):
         if url is None:
             raise ValueError('A url is required')
@@ -51,7 +51,7 @@ class KBaseReport(object):
            Required arguments: *     SimpleReport report - See the structure
            above *     string workspace_name - Workspace name of the running
            app. Required *         if workspace_id is absent *     int
-           workspace_id - Workspace ID of the running app. Required if *     
+           workspace_id - Workspace ID of the running app. Required if *
            workspace_name is absent) -> structure: parameter "report" of type
            "SimpleReport" (* A simple report for use in create() * Optional
            arguments: *     string text_message - Readable plain-text report
@@ -64,9 +64,9 @@ class KBaseReport(object):
            "direct_html" of String, parameter "warnings" of list of String,
            parameter "objects_created" of list of type "WorkspaceObject" (*
            Represents a Workspace object with some brief description text *
-           that can be associated with the object. * Required arguments: *   
+           that can be associated with the object. * Required arguments: *
            ws_id ref - workspace ID in the format
-           'workspace_id/object_id/version' * Optional arguments: *    
+           'workspace_id/object_id/version' * Optional arguments: *
            string description - A plaintext, human-readable description of
            the *         object created) -> structure: parameter "ref" of
            type "ws_id" (* Workspace ID reference in the format
@@ -76,7 +76,7 @@ class KBaseReport(object):
         :returns: instance of type "ReportInfo" (* The reference to the saved
            KBaseReport. This is the return object for * both create() and
            create_extended() * Returned data: *    ws_id ref - reference to a
-           workspace object in the form of *       
+           workspace object in the form of *
            'workspace_id/object_id/version'. This is a reference to a saved *
            Report object (see KBaseReportWorkspace.spec) *    string name -
            Plaintext unique name for the report. In *        create_extended,
@@ -102,12 +102,12 @@ class KBaseReport(object):
            workspace_id is absent *     int workspace_id - ID of workspace
            where the report should be saved. *         Required if
            workspace_name is absent * Optional arguments: *     string
-           message - Simple text message to store in the report object *    
+           message - Simple text message to store in the report object *
            list<WorkspaceObject> objects_created - List of result workspace
            objects that this app *         has created. They will be linked
            in the report view *     list<string> warnings - A list of
            plain-text warning messages *     list<File> html_links - A list
-           of paths or shock IDs pointing to HTML files or directories. *    
+           of paths or shock IDs pointing to HTML files or directories. *
            If you pass in paths to directories, they will be zipped and
            uploaded *     int direct_html_link_index - Index in html_links to
            set the direct/default view in the *         report. Set either
@@ -115,11 +115,11 @@ class KBaseReport(object):
            direct_html - Simple HTML text content that will be rendered
            within the report *         widget. Set either direct_html or
            direct_html_link_index, but not both *     list<File> file_links -
-           A list of file paths or shock node IDs. Allows the user to *      
+           A list of file paths or shock node IDs. Allows the user to *
            specify files that the report widget should link for download. If
-           you pass in paths *         to directories, they will be zipped * 
+           you pass in paths *         to directories, they will be zipped *
            string report_object_name - Name to use for the report object
-           (will *         be auto-generated if unspecified) *    
+           (will *         be auto-generated if unspecified) *
            html_window_height - Fixed height in pixels of the HTML window for
            the report *     summary_window_height - Fixed height in pixels of
            the summary window for the report) -> structure: parameter
@@ -127,7 +127,7 @@ class KBaseReport(object):
            "WorkspaceObject" (* Represents a Workspace object with some brief
            description text * that can be associated with the object. *
            Required arguments: *     ws_id ref - workspace ID in the format
-           'workspace_id/object_id/version' * Optional arguments: *    
+           'workspace_id/object_id/version' * Optional arguments: *
            string description - A plaintext, human-readable description of
            the *         object created) -> structure: parameter "ref" of
            type "ws_id" (* Workspace ID reference in the format
@@ -168,7 +168,7 @@ class KBaseReport(object):
         :returns: instance of type "ReportInfo" (* The reference to the saved
            KBaseReport. This is the return object for * both create() and
            create_extended() * Returned data: *    ws_id ref - reference to a
-           workspace object in the form of *       
+           workspace object in the form of *
            'workspace_id/object_id/version'. This is a reference to a saved *
            Report object (see KBaseReportWorkspace.spec) *    string name -
            Plaintext unique name for the report. In *        create_extended,
