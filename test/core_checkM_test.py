@@ -226,7 +226,7 @@ class CoreCheckMTest(unittest.TestCase):
     def prep_assemblies(self):
         ''' prepare the assemblies and assembly set '''
 
-        assembly_list = TEST_DATA['assembly_list'][3:]
+        assembly_list = TEST_DATA['assembly_list'][0:3]
 
         # just load the test assembly and the dodgy contig assembly
         for assembly in assembly_list:
@@ -350,7 +350,7 @@ class CoreCheckMTest(unittest.TestCase):
 
         ''' add a couple of genomes and create a genome set '''
 
-        genome_list = TEST_DATA['genome_list'][3:]
+        genome_list = TEST_DATA['genome_list'][0:3]
 
         # upload a few genomes
         for genome in genome_list:
@@ -483,7 +483,7 @@ class CoreCheckMTest(unittest.TestCase):
         print ("=================================================================\n")
 
         # run checkM lineage_wf app on a single assembly
-        assembly = TEST_DATA['assembly_list'][3]
+        assembly = TEST_DATA['assembly_list'][1]
 
         input_ref = getattr(self, assembly['attr'])
         params = {
@@ -644,7 +644,7 @@ class CoreCheckMTest(unittest.TestCase):
 
         # run checkM lineage_wf app on a single genome
         # input_ref = self.genome_refs[0]
-        genome = TEST_DATA['genome_list'][3]
+        genome = TEST_DATA['genome_list'][1]
 
         input_ref = getattr(self, genome['attr'])
         params = {
