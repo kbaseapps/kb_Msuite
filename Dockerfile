@@ -1,76 +1,14 @@
-FROM kbase/sdkbase2:python
-
-# install cython that pysam likes
-RUN \
-  apt-get update && apt-get install -y build-essential wget \
-  && pip install --upgrade pip setuptools Cython==0.25
-
-###### CheckM installation
-#  Directions from https://github.com/Ecogenomics/CheckM/wiki/Installation#how-to-install-checkm
-#
-# CheckM requires the following programs to be added to your system path:
-#
-# HMMER (>=3.1b1)
-# prodigal (2.60 or >=2.6.1)
-# executable must be named prodigal and not prodigal.linux
-# pplacer (>=1.1)
-# guppy, which is part of the pplacer package, must also be on your system path
-# pplacer binaries can be found on the pplacer GitHub page
-
-# Install HMMER (>=3.1b1)
-WORKDIR /kb/module
-RUN \
-  curl http://eddylab.org/software/hmmer3/3.1b2/hmmer-3.1b2-linux-intel-x86_64.tar.gz > hmmer-3.1b2-linux-intel-x86_64.tar.gz && \
-  tar -zxvf hmmer-3.1b2-linux-intel-x86_64.tar.gz && \
-  ln -s hmmer-3.1b2-linux-intel-x86_64 hmmer && \
-  rm -f hmmer-3.1b2-linux-intel-x86_64.tar.gz && \
-  cd hmmer && \
-  ./configure && \
-  make && make install && \
-  cd easel && make check && make install
-
-
-# Install Prodigal (2.60 or >=2.6.1)
-WORKDIR /kb/module
-RUN \
-  wget https://github.com/hyattpd/Prodigal/archive/v2.6.3.tar.gz && \
-  tar -zxvf v2.6.3.tar.gz && \
-  ln -s Prodigal-2.6.3 prodigal && \
-  rm -f v2.6.3.tar.gz && \
-  cd prodigal && \
-  make && \
-  cp prodigal /kb/deployment/bin/prodigal
-
-# Install Pplacer (>=1.1)
-WORKDIR /kb/module
-RUN \
-  wget https://github.com/matsen/pplacer/releases/download/v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip && \
-  unzip pplacer-linux-v1.1.alpha19.zip && \
-  ln -s pplacer-Linux-v1.1.alpha19 pplacer && \
-  rm -f pplacer-linux-v1.1.alpha19.zip && \
-  rm -f pplacer-1.1.alpha19.tar.gz && \
-  cp -R pplacer-Linux-v1.1.alpha19 /kb/deployment/bin/pplacer
-
-ENV PATH "$PATH:/kb/deployment/bin/pplacer"
-
-# This will install CheckM and all other required Python libraries.
-RUN pip install numpy matplotlib==3.1.0 pysam scipy dendropy coverage checkm-genome \
-    && cp -R /miniconda/bin/checkm /kb/deployment/bin/CheckMBin \
-    && mkdir -p /data/checkm_data \
-    && mv /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG.orig \
-    && touch /data/DATA_CONFIG \
-    && cp /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG.orig /data/DATA_CONFIG \
-    && ln -sf /data/DATA_CONFIG /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG \
-    && chmod +rwx /data/DATA_CONFIG
+FROM ialarmedalien/kbase_checkm_base:latest
 
 COPY ./ /kb/module
 
 WORKDIR /kb/module
 
-RUN chmod -R a+rw /kb/module \
+RUN mkdir -p /kb/module/work/tmp/test_data \
+    && cp -r /kb/module/test/data/* /kb/module/work/tmp/test_data/ \
+    && chmod -R a+rw /kb/module \
     && make all \
-    && mkdir -p /kb/module/work/tmp/test_data \
-    && cp -r /kb/module/test/data/* /kb/module/work/tmp/test_data/
+    && rm -f /data/__READY__
 
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 

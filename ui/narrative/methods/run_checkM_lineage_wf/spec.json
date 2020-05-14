@@ -1,125 +1,146 @@
 {
-    "ver": "1.4.0",
-    "authors": [
-        "dylan","msneddon","dparks","tgu2","seanjungbluth"
-    ],
-    "contact": "http://kbase.us/contact-us/",
-    "categories": ["active","communities","assembly"],
-    "widgets": {
-        "input": null,
-        "output": "no-display"
-    },
-    "parameters": [ 
+  "authors": [
+    "dylan",
+    "msneddon",
+    "dparks",
+    "tgu2",
+    "seanjungbluth",
+    "ialarmedalien"
+  ],
+  "behavior": {
+    "service-mapping": {
+      "input_mapping": [
         {
-            "id": "input_ref",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": [ "KBaseMetagenomes.BinnedContigs",
-				    "KBaseGenomeAnnotations.Assembly",
-				    "KBaseGenomes.ContigSet",
-				    "KBaseSets.AssemblySet",
-				    "KBaseGenomes.Genome",
-				    "KBaseSearch.GenomeSet"
-				  ]
-            }
-        }, 
+          "narrative_system_variable": "workspace",
+          "target_property": "workspace_name"
+        },
         {
-            "id": "reduced_tree",
-            "optional": false,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values":[1],
-            "field_type" : "dropdown",
-            "dropdown_options": {
-		"options": [
-		    {
-			"value": 1,
-			"display": "reduced tree",
-			"id": "reduced_tree_TRUE",
-			"ui-name": "reduced_tree_TRUE"
-		    },
-		    {
-			"value": 0,
-			"display": "full tree",
-			"id": "reduced_tree_FALSE",
-			"ui-name": "reduced_tree_FALSE"
-		    }
-		]
-            }
-        }, 
+          "input_parameter": "input_ref",
+          "target_property": "input_ref",
+          "target_type_transform": "resolved-ref"
+        },
         {
-           "id": "save_all_plots",
-            "optional": false,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values":[1],
-            "field_type" : "dropdown",
-            "dropdown_options": {
-		"options": [
-		    {
-			"value": 0,
-			"display": "discard",
-			"id": "save_all_plots_FALSE",
-			"ui-name": "save_all_plots_FALSE"
-		    },
-		    {
-			"value": 1,
-			"display": "save",
-			"id": "save_all_plots_TRUE",
-			"ui-name": "save_all_plots_TRUE"
-		    }
-		]
-            }
+          "input_parameter": "reduced_tree",
+          "target_property": "reduced_tree"
+        },
+        {
+          "input_parameter": "save_all_plots",
+          "target_property": "save_plots_dir"
+        },
+        {
+          "constant_value": "4",
+          "target_property": "threads"
         }
-    ],
-
-    "behavior": {
-        "service-mapping": {
-            "url": "",
-            "name": "kb_Msuite",
-            "method": "run_checkM_lineage_wf",
-            "input_mapping": [
-                {
-                    "narrative_system_variable": "workspace",
-                    "target_property": "workspace_name"
-                },
-                {
-                    "input_parameter": "input_ref",
-                    "target_property": "input_ref",
-                    "target_type_transform": "resolved-ref"
-                },
-                {
-                    "input_parameter": "reduced_tree",
-                    "target_property": "reduced_tree"
-                },
-                {
-                    "input_parameter": "save_all_plots",
-                    "target_property": "save_plots_dir"
-                },
-                {
-                    "constant_value": "4",
-                    "target_property": "threads"
-                }
-            ],
-            "output_mapping": [
-                {
-                    "service_method_output_path": [0, "report_name"],
-                    "target_property": "report_name"
-                },
-                {
-                    "service_method_output_path": [0, "report_ref"],
-                    "target_property": "report_ref"
-                },
-                {
-                    "constant_value": "36",
-                    "target_property": "report_window_line_height"
-                }
-            ]
+      ],
+      "method": "run_checkM_lineage_wf",
+      "name": "kb_Msuite",
+      "output_mapping": [
+        {
+          "service_method_output_path": [
+            0,
+            "report_name"
+          ],
+          "target_property": "report_name"
+        },
+        {
+          "service_method_output_path": [
+            0,
+            "report_ref"
+          ],
+          "target_property": "report_ref"
+        },
+        {
+          "constant_value": "36",
+          "target_property": "report_window_line_height"
         }
+      ],
+      "url": ""
+    }
+  },
+  "categories": [
+    "active",
+    "communities",
+    "assembly"
+  ],
+  "contact": "http://kbase.us/contact-us/",
+  "job_id_output_field": "docker",
+  "parameters": [
+    {
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [
+        ""
+      ],
+      "field_type": "text",
+      "id": "input_ref",
+      "optional": false,
+      "text_options": {
+        "valid_ws_types": [
+          "KBaseMetagenomes.BinnedContigs",
+          "KBaseGenomeAnnotations.Assembly",
+          "KBaseGenomes.ContigSet",
+          "KBaseSets.AssemblySet",
+          "KBaseGenomes.Genome",
+          "KBaseSearch.GenomeSet"
+        ]
+      }
     },
-    "job_id_output_field": "docker"
+    {
+      "advanced": true,
+      "allow_multiple": false,
+      "default_values": [
+        1
+      ],
+      "dropdown_options": {
+        "options": [
+          {
+            "display": "reduced tree",
+            "id": "reduced_tree_TRUE",
+            "ui-name": "reduced_tree_TRUE",
+            "value": 1
+          },
+          {
+            "display": "full tree",
+            "id": "reduced_tree_FALSE",
+            "ui-name": "reduced_tree_FALSE",
+            "value": 0
+          }
+        ]
+      },
+      "field_type": "dropdown",
+      "id": "reduced_tree",
+      "optional": false
+    },
+    {
+      "advanced": true,
+      "allow_multiple": false,
+      "default_values": [
+        1
+      ],
+      "dropdown_options": {
+        "options": [
+          {
+            "display": "discard",
+            "id": "save_all_plots_FALSE",
+            "ui-name": "save_all_plots_FALSE",
+            "value": 0
+          },
+          {
+            "display": "save",
+            "id": "save_all_plots_TRUE",
+            "ui-name": "save_all_plots_TRUE",
+            "value": 1
+          }
+        ]
+      },
+      "field_type": "dropdown",
+      "id": "save_all_plots",
+      "optional": false
+    }
+  ],
+  "ver": "1.5.0",
+  "widgets": {
+    "input": null,
+    "output": "no-display"
+  }
 }
