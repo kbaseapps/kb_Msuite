@@ -183,7 +183,7 @@ class CoreCheckMTest(unittest.TestCase):
 
         assembly_file_path = os.path.join(self.test_data_dir, "assemblies", assembly['path'])
         if not os.path.exists(assembly_file_path):
-            shutil.copy(os.path.join("data", "assemblies", assembly['path']), assembly_file_path)
+            shutil.copy(os.path.join(self.appdir, "test", "data", "assemblies", assembly['path']), assembly_file_path)
 
         saved_assembly = self.au.save_assembly_from_fasta({
             'file': {'path': assembly_file_path},
@@ -226,7 +226,7 @@ class CoreCheckMTest(unittest.TestCase):
     def prep_assemblies(self):
         ''' prepare the assemblies and assembly set '''
 
-        assembly_list = TEST_DATA['assembly_list'][0:3]
+        assembly_list = TEST_DATA['assembly_list']
 
         # just load the test assembly and the dodgy contig assembly
         for assembly in assembly_list:
@@ -241,7 +241,7 @@ class CoreCheckMTest(unittest.TestCase):
                         'ref':   getattr(self, a['attr']),
                         'label': a['name'],
                     }
-                    for a in assembly_list
+                    for a in assembly_list[0:3]
                 ],
             },
         ]
@@ -261,7 +261,7 @@ class CoreCheckMTest(unittest.TestCase):
             os.path.join(binned_contigs_path, 'bin.summary')
         ):
             shutil.rmtree(binned_contigs_path, ignore_errors=True)
-            shutil.copytree(os.path.join("data", bc['path']), binned_contigs_path)
+            shutil.copytree(os.path.join(self.appdir, "test", "data", bc['path']), binned_contigs_path)
 
         saved_object = self.mu.file_to_binned_contigs({
             'file_directory': binned_contigs_path,
@@ -298,7 +298,7 @@ class CoreCheckMTest(unittest.TestCase):
 
         genome_file_path = os.path.join(self.test_data_dir, genome['path'])
         if not os.path.exists(genome_file_path):
-            shutil.copy(os.path.join("data", "genomes", genome['path']), genome_file_path)
+            shutil.copy(os.path.join(self.appdir, "test", "data", "genomes", genome['path']), genome_file_path)
 
         genome_data = self.gfu.genbank_to_genome({
             'file': {'path': genome_file_path},
