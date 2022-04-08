@@ -1,3 +1,8 @@
+### Version 1.4.1
+__Changes__
+- changed defaults in Filter App to Completeness 90% / Contamination 5%
+- fixed unit tests which were failing on assembly copy
+
 ### Version 1.4.0
 __Changes__
 - updated kbase module paths in lib to installed_clients

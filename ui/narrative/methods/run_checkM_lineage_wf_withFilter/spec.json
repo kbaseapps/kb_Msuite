@@ -162,7 +162,7 @@
       "advanced": false,
       "allow_multiple": false,
       "default_values": [
-        "95"
+        "90"
       ],
       "field_type": "text",
       "id": "completeness_perc",
@@ -177,7 +177,7 @@
       "advanced": false,
       "allow_multiple": false,
       "default_values": [
-        "2"
+        "5"
       ],
       "field_type": "text",
       "id": "contamination_perc",

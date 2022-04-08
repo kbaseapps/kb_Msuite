@@ -130,6 +130,8 @@ class CoreCheckMTest(unittest.TestCase):
         cls.appdir = cls.cfg['appdir']
 
         cls.test_data_dir = os.path.join(cls.scratch, 'test_data')
+        if not os.path.exists (cls.test_data_dir):
+            os.makedirs (cls.test_data_dir)
         cls.suffix = test_time_stamp
         cls.checkm_runner = CheckMUtil(cls.cfg, cls.ctx)
 
@@ -176,12 +178,15 @@ class CoreCheckMTest(unittest.TestCase):
             'name': 'Cool_Assembly_Name',
             'attr': 'assembly_blah_ref', # name of the attribute to populate
         }
-
+<
         '''
         if hasattr(self, assembly['attr']):
             return
 
-        assembly_file_path = os.path.join(self.test_data_dir, "assemblies", assembly['path'])
+        shared_assembly_dir = os.path.join(self.test_data_dir, "assemblies")
+        if not os.path.exists (shared_assembly_dir):
+            os.makedirs (shared_assembly_dir)
+        assembly_file_path = os.path.join(shared_assembly_dir, assembly['path'])
         if not os.path.exists(assembly_file_path):
             shutil.copy(os.path.join(self.appdir, "test", "data", "assemblies", assembly['path']), assembly_file_path)
 
