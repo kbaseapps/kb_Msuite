@@ -2,6 +2,7 @@
 __Changes__
 - changed defaults in Filter App to Completeness 90% / Contamination 5%
 - fixed unit tests which were failing on assembly copy
+- added Github Actions unit testing
 
 ### Version 1.4.0
 __Changes__
