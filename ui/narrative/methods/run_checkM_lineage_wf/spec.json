@@ -62,7 +62,7 @@
     "communities",
     "assembly"
   ],
-  "contact": "http://kbase.us/contact-us/",
+  "contact": "http://www.kbase.us/support/",
   "job_id_output_field": "docker",
   "parameters": [
     {
@@ -138,7 +138,7 @@
       "optional": false
     }
   ],
-  "ver": "1.5.0",
+  "ver": "1.4.2",
   "widgets": {
     "input": null,
     "output": "no-display"

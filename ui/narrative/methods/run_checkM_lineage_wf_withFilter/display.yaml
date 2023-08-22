@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Filter Bins by Quality with CheckM - v1.0.18
+name: Filter Bins by Quality with CheckM - v1.1.2
 
 tooltip: |
     Runs the CheckM lineage workflow to assess the genome quality of isolates, single cells, or genome bins from metagenome assemblies through comparison to an existing database of genomes.  Creates a new BinnedContigs object with High Quality bins that pass user-defined thresholds for Completeness and Contamination.

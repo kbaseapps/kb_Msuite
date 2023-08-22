@@ -88,7 +88,7 @@
     "communities",
     "assembly"
   ],
-  "contact": "http://kbase.us/contact-us/",
+  "contact": "http://www.kbase.us/support/",
   "job_id_output_field": "docker",
   "parameters": [
     {
@@ -162,7 +162,7 @@
       "advanced": false,
       "allow_multiple": false,
       "default_values": [
-        "95"
+        "90"
       ],
       "field_type": "text",
       "id": "completeness_perc",
@@ -177,7 +177,7 @@
       "advanced": false,
       "allow_multiple": false,
       "default_values": [
-        "2"
+        "5"
       ],
       "field_type": "text",
       "id": "contamination_perc",
@@ -205,7 +205,7 @@
       }
     }
   ],
-  "ver": "1.5.0",
+  "ver": "1.4.2",
   "widgets": {
     "input": null,
     "output": "no-display"

@@ -1,3 +1,13 @@
+### Version 1.4.2
+__Changes__
+- updated CheckM to v1.1.2
+- added tool version to App name in display.yaml
+- changed defaults to 90/5 in Filter with CheckM App
+
+### Version 1.4.1
+__Changes__
+- fixed missing folder in unit tests
+
 ### Version 1.4.0
 __Changes__
 - updated kbase module paths in lib to installed_clients
