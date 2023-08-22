@@ -182,8 +182,12 @@ class CoreCheckMTest(unittest.TestCase):
             return
 
         assembly_file_path = os.path.join(self.test_data_dir, "assemblies", assembly['path'])
+        assembly_file_dirname = os.path.dirname(assembly_file_path)
+        if not os.path.exists(assembly_file_dirname):
+            os.makedirs(assembly_file_dirname, exist_ok=True)
         if not os.path.exists(assembly_file_path):
-            shutil.copy(os.path.join(self.appdir, "test", "data", "assemblies", assembly['path']), assembly_file_path)
+            from_ = os.path.join(self.appdir, "test", "data", "assemblies", assembly['path'])
+            shutil.copy(from_, assembly_file_path)
 
         saved_assembly = self.au.save_assembly_from_fasta({
             'file': {'path': assembly_file_path},
@@ -700,8 +704,8 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 8: Data staging (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
-    # @unittest.skip("skipped test_data_staging")
     # missing test data for this custom test
+    # HIDE @unittest.skip("skipped test_data_staging")
     def test_data_staging(self):
 
         # test stage assembly
@@ -736,7 +740,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 9: Plotting (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_output_plotting")
+    # HIDE @unittest.skip("skipped test_output_plotting")
     # missing test data for this custom test
     def test_output_plotting(self):
 
@@ -764,7 +768,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 10: tetra wiring (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
-    @unittest.skip("skipped test_checkM_local_function_wiring")
+    # HIDE @unittest.skip("skipped test_checkM_local_function_wiring")
     # missing test data for this custom test
     def test_checkM_local_function_wiring(self):
 
