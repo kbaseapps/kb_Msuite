@@ -503,7 +503,7 @@ class CoreCheckMTest(unittest.TestCase):
             'direct_html_link_index': 0,
             'file_links': ['CheckM_summary_table.tsv.zip', 'plots.zip', 'full_output.zip'],
             'html_links': [
-                'CheckM_Plot.html'
+                'CheckM_Table.html'
             ],
         }
         self.run_and_check_report(params, expected_results)
@@ -538,7 +538,7 @@ class CoreCheckMTest(unittest.TestCase):
             'direct_html_link_index': 0,
             'file_links': ['CheckM_summary_table.tsv.zip', 'plots.zip', 'full_output.zip'],
             'html_links': [
-                'CheckM_Plot.html'
+                'CheckM_Table.html'
             ],
         }
         self.run_and_check_report(params, expected_results)
@@ -573,7 +573,7 @@ class CoreCheckMTest(unittest.TestCase):
             'direct_html_link_index': 0,
             'file_links': ['CheckM_summary_table.tsv.zip', 'plots.zip', 'full_output.zip'],
             'html_links': [
-                'CheckM_Plot.html'
+                'CheckM_Table.html'
             ],
         }
         self.run_and_check_report(params, expected_results)
@@ -631,7 +631,7 @@ class CoreCheckMTest(unittest.TestCase):
             'direct_html_link_index': 0,
             'file_links': ['CheckM_summary_table.tsv.zip', 'plots.zip', 'full_output.zip'],
             'html_links': [
-                'CheckM_Plot.html'
+                'CheckM_Table.html'
             ],
         }
         self.run_and_check_report(params, expected_results)
@@ -664,7 +664,7 @@ class CoreCheckMTest(unittest.TestCase):
             'direct_html_link_index': 0,
             'file_links': ['CheckM_summary_table.tsv.zip', 'plots.zip', 'full_output.zip'],
             'html_links': [
-                'CheckM_Plot.html'
+                'CheckM_Table.html'
             ],
         }
         self.run_and_check_report(params, expected_results)
@@ -696,7 +696,7 @@ class CoreCheckMTest(unittest.TestCase):
             'direct_html_link_index': 0,
             'file_links': ['CheckM_summary_table.tsv.zip', 'plots.zip', 'full_output.zip'],
             'html_links': [
-                'CheckM_Plot.html'
+                'CheckM_Table.html'
             ],
         }
         self.run_and_check_report(params, expected_results)
@@ -704,8 +704,8 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 8: Data staging (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
+    @unittest.skip("skipped test_data_staging")
     # missing test data for this custom test
-    # HIDE @unittest.skip("skipped test_data_staging")
     def test_data_staging(self):
 
         # test stage assembly
@@ -740,7 +740,7 @@ class CoreCheckMTest(unittest.TestCase):
     # Test 9: Plotting (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_output_plotting")
+    @unittest.skip("skipped test_output_plotting")
     # missing test data for this custom test
     def test_output_plotting(self):
 
@@ -763,12 +763,12 @@ class CoreCheckMTest(unittest.TestCase):
         self.assertIn('shock_id', res)
         self.assertIn('name', res)
         self.assertIn('description', res)
-        self.assertEqual(res['name'], 'CheckM_Plot.html')
+        self.assertEqual(res['name'], 'CheckM_Table.html')
 
     # Test 10: tetra wiring (intended data not checked into git repo: SKIP)
     #
     # Uncomment to skip this test
-    # HIDE @unittest.skip("skipped test_checkM_local_function_wiring")
+    @unittest.skip("skipped test_checkM_local_function_wiring")
     # missing test data for this custom test
     def test_checkM_local_function_wiring(self):
 
@@ -814,7 +814,7 @@ class CoreCheckMTest(unittest.TestCase):
             'direct_html_link_index': 0,
             'file_links': ['CheckM_summary_table.tsv.zip', 'plots.zip', 'full_output.zip'],
             'html_links': [
-                'CheckM_Plot.html'
+                'CheckM_Table.html'
             ],
             'objects_created': 1,
         }
