@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Filter Bins by Quality with CheckM - v1.0.18
+name: Filter Bins by Quality with CheckM - v1.1.2
 
 tooltip: |
     Runs the CheckM lineage workflow to assess the genome quality of isolates, single cells, or genome bins from metagenome assemblies through comparison to an existing database of genomes.  Creates a new BinnedContigs object with High Quality bins that pass user-defined thresholds for Completeness and Contamination.
@@ -71,9 +71,14 @@ description : |
 
     <p><b>This version of the CheckM App will filter a <b></i>BinnedContigs</i></b> object to retain only those bins that pass thresholds for Completeness and Contamination.</b></p>
 
+    <p><hr></p>
     <p>CheckM provides a set of tools for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. It provides robust estimates of genome completeness and contamination by using collocated sets of genes that are ubiquitous and single-copy within a phylogenetic lineage. Assessment of genome quality can also be examined using plots depicting key genomic characteristics (e.g., GC, coding density) which highlight sequences outside the expected distributions of a typical genome. If you wish to make comments about the functional potential of a genome, look for maximum genome completeness and minimal contamination. Users should be aware that there are limitations to this approach. For a discussion of some of the assumptions of using a tool like CheckM see <a href=”https://www.microbe.net/2017/12/13/why-genome-completeness-and-contamination-estimates-are-more-complicated-than-you-think/”>this article</a>.</p>
 
     <p>If your workflow involves metagenome assembled genomes (MAGs), then CheckM QC is likely one of the first things you will want to perform (i.e. prior to annotation of the AssemblySet). This information will indicate which genome bins should be discarded (i.e. rendered as unbinned) prior to analyses of the bins (e.g. Add Species to Genome Tree, Taxonomic Classification).</p>
+
+    <p><hr></p>
+    <p><b>Tool and Data Sources:</b></p>
+    <p><b>CheckM v1.1.2</b> is installed from <a href="https://github.com/Ecogenomics/CheckM/releases/tag/v1.1.2">https://github.com/Ecogenomics/CheckM/releases/tag/v1.1.2</a> with reference data version <b>2015_01_16</b> from <a href="https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz">https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz</a>.</p>
 
     <p><b>Input and Parameters:</b></p>
     <p><b><i>BinnedContigs:</i></b> A user may submit a BinnedContig object containing multiple "binned" genomes. For every input bin, a separate evaluation of the genome completeness using the clade-specific phylogenetic marker genes will be performed.</p>
@@ -82,17 +87,27 @@ description : |
     <p><b>Output:</b></p>
     <p><b><i>Output Object:</i></b> A <b><i>BinnedContig object</i></b> containing those bins that pass the user-defined Completeness and Contamination thresholds (defaults of 95% and 2%, respectively).  If either all bins or no bins pass those thresholds, then no output object is produced.</p>
 
-    <p><b><i>Output Report:</i></b> The output report offers both graphical and tabular representations of the phylogenetic marker completeness and contamination. CheckM generates clade-specific marker gene sets for each bin and reports the taxonomic resolution possible for each bin in the "Marker Lineage" column. Users may want to look at the "Marker Lineage" column to see what MAGs were classified with, for example, the "d__Bacteria" or "d__Archaea" marker sets. Instances where a broad (domain-level) marker set is used compared to a marker set from specific lineage (e.g. c__Alphaproteobacteria) can help one contextualize (and evaluate) the genome completeness and contamination estimates.</p>
+    <p><b><i>Output Report:</i></b> The output report offers a tabular representations of the phylogenetic marker completeness and contamination. CheckM generates clade-specific marker gene sets for each bin and reports the taxonomic resolution possible for each bin in the "Marker Lineage" column. Users may want to look at the "Marker Lineage" column to see what MAGs were classified with, for example, the "d__Bacteria" or "d__Archaea" marker sets. Instances where a broad (domain-level) marker set is used compared to a marker set from specific lineage (e.g. c__Alphaproteobacteria) can help one contextualize (and evaluate) the genome completeness and contamination estimates.</p>
 
     <p>The number of Genomes that were used in generating each marker set is given, as is the number of markers generated. Marker genes are typically single-copy, so the occurrence of more than one in a given genome or bin may reveal contamination, which is indicated with yellow to red bars in the graphical depiction and by the columns "2" to "5+" in the table. As noted above in the article on assumptions, for incomplete genomes (e.g. 50-70%) the contamination measure is going to be an underestimate. In other words, be wary of a genome that is 50% complete with 0% contamination - contamination is present, this tool just doesn't detect it.</p>
 
-    <p>The fraction of marker genes that occur as duplicates is used to calculate the "Contamination" percentage in the table. Missing clade-specific phylogenetic markers are shown in gray in the plot and by the column "0" in the table, with the "Completeness" value obtained by the proportion of the missing markers to the total number of markers used. The presence of one and exactly one copy of a marker is indicated with a green bar in the plot and the tally in the "1" column of the table. Ideally, <a href=”https://www.nature.com/articles/nbt.3893”>a perfect Genome</a> will have all markers in exactly one copy assuming that the derivation of the markers was itself perfectly done and biology was perfectly <a href=”https://www.nature.com/articles/nbt.3893/tables/1”>predictable.</a> Be sure to inspect results to ensure they are accurate. For example, for lineages not well-characterized in the CheckM database, the CheckM program will produce dubious results because marker gene assumptions are broken.</p>
+    <p>The fraction of marker genes that occur as duplicates is used to calculate the "Contamination" percentage in the table. Missing clade-specific phylogenetic markers are shown by the column "0" in the table, with the "Completeness" value obtained by the proportion of the missing markers to the total number of markers used. The presence of one and exactly one copy of a marker is indicated by the tally in the "1" column of the table. Ideally, <a href=”https://www.nature.com/articles/nbt.3893”>a perfect Genome</a> will have all markers in exactly one copy assuming that the derivation of the markers was itself perfectly done and biology was perfectly <a href=”https://www.nature.com/articles/nbt.3893/tables/1”>predictable.</a> Be sure to inspect results to ensure they are accurate. For example, for lineages not well-characterized in the CheckM database, the CheckM program will produce dubious results because marker gene assumptions are broken.</p>
 
     <p>In the table, bins that do not pass the thresholds for completeness or contamination are indicated with red.  For both the CheckM Plot and Table, all Bins are shown regardless of whether they were placed into the output BinnedContig object.</p>
 
+    <p><b>Note:</b> CheckM no longer generates a Bin QA Plot as of the python3 version of the tool.</p>
+
     <p><b><i>Downloadable files:</i></b> The plots and data output by the CheckM lineage workflow may be downloaded.  Additionally, a Tab-delimited TSV table in zipped text format that contains the CheckM assessment summary (matching that in the HTML CheckM Table report) for each bin is available to download.  Unlike the output filtered <b><i>BinnedContigs</i></b> object, the TSV summary table will also include bins that did not pass Completeness and Contamination thresholds.</p>
 
-    <p><strong>Team members who implemented App in KBase:</strong> Michael Sneddon and Dylan Chivian. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+    <p><hr></p>
+    <p><strong>Team members who implemented App in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a> and <a href="https://narrative.kbase.us/#people/msneddon">Michael Sneddon</a>. For questions, please <a href=”http://www.kbase.us/support/”>contact us</a>.</p>
+
+    <p><strong>Please cite:</strong>
+      <ul>
+        <li>Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Res. 2015;25: 1043–1055. doi:10.1101/gr.186072.114
+        <li>Chivian D, Jungbluth SP, Dehal PS, Wood-Charlson EM, Canon RS, Allen BH, Clark MM, Gu T, Land ML, Price GA, Riehl WJ, Sneddon MW, Sutormin R, Zhang Q, Cottingham RW, Henry CS, Arkin AP. Metagenome-assembled genome extraction and analysis from microbiomes using KBase. Nat Protoc. 2023 Jan;18(1):208-238. doi: 10.1038/s41596-022-00747-x
+      </ul>
+    </p>
 
 publications:
     -
@@ -110,3 +125,9 @@ publications:
         display-text: |
             Additional info:
         link: https://github.com/Ecogenomics/CheckM/wiki
+
+    -
+        pmid: 36376589
+        display-text: |
+            Chivian D, Jungbluth SP, Dehal PS, Wood-Charlson EM, Canon RS, Allen BH, Clark MM, Gu T, Land ML, Price GA, Riehl WJ, Sneddon MW, Sutormin R, Zhang Q, Cottingham RW, Henry CS, Arkin AP. Metagenome-assembled genome extraction and analysis from microbiomes using KBase. Nat Protoc. 2023 Jan;18(1):208-238. doi: 10.1038/s41596-022-00747-x
+        link: https://www.nature.com/articles/s41596-022-00747-x
