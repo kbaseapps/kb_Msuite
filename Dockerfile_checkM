@@ -54,13 +54,22 @@ RUN \
 
 ENV PATH "$PATH:/kb/deployment/bin/pplacer"
 
-# This will install CheckM and all other required Python libraries.
+# This will install CheckM1 and all other required Python libraries.
 RUN \
     pip install numpy matplotlib==3.1.0 pysam scipy dendropy coverage checkm-genome \
     && cp -R /miniconda/bin/checkm /kb/deployment/bin/CheckMBin \
-    && mkdir -p /data/checkm_data \
+    && mkdir -p /data/checkm1/checkm_data \
     && mv /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG.orig \
-    && touch /data/DATA_CONFIG \
-    && cp /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG.orig /data/DATA_CONFIG \
-    && ln -sf /data/DATA_CONFIG /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG \
-    && chmod +rwx /data/DATA_CONFIG
+    && touch /data/checkm1/DATA_CONFIG \
+    && cp /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG.orig /data/checkm1/DATA_CONFIG \
+    && ln -sf /data/checkm1/DATA_CONFIG /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG \
+    && chmod +rwx /data/checkm1/DATA_CONFIG
+
+
+# This will install CheckM2 and all other required Python libraries.
+RUN \
+    wget https://github.com/bbuchfink/diamond/releases/download/v2.1.8/diamond-linux64.tar.gz -O diamond-linux64.tar.gz && \
+    tar xfz diamond-linux64.tar.gz && \
+    mv diamond /usr/local/bin && \
+    pip install --upgrade pip && \
+    pip install CheckM2
