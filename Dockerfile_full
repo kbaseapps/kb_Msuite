@@ -1,87 +1,76 @@
-FROM kbase/sdkbase2:python
+FROM kbase/sdkpython:3.8.10
+MAINTAINER KBase Developer
 
-# install cython that pysam likes
-RUN \
-  apt-get update && apt-get install -y build-essential wget \
-  && pip install --upgrade pip setuptools Cython==0.25
+# Basics + build deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential wget curl unzip ca-certificates tree \
+  && rm -rf /var/lib/apt/lists/*
 
-###### CheckM installation
-#  Directions from https://github.com/Ecogenomics/CheckM/wiki/Installation#how-to-install-checkm
+# Keep pip toolchain current; Cython helps pysam wheels fallback if needed
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
+ && pip install --no-cache-dir "Cython>=0.29.0"
 
-# CheckM requires the following programs to be added to your system path:
-#
-# HMMER (>=3.1b1)
-# prodigal (2.60 or >=2.6.1)
-# executable must be named prodigal and not prodigal.linux
-# pplacer (>=1.1)
-# guppy, which is part of the pplacer package, must also be on your system path
-# pplacer binaries can be found on the pplacer GitHub page
+##### ---- Third-party binaries required by CheckM ----
 
-# Install HMMER (>=3.1b1)
+# HMMER >= 3.1b1 (building 3.1b2 like before)
+WORKDIR /opt
+RUN curl -fsSL http://eddylab.org/software/hmmer3/3.1b2/hmmer-3.1b2-linux-intel-x86_64.tar.gz \
+      -o hmmer-3.1b2-linux-intel-x86_64.tar.gz \
+ && tar -xzf hmmer-3.1b2-linux-intel-x86_64.tar.gz \
+ && rm -f hmmer-3.1b2-linux-intel-x86_64.tar.gz \
+ && cd hmmer-3.1b2-linux-intel-x86_64 \
+ && ./configure && make && make install \
+ && cd easel && make check && make install
+
+# Prodigal 2.6.3
+WORKDIR /opt
+RUN wget -q https://github.com/hyattpd/Prodigal/archive/v2.6.3.tar.gz \
+ && tar -xzf v2.6.3.tar.gz && rm -f v2.6.3.tar.gz \
+ && cd Prodigal-2.6.3 && make \
+ && install -m 0755 prodigal /usr/local/bin/prodigal
+
+# pplacer 1.1.alpha19 (includes guppy)
+WORKDIR /opt
+RUN wget -q https://github.com/matsen/pplacer/releases/download/v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip \
+ && unzip -q pplacer-linux-v1.1.alpha19.zip \
+ && rm -f pplacer-linux-v1.1.alpha19.zip \
+ && mv pplacer-Linux-v1.1.alpha19 /opt/pplacer
+ENV PATH="/opt/pplacer:${PATH}"
+
+##### ---- CheckM 1.2.3 ----
+# Pin minimal scientific stack that CheckM expects to stay stable in SDK image.
+RUN pip install --no-cache-dir \
+      "numpy" \
+      "matplotlib==3.1.0" \
+      "pysam" \
+      "scipy" \
+      "dendropy" \
+      "coverage" \
+      "checkm-genome==1.2.3"
+
+# Configure CheckM data root (no hard-coded site-packages path)
+ENV CHECKM_DATA_PATH=/data/checkm_data
+RUN mkdir -p "$CHECKM_DATA_PATH" \
+ && python - <<'PY'
+import os, importlib, pathlib
+pkg = importlib.import_module('checkm')
+cfg = pathlib.Path(pkg.__file__).parent/'DATA_CONFIG'
+cfg.write_text(os.environ.get('CHECKM_DATA_PATH','/data/checkm_data')+'\n')
+print('Wrote', cfg, '->', cfg.read_text().strip())
+PY
+
+# (Optional) quick smoke test
+RUN checkm -h >/dev/null 2>&1 || (echo "CheckM not on PATH" && exit 1)
+
+##### ---- App wiring (same as your current image) ----
 WORKDIR /kb/module
-RUN \
-  curl http://eddylab.org/software/hmmer3/3.1b2/hmmer-3.1b2-linux-intel-x86_64.tar.gz > hmmer-3.1b2-linux-intel-x86_64.tar.gz && \
-  tar -zxvf hmmer-3.1b2-linux-intel-x86_64.tar.gz && \
-  ln -s hmmer-3.1b2-linux-intel-x86_64 hmmer && \
-  rm -f hmmer-3.1b2-linux-intel-x86_64.tar.gz && \
-  cd hmmer && \
-  ./configure && \
-  make && make install && \
-  cd easel && make check && make install
-
-
-# Install Prodigal (2.60 or >=2.6.1)
-WORKDIR /kb/module
-RUN \
-  wget https://github.com/hyattpd/Prodigal/archive/v2.6.3.tar.gz && \
-  tar -zxvf v2.6.3.tar.gz && \
-  ln -s Prodigal-2.6.3 prodigal && \
-  rm -f v2.6.3.tar.gz && \
-  cd prodigal && \
-  make && \
-  cp prodigal /kb/deployment/bin/prodigal
-
-# Install Pplacer (>=1.1)
-WORKDIR /kb/module
-RUN \
-  wget https://github.com/matsen/pplacer/releases/download/v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip && \
-  unzip pplacer-linux-v1.1.alpha19.zip && \
-  ln -s pplacer-Linux-v1.1.alpha19 pplacer && \
-  rm -f pplacer-linux-v1.1.alpha19.zip && \
-  rm -f pplacer-1.1.alpha19.tar.gz && \
-  cp -R pplacer-Linux-v1.1.alpha19 /kb/deployment/bin/pplacer
-
-ENV PATH "$PATH:/kb/deployment/bin/pplacer"
-
-# This will install CheckM and all other required Python libraries.
-RUN \
-    pip3 install numpy \
-    && pip3 install matplotlib==3.1.0 \
-    && pip3 install pysam \
-    && pip3 install scipy \
-    && pip3 install dendropy \
-    && pip3 install coverage \
-    && pip3 install checkm-genome \
-    && cp -R /miniconda/bin/checkm /kb/deployment/bin/CheckMBin \
-    && mkdir -p /data/checkm_data \
-    && mv /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG.orig \
-    && touch /data/DATA_CONFIG \
-    && cp /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG.orig /data/DATA_CONFIG \
-    && ln -sf /data/DATA_CONFIG /miniconda/lib/python3.6/site-packages/checkm/DATA_CONFIG \
-    && chmod +rwx /data/DATA_CONFIG
-
-RUN apt-get install -y tree
-
 COPY ./ /kb/module
 
-WORKDIR /kb/module
-
 RUN mkdir -p /kb/module/work/tmp/test_data \
-    && cp -r /kb/module/test/data/* /kb/module/work/tmp/test_data/ \
-    && chmod -R a+rw /kb/module \
-    && make all \
-    && rm -f /data/__READY__
+ && cp -r /kb/module/test/data/* /kb/module/work/tmp/test_data/ \
+ && chmod -R a+rw /kb/module \
+ && make all \
+ && rm -f /data/__READY__
 
-ENTRYPOINT [ "./scripts/entrypoint.sh" ]
-
-CMD [ ]
+ENTRYPOINT ["./scripts/entrypoint.sh"]
+CMD []
